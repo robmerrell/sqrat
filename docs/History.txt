@@ -1,0 +1,13 @@
+﻿Scrat - Squirrel Binding Utility
+(c) 2009 Brandon Jones
+Version 0.0.2 (preview)
+
+=== Version History ===
+
+0.0.2 (05/06/2009)
+ * Increased possible variable count to 9 for all function bindings and calls
+ * Corrected issue where Object.Cast wouldn't convert types properly
+ * Updated documentation a bit
+
+0.0.1 (05/05/2009)
+ * Initial Release
