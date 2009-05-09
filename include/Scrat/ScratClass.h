@@ -32,89 +32,46 @@
 #include <string.h>
 
 #include "ScratObject.h"
+#include "ScratClassType.h"
 #include "ScratMemberMethods.h"
 #include "ScratAllocator.h"
 
 namespace Scrat {
-	
+
 	//
 	// Class
 	//
 
 	template<class C, class A = DefaultAllocator<C>>
 	class Class : public Object {
-
 	public:
 		// Create a new table
 		Class(HSQUIRRELVM v, bool createClass = true) : Object(v) {
-			if(createClass && !Initialized()) {
+			if(createClass && !ClassType<C>::Initialized()) {
 				sq_newclass(vm, false);
-				sq_getstackobj(vm, -1, &ClassObject());
+				sq_getstackobj(vm, -1, &ClassType<C>::ClassObject());
 
 				sq_pop(vm, -1);
 
 				InitClass();
 
-				Initialized() = true;
+				ClassType<C>::Initialized() = true;
 			}
 		}
 		
 		// Get the Squirrel Object for this Class
 		virtual HSQOBJECT GetObject() const { 
-			return ClassObject();
+			return ClassType<C>::ClassObject();
 		}
 
 		// Get the Squirrel Object for this Class
 		virtual HSQOBJECT& GetObject() { 
-			return ClassObject();
+			return ClassType<C>::ClassObject();
 		}
 
 		virtual void Release() {}
-
-		// Get the Squirrel Object for this Class
-		static inline HSQOBJECT& ClassObject() {
-			static HSQOBJECT classObj; 
-			return classObj;
-		}
-
-		// Get the Get Table for this Class
-		static inline HSQOBJECT& GetTable() {
-			static HSQOBJECT getTable; 
-			return getTable;
-		}
-
-		// Get the Set Table for this Class
-		static inline HSQOBJECT& SetTable() {
-			static HSQOBJECT setTable; 
-			return setTable;
-		}
-
-		static inline bool& Initialized() {
-			static bool initialized = false;
-			return initialized;
-		}
 	
 	public:
-		static void PushInstance(HSQUIRRELVM vm, C* ptr) {
-			sq_pushobject(vm, ClassObject());
-			sq_createinstance(vm, -1);
-			sq_remove(vm, -2);
-			sq_setinstanceup(vm, -1, ptr);
-		}
-
-		static void PushInstanceCopy(HSQUIRRELVM vm, C& value) {
-			sq_pushobject(vm, ClassObject());
-			sq_createinstance(vm, -1);
-			sq_remove(vm, -2);
-			A::Copy(vm, -1, value);
-		}
-
-		static C* GetInstance(HSQUIRRELVM vm, SQInteger idx) {
-			C* ptr = NULL;
-			sq_getinstanceup(vm, idx, (SQUserPointer*)&ptr, NULL);
-			return ptr;
-		}
-
 		//
 		// Variable Binding
 		//
@@ -134,10 +91,10 @@ namespace Scrat {
 		template<class V>
 		Class& Var(const SQChar* name, V C::* var) {
 			// Add the getter
-			BindAccessor(name, &var, sizeof(var), &sqDefaultGet<C, V>, GetTable());
+			BindAccessor(name, &var, sizeof(var), &sqDefaultGet<C, V>, ClassType<C>::GetTable());
 
 			// Add the setter
-			BindAccessor(name, &var, sizeof(var), &sqDefaultSet<C, V>, SetTable());
+			BindAccessor(name, &var, sizeof(var), &sqDefaultSet<C, V>, ClassType<C>::SetTable());
 
 			return *this;
 		}
@@ -170,36 +127,38 @@ namespace Scrat {
 		// Initialize the required data structure for the class
 		void InitClass() {
 			// push the class
-			sq_pushobject(vm, GetObject());
+			sq_pushobject(vm, ClassType<C>::ClassObject());
+
+			ClassType<C>::CopyFunc() = &A::Copy;
 
 			// add the default constructor
 			sq_pushstring(vm,_SC("constructor"), -1);
 			sq_newclosure(vm, &A::New, 0);
-			sq_newslot(vm, -3, false); 
-			
+			sq_newslot(vm, -3, false);
+
 			// add the set table (static)
-			sq_resetobject(&SetTable());
+			sq_resetobject(&ClassType<C>::SetTable());
 			sq_pushstring(vm,_SC("__setTable"), -1);
 			sq_newtable(vm);
-			sq_getstackobj(vm, -1, &SetTable());
+			sq_getstackobj(vm, -1, &ClassType<C>::SetTable());
 			sq_newslot(vm, -3, true);
 
 			// add the get table (static)
-			sq_resetobject(&GetTable());
+			sq_resetobject(&ClassType<C>::GetTable());
 			sq_pushstring(vm,_SC("__getTable"), -1);
 			sq_newtable(vm);
-			sq_getstackobj(vm, -1, &GetTable());
+			sq_getstackobj(vm, -1, &ClassType<C>::GetTable());
 			sq_newslot(vm, -3, true);
 			
 			// override _set
 			sq_pushstring(vm, _SC("_set"), -1);
-			sq_pushobject(vm, SetTable()); // Push the set table as a free variable
+			sq_pushobject(vm, ClassType<C>::SetTable()); // Push the set table as a free variable
 			sq_newclosure(vm, sqVarSet, 1);
 			sq_newslot(vm, -3, false);
 			
 			// override _get
 			sq_pushstring(vm, _SC("_get"), -1);
-			sq_pushobject(vm, GetTable()); // Push the get table as a free variable
+			sq_pushobject(vm, ClassType<C>::GetTable()); // Push the get table as a free variable
 			sq_newclosure(vm, sqVarGet, 1);
 			sq_newslot(vm, -3, false);
 
@@ -232,56 +191,58 @@ namespace Scrat {
 	template<class C, class B, class A = DefaultAllocator<C>>
 	class DerivedClass : public Class<C, A> {
 	public:
-		DerivedClass(HSQUIRRELVM v) : Class<C>(v, false) {
-			if(!Initialized()) {
-				sq_pushobject(vm, Class<B>::ClassObject());
+		DerivedClass(HSQUIRRELVM v) : Class<C, A>(v, false) {
+			if(!ClassType<C>::Initialized()) {
+				sq_pushobject(vm, ClassType<B>::ClassObject());
 				sq_newclass(vm, true);
-				sq_getstackobj(vm, -1, &ClassObject());
+				sq_getstackobj(vm, -1, &ClassType<C>::ClassObject());
 
 				sq_pop(vm, -1);
 
 				InitDerivedClass();
-				Initialized() = true;
+				ClassType<C>::Initialized() = true;
 			}
 		}
 
 	protected:
 		void InitDerivedClass() {
 			// push the class
-			sq_pushobject(vm, GetObject());
+			sq_pushobject(vm, ClassType<C>::ClassObject());
+
+			ClassType<C>::CopyFunc() = &A::Copy;
 
 			// add the default constructor
 			sq_pushstring(vm,_SC("constructor"), -1);
 			sq_newclosure(vm, &A::New, 0);
-			sq_newslot(vm, -3, false); 
+			sq_newslot(vm, -3, false);
 			
 			// clone the base classes set table (static)
-			sq_resetobject(&SetTable());
-			sq_pushobject(vm, Class<B>::SetTable());
+			sq_resetobject(&ClassType<C>::SetTable());
+			sq_pushobject(vm, ClassType<B>::SetTable());
 			sq_pushstring(vm,_SC("__setTable"), -1);
 			sq_clone(vm, -2);
 			sq_remove(vm, -3);
-			sq_getstackobj(vm, -1, &SetTable());
+			sq_getstackobj(vm, -1, &ClassType<C>::SetTable());
 			sq_newslot(vm, -3, true);
 
 			// clone the base classes get table (static)
-			sq_resetobject(&GetTable());
-			sq_pushobject(vm, Class<B>::GetTable());
+			sq_resetobject(&ClassType<C>::GetTable());
+			sq_pushobject(vm, ClassType<B>::GetTable());
 			sq_pushstring(vm,_SC("__getTable"), -1);
 			sq_clone(vm, -2);
 			sq_remove(vm, -3);
-			sq_getstackobj(vm, -1, &GetTable());
+			sq_getstackobj(vm, -1, &ClassType<C>::GetTable());
 			sq_newslot(vm, -3, true);
 			
 			// override _set
 			sq_pushstring(vm, _SC("_set"), -1);
-			sq_pushobject(vm, SetTable()); // Push the set table as a free variable
+			sq_pushobject(vm, ClassType<C>::SetTable()); // Push the set table as a free variable
 			sq_newclosure(vm, sqVarSet, 1);
 			sq_newslot(vm, -3, false);
 			
 			// override _get
 			sq_pushstring(vm, _SC("_get"), -1);
-			sq_pushobject(vm, GetTable()); // Push the get table as a free variable
+			sq_pushobject(vm, ClassType<C>::GetTable()); // Push the get table as a free variable
 			sq_newclosure(vm, sqVarGet, 1);
 			sq_newslot(vm, -3, false);
 

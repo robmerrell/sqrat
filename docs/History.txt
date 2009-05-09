@@ -1,8 +1,14 @@
 ﻿Scrat - Squirrel Binding Utility
 (c) 2009 Brandon Jones
-Version 0.0.2 (preview)
+Version 0.0.3 (preview)
 
 === Version History ===
+
+0.0.3 (05/09/2009)
+ * More updates to class get/set routines
+ * Fixed issue with conflicting class templates (moved static class members into their own type)
+ * Renamed "NativeManaged" allocator to "NoConstructor" (made more sense)
+ * Various other bugfixes
 
 0.0.2 (05/06/2009)
  * Increased possible variable count to 9 for all function bindings and calls

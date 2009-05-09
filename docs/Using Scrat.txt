@@ -137,17 +137,24 @@ functionality:
 	
 === Object ===
 
-The Scrat Object is the base class for both the Table and Class. It is essentially a smart pointer wrapper for HSQOBJECTs. The HSQOBJECT has a reference added any time a Scrat Object is created or copied and is dereferenced upon deletion.
+The Scrat Object is the base class for both the Table and Class. It is 
+essentially a smart pointer wrapper for HSQOBJECTs. The HSQOBJECT has a 
+reference added any time a Scrat Object is created or copied and is 
+dereferenced upon deletion. 
 
-If the object represents a value you can retreive that value by calling Cast with the appropriate type:
+If the object represents a value you can retreive that value by calling 
+Cast with the appropriate type: 
 
 	int objVal = myObject.Cast<int>();
 	
-If the object represents a Table or Class you may also retrieve the values of a given slot using GetSlot. This will return another Scrat Object:
+If the object represents a Table or Class you may also retrieve the 
+values of a given slot using GetSlot. This will return another Scrat 
+Object: 
 
 	Object slotVal = myObject.GetSlot("myVal");
 
-If the object represents an instance of a class, the instance user pointer can be retrieved via GetInstanceUP:
+If the object represents an instance of a class, the instance user 
+pointer can be retrieved via GetInstanceUP: 
 
 	MyClass* instance = (MyClass*)myObject.GetInstanceUP();
 	
@@ -155,46 +162,64 @@ GetInstanceUP can also be provided a tag if needed.
 
 === Tables ===
 	
-The Scrat Table is an Object that can have functions or values bound to it. Functions are bound by calling Func:
+The Scrat Table is an Object that can have functions or values bound to 
+it. Functions are bound by calling Func: 
 
 	myTable.Func("MyFunc", &myFunc);
 	
-In this case &myFunc is a reference to a global or static function. If there are multiple overloads for myFunc, Scrat needs to know which to use. These cases can be disambiguated by providing the function signature as a template type to Func:
+In this case &myFunc is a reference to a global or static function. If 
+there are multiple overloads for myFunc, Scrat needs to know which to 
+use. These cases can be disambiguated by providing the function 
+signature as a template type to Func: 
 
 	myTable.Func<bool (*)(int, float)>("MyFunc", &myFunc);
 	
-Raw Squirrel functions can also be bound to a table using SquirrelFunc, which is called exactly like Func:
+Raw Squirrel functions can also be bound to a table using SquirrelFunc, 
+which is called exactly like Func: 
 
 	myTable.SquirrelFunc("MySqFunc", &mySqFunc);
 	
-The function passed to SquirrelFunc must be a SQFUNCTION, which is defined like so:
+The function passed to SquirrelFunc must be a SQFUNCTION, which is 
+defined like so: 
 
 	SQInteger mySqFunc(HSQUIRRELVM vm) {}
 	
-When using a Squirrel Function you are responsible for all stack management.
-	
+When using a Squirrel Function you are responsible for all stack 
+management. 
+
 === Classes ===
 
-Scrat Classes are used very much like tables, but can have instances created of them from within Squirrel. Function binding is identical to tables, but are now passed references to member functions instead:
+Scrat Classes are used very much like tables, but can have instances 
+created of them from within Squirrel. Function binding is identical to 
+tables, but are now passed references to member functions instead: 
 
 	myClass.Func("MyFunc", &MyClass::MyFunc);
 	
-class functions are disambiguated the same way as table functions. In addition to member functions, you can also bind a global or static function as a member function using GlobalFunc, which has syntax identical to Func:
+Class functions are disambiguated the same way as table functions. In 
+addition to member functions, you can also bind a global or static 
+function as a member function using GlobalFunc, which has syntax 
+identical to Func: 
 
 	myClass.GlobalFunc("MyFunc", &myGlobalFunc);
 
-When binding a function using GlobalFunc, the first argument of the bound function must be a pointer to the class type that the function is being bound to, which will be set to the calling instance when the function is invoked.
+When binding a function using GlobalFunc, the first argument of the 
+bound function must be a pointer to the class type that the function is 
+being bound to, which will be set to the calling instance when the 
+function is invoked. 
 
-Static functions can also be bound in the same way using StaticFunc, but static functions will not be passed the calling instance:
+Static functions can also be bound in the same way using StaticFunc, but 
+static functions will not be passed the calling instance: 
 
 	myClass.StaticFunc("MyStaticFunc", &MyClass::myStaticFunc)
 	myClass.StaticFunc("MyStaticFunc2", &globalStaticFunc)
 	
-Static functions do not need to be called on an instance within Squirrel (although they can be), you can call them directly on the class:
+Static functions do not need to be called on an instance within Squirrel 
+(although they can be), you can call them directly on the class: 
 
 	MyClass.MyStaticFunc();
 	
-Variables are treated simliarly to Functions. Instance variables are bound with Var:
+Variables are treated simliarly to Functions. Instance variables are 
+bound with Var: 
 
 	myClass.Var("MyInt", &MyClass::MyInt);
 	
@@ -208,7 +233,7 @@ Section Awaiting Content
 
 === Future Work ===
 
-I hope to incorporate the following features in upcoming releases of 
+I hope to incorporate the following features in upcoming releases of
 Scrat:
 
   * Function/Constructor Overloading

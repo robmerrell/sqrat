@@ -31,6 +31,8 @@
 #include <squirrel.h>
 #include <string>
 
+#include "ScratClassType.h"
+
 namespace Scrat {
 
 	//
@@ -41,13 +43,13 @@ namespace Scrat {
 	class VarType {
 	public:
 		static T& get(HSQUIRRELVM vm, SQInteger idx) {
-			return *Class<T>::GetInstance(vm, idx);
-		}
-		static void push(HSQUIRRELVM vm, T& value) {
-			Class<T>::PushInstanceCopy(vm, value);
+			return *ClassType<T>::GetInstance(vm, idx);
 		}
 		static void push(HSQUIRRELVM vm, T* value) {
-			Class<T>::PushInstance(vm, value);
+			ClassType<T>::PushInstance(vm, value);
+		}
+		static void push(HSQUIRRELVM vm, T& value) {
+			ClassType<T>::PushInstanceCopy(vm, value);
 		}
 	};
 
@@ -128,7 +130,7 @@ namespace Scrat {
 	//
 
 	template<>
-	class VarType<const SQChar*> {
+	class VarType<const SQChar> {
 	public:
 		static const SQChar* get(HSQUIRRELVM vm, SQInteger idx) {
 			const SQChar* ret;
@@ -142,7 +144,7 @@ namespace Scrat {
 	};
 	
 	template<>
-	class VarType<std::basic_string<SQChar>> {
+	class VarType<std::basic_string<SQChar> > {
 	public:
 		static std::wstring get(HSQUIRRELVM vm, SQInteger idx) {
 			const SQChar* ret;
@@ -189,18 +191,13 @@ namespace Scrat {
 	
 	// Push
 	template<class T>
-	inline void PushVar(HSQUIRRELVM vm, T& value) {
+	inline void PushVar(HSQUIRRELVM vm, T* value) {
 		VarType<T>::push(vm, value);
 	}
-
+	
 	template<class T>
-	inline void PushVar(HSQUIRRELVM vm, T* value) {
-		VarType<T>::push(vm, *value);
-	}
-
-	template<class T>
-	inline void PushVar(HSQUIRRELVM vm, const T& value) {
-		VarType<T>::push(vm, const_cast<T&>(value));
+	inline void PushVar(HSQUIRRELVM vm, T& value) {
+		VarType<T>::push(vm, value);
 	}
 
 	template<class T>
@@ -208,15 +205,20 @@ namespace Scrat {
 		VarType<T>::push(vm, const_cast<T&>(*value));
 	}
 
+	template<class T>
+	inline void PushVar(HSQUIRRELVM vm, const T& value) {
+		VarType<T>::push(vm, const_cast<T&>(value));
+	}
+
 	// Special case for text (Don't know how else to do it)
 	template<>
 	inline const SQChar* GetVar<SQChar>(TypeWrapper<const SQChar*>, HSQUIRRELVM vm, SQInteger idx) {
-		return VarType<const SQChar*>::get(vm, idx);
+		return VarType<const SQChar>::get(vm, idx);
 	}
 
 	template<>
 	inline void PushVar<SQChar>(HSQUIRRELVM vm, const SQChar* value) {
-		VarType<const SQChar*>::push(vm, value);
+		VarType<const SQChar>::push(vm, value);
 	}
 
 }

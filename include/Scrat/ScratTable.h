@@ -79,7 +79,7 @@ namespace Scrat {
 		}
 
 		template<class V>
-		Table& SetInstance(const SQChar* name, V& val) {
+		Table& SetInstance(const SQChar* name, V* val) {
 			BindInstance<V>(name, val, false);
 			return *this;
 		}

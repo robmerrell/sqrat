@@ -34,6 +34,7 @@
 #include "ScratObject.h"
 
 namespace Scrat {
+	
 	//
 	// DefaultAllocator
 	//
@@ -48,8 +49,8 @@ namespace Scrat {
 			return 0;
 		}
 
-		static C* Copy(HSQUIRRELVM vm, SQInteger idx, const C& value) {
-			C* instance = new C(value);
+		static SQInteger Copy(HSQUIRRELVM vm, SQInteger idx, const void* value) {
+			C* instance = new C(*static_cast<const C*>(value));
 			sq_setinstanceup(vm, idx, instance);
 			sq_setreleasehook(vm, idx, &Delete);
 			return 0;
@@ -62,11 +63,21 @@ namespace Scrat {
 		}
 	};
 
-	class NativeManaged {
+	//
+	// NoConstructorAllocator
+	//
+
+	class NoConstructor {
 	public:
-		static SQInteger New(HSQUIRRELVM vm) {}
-		static SQInteger Copy(HSQUIRRELVM vm) {}
-		static SQInteger Delete(SQUserPointer ptr, SQInteger size) {}
+		static SQInteger New(HSQUIRRELVM vm) { 
+			return 0; 
+		}
+		static SQInteger Copy(HSQUIRRELVM vm, SQInteger idx, const void* value) { 
+			return 0; 
+		}
+		static SQInteger Delete(SQUserPointer ptr, SQInteger size) { 
+			return 0; 
+		}
 	};
 }
 

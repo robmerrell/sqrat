@@ -147,7 +147,7 @@ namespace Scrat {
 		
 		// Set the value of an instance on the object. Changes to values set this way are reciprocated back to the source instance
 		template<class V>
-		inline void BindInstance(const SQChar* name, V& val, bool staticVar = false) {
+		inline void BindInstance(const SQChar* name, V* val, bool staticVar = false) {
 			sq_pushobject(vm, GetObject());
 			sq_pushstring(vm, name, -1);
 			PushVar(vm, val);
