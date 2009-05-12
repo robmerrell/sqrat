@@ -38,7 +38,7 @@ namespace Scrat {
 
 	class Table : public Object {
 	public:
-		Table(HSQUIRRELVM v) : Object(v) {
+		Table(HSQUIRRELVM v) : Object(v, false) {
 			sq_newtable(vm);
 			sq_getstackobj(vm,-1,&GetObject());
 			sq_pop(vm,-1);

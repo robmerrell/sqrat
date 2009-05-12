@@ -38,9 +38,11 @@ namespace Scrat {
 	protected:
 		HSQUIRRELVM vm;
 		HSQOBJECT obj;
+		bool release;
 
-		Object(HSQUIRRELVM v) : vm(v) {
+		Object(HSQUIRRELVM v, bool releaseOnDestroy = true) : vm(v), release(releaseOnDestroy) {
 			sq_resetobject(&obj);
+			releaseOnDestroy = true;
 		}
 
 	public:
@@ -57,7 +59,9 @@ namespace Scrat {
 		}
 
 		~Object() {
-			Release();
+			if(release) {
+				Release();
+			}
 		}
 
 		Object& operator=(const Object& so) {
@@ -91,7 +95,7 @@ namespace Scrat {
 			return GetObject();
 		}
 
-		virtual void Release() {
+		void Release() {
 			sq_release(vm, &obj);
 		}
 

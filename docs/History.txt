@@ -1,8 +1,16 @@
 ﻿Scrat - Squirrel Binding Utility
 (c) 2009 Brandon Jones
-Version 0.0.3 (preview)
+Version 0.0.4 (preview)
 
 === Version History ===
+
+0.0.4 (05/12/2009)
+ * Corrected issue with some types being statically defined as unicode versions (ie: wstring)
+ * Added a Scrat::string typedef for ease of use/development in unicode and ASCII (typedef-ed as std::basic_string< SQChar >)
+ * Added SquirrelFunc to Class. Allows for binding of unmanaged SQFUNCTION methods. (ported from Table)
+ * Added LastErrorString function - returns the last Squirrel Error as a Scrat::string. String is empty if no error
+ * Corrected an issue with tables and classes attempting to release their internal objects too early
+ * Fixed ambiguous function resolution problem with function calls returning void
 
 0.0.3 (05/09/2009)
  * More updates to class get/set routines

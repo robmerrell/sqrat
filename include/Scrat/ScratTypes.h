@@ -142,17 +142,19 @@ namespace Scrat {
 			sq_pushstring(vm, value, -1);
 		}
 	};
+
+	typedef std::basic_string<SQChar> string;
 	
 	template<>
-	class VarType<std::basic_string<SQChar> > {
+	class VarType< string > {
 	public:
-		static std::wstring get(HSQUIRRELVM vm, SQInteger idx) {
+		static string get(HSQUIRRELVM vm, SQInteger idx) {
 			const SQChar* ret;
 			sq_tostring(vm, idx);
 			sq_getstring(vm, -1, &ret);
-			return std::wstring(ret);
+			return string(ret);
 		}
-		static void push(HSQUIRRELVM vm, std::wstring value) {
+		static void push(HSQUIRRELVM vm, string value) {
 			sq_pushstring(vm, value.c_str(), -1);
 		}
 	};
