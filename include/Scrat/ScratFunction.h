@@ -298,6 +298,7 @@ namespace Scrat {
 			obj = sf.obj;
 			sq_addref(vm, &env);
 			sq_addref(vm, &obj);
+			return *this;
 		}
 
 

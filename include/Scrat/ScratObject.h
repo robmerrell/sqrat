@@ -69,6 +69,7 @@ namespace Scrat {
 			vm = so.vm;
 			obj = so.obj;
 			sq_addref(vm, &GetObject());
+			return *this;
 		}
 
 		HSQUIRRELVM& GetVM() {
