@@ -121,7 +121,7 @@ namespace Scrat {
 		template <class T>
 		T Cast() const {
 			sq_pushobject(vm, GetObject());
-			T ret = GetVar(TypeWrapper<T>, vm, -1);
+			T ret = GetVar(TypeWrapper<T>(), vm, -1);
 			sq_pop(vm, 1);
 			return ret;
 		}
