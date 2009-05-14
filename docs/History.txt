@@ -1,8 +1,13 @@
 ﻿Scrat - Squirrel Binding Utility
 (c) 2009 Brandon Jones
-Version 0.0.4 (preview)
+Version 0.0.5 (preview)
 
 === Version History ===
+
+0.0.5 (???)
+ * Added Constants and Enumerations (See "Using Scrat" for details)
+ * Moved all files up one directory, from "<scrat root>/include/scrat" to "<scrat root>/include"
+ * Fixed TypeWrapper issue with Object.Cast
 
 0.0.4 (05/12/2009)
  * Corrected issue with some types being statically defined as unicode versions (ie: wstring)

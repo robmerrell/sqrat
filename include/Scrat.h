@@ -33,6 +33,7 @@
 #include "ScratTable.h"
 #include "ScratClass.h"
 #include "ScratFunction.h"
+#include "ScratConst.h"
 #include "ScratUtil.h"
 
 #endif

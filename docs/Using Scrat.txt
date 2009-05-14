@@ -33,7 +33,9 @@ versions may work fine, but the author makes no promises!
   * Tables
     * Bind Global functions and variables
     * Can be used to support Namespaces
-  * Objecta
+  * Constants and Enumerations
+    * True support for compile time constant and enumeration values
+  * Objects
     * HSQOBJECT Smart-pointer
     * Provides simple lookup and casting capabilities
   * Functions
@@ -41,8 +43,8 @@ versions may work fine, but the author makes no promises!
 	
 === Including In Your Project ===
 
-Ensure that "<Scrat root>/include" is in your include path and include 
-"scrat/scrat.h" Yup, that's all there is to it! 
+Ensure that "<scrat root>/include" is in your include path and include 
+"scrat.h" Yup, that's all there is to it! 
 	
 === Basic Usage ===
 
@@ -226,6 +228,52 @@ bound with Var:
 And static variables are bound with StaticVar:
 
 	myClass.StaticVar("MyStaticInt", &MyClass::MyStaticInt);
+	
+=== Constants and Enumerations ===
+
+Constants and enumerations are both handled similarly by Squirrel in 
+that both are evaluated at compile time (like C++ defines). This can 
+improve the performance of scripts by skipping the table lookups 
+normally associated with variable use. 
+
+Constant binding happens on the ConstTable object, which functions in a 
+very similar manner to the RootTable object. It is limited to two 
+operations, however: Const and Enum. Const will set one of the valid 
+constant values (int, float, or string) to the given name: 
+
+	ConstTable(vm)
+		.Const("ConstInt", 12)
+		.Const("ConstFloat", 3.14)
+		.Const("ConstString", "Hello World!")
+		;
+		
+These are accessed from the script as global variables:
+
+	::print(ConstString); // prints "Hello World!"
+	local x = ConstInt - 4; // x = 8;
+	
+Enumerations are simply named groups of constant values. Creation of an 
+enumeration is done with the Enumeration object and bound to the 
+ConstTable with Enum. 
+
+	Enumeration color(vm);
+	color.Const("Red", 1);
+	color.Const("Green", 2);
+	color.Const("Blue", 3);
+	
+	ConstTable(vm).Enum("Color", color);
+	
+Or, of course:
+
+	ConstTable(vm).Enum("Color", Enumeration(vm)
+		.Const("Red", 1)
+		.Const("Green", 2)
+		.Const("Blue", 3)
+	);
+		
+Enumerations are accessed from script like static class members:
+
+	::print(Color.Red); // prints "1"
 
 === Function ===
 
@@ -238,8 +286,6 @@ Scrat:
 
   * Function/Constructor Overloading
   * Class Attributes
-  * Constants
-  * Enumerations
   
 === Contact ===
 

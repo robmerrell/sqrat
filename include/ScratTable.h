@@ -40,7 +40,7 @@ namespace Scrat {
 	public:
 		Table(HSQUIRRELVM v) : Object(v, false) {
 			sq_newtable(vm);
-			sq_getstackobj(vm,-1,&GetObject());
+			sq_getstackobj(vm,-1,&obj);
 			sq_pop(vm,-1);
 		}
 
@@ -99,7 +99,7 @@ namespace Scrat {
 	public:
 		RootTable(HSQUIRRELVM v) : Table(v) {
 			sq_pushroottable(vm);
-			sq_getstackobj(vm,-1,&GetObject());
+			sq_getstackobj(vm,-1,&obj);
 			sq_pop(v,-1); // pop root table
 		}
 	};
