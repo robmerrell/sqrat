@@ -69,13 +69,13 @@ namespace Scrat {
 
 	class NoConstructor {
 	public:
-		static SQInteger New(HSQUIRRELVM vm) { 
+		static SQInteger New(HSQUIRRELVM) { 
 			return 0; 
 		}
-		static SQInteger Copy(HSQUIRRELVM vm, SQInteger idx, const void* value) { 
+		static SQInteger Copy(HSQUIRRELVM, SQInteger, const void*) { 
 			return 0; 
 		}
-		static SQInteger Delete(SQUserPointer ptr, SQInteger size) { 
+		static SQInteger Delete(SQUserPointer, SQInteger) { 
 			return 0; 
 		}
 	};

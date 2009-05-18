@@ -8,6 +8,9 @@ Version 0.0.5 (preview)
  * Added Constants and Enumerations (See "Using Scrat" for details)
  * Moved all files up one directory, from "<scrat root>/include/scrat" to "<scrat root>/include"
  * Fixed TypeWrapper issue with Object.Cast
+ * Changed how Functions are retrieved. Now you call Table.GetFunction<returnType>("FunctionName")
+ * Updated variable get/set routines. Should be a little more lightweight now and responds correctly to std::string&
+ * Added support for default Virtual Machines (cuts down on repetitive code while leaving customization open)
 
 0.0.4 (05/12/2009)
  * Corrected issue with some types being statically defined as unicode versions (ie: wstring)

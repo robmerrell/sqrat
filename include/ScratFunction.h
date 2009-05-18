@@ -35,9 +35,15 @@ namespace Scrat {
 
 	template <class R>
 	class Function  {
+		friend class Table;
 	private:
 		HSQUIRRELVM vm;
 		HSQOBJECT env, obj;
+
+		Function(HSQUIRRELVM v, HSQOBJECT e, HSQOBJECT o) : vm(v), env(e), obj(o) {
+			sq_addref(vm, &env);
+			sq_addref(vm, &obj);
+		}
 
 	public:
 		Function() {
@@ -47,18 +53,6 @@ namespace Scrat {
 
 		Function(const Function& sf) : vm(sf.vm), env(sf.env), obj(sf.obj) {
 			sq_addref(vm, &env);
-			sq_addref(vm, &obj);
-		}
-
-		Function(HSQUIRRELVM v, HSQOBJECT e, HSQOBJECT o) : vm(v), env(e), obj(o) {
-			sq_addref(vm, &env);
-			sq_addref(vm, &obj);
-		}
-
-		Function(const Object& e, const SQChar* slot) : vm(e.GetVM()), env(e.GetObject()) {
-			sq_addref(vm, &env);
-			Object so = e.GetSlot(slot);
-			obj = so.GetObject();
 			sq_addref(vm, &obj);
 		}
 
@@ -98,7 +92,7 @@ namespace Scrat {
 			sq_pushobject(vm, env);
 
 			sq_call(vm, 1, true, false);
-			R ret = GetVar(TypeWrapper<R>(), vm, -1);
+			R ret = Var<R>(vm, -1).value;
 			sq_pop(vm, 1);
 			return ret;
 		}
@@ -111,9 +105,9 @@ namespace Scrat {
 			PushVar(vm, a1);
 
 			sq_call(vm, 2, true, false);
-			R ret = GetVar(TypeWrapper<R>(), vm, -1);
+			Var<R> ret(vm, -1);
 			sq_pop(vm, 1);
-			return ret;
+			return ret.value;
 		}
 
 		template <class A1, class A2>
@@ -125,7 +119,7 @@ namespace Scrat {
 			PushVar(vm, a2);
 
 			sq_call(vm, 3, true, false);
-			R ret = GetVar(TypeWrapper<R>(), vm, -1);
+			R ret = Var<R>(vm, -1).value;
 			sq_pop(vm, 1);
 			return ret;
 		}
@@ -140,7 +134,7 @@ namespace Scrat {
 			PushVar(vm, a3);
 
 			sq_call(vm, 4, true, false);
-			R ret = GetVar(TypeWrapper<R>(), vm, -1);
+			R ret = Var<R>(vm, -1).value;
 			sq_pop(vm, 1);
 			return ret;
 		}
@@ -156,7 +150,7 @@ namespace Scrat {
 			PushVar(vm, a4);
 
 			sq_call(vm, 5, true, false);
-			R ret = GetVar(TypeWrapper<R>(), vm, -1);
+			R ret = Var<R>(vm, -1).value;
 			sq_pop(vm, 1);
 			return ret;
 		}
@@ -174,7 +168,7 @@ namespace Scrat {
 			PushVar(vm, a5);
 
 			sq_call(vm, 6, true, false);
-			R ret = GetVar(TypeWrapper<R>(), vm, -1);
+			R ret = Var<R>(vm, -1).value;
 			sq_pop(vm, 1);
 			return ret;
 		}
@@ -192,7 +186,7 @@ namespace Scrat {
 			PushVar(vm, a6);
 
 			sq_call(vm, 7, true, false);
-			R ret = GetVar(TypeWrapper<R>(), vm, -1);
+			R ret = Var<R>(vm, -1).value;
 			sq_pop(vm, 1);
 			return ret;
 		}
@@ -211,7 +205,7 @@ namespace Scrat {
 			PushVar(vm, a7);
 
 			sq_call(vm, 8, true, false);
-			R ret = GetVar(TypeWrapper<R>(), vm, -1);
+			R ret = Var<R>(vm, -1).value;
 			sq_pop(vm, 1);
 			return ret;
 		}
@@ -231,7 +225,7 @@ namespace Scrat {
 			PushVar(vm, a8);
 
 			sq_call(vm, 9, true, false);
-			R ret = GetVar(TypeWrapper<R>(), vm, -1);
+			R ret = Var<R>(vm, -1).value;
 			sq_pop(vm, 1);
 			return ret;
 		}
@@ -252,7 +246,7 @@ namespace Scrat {
 			PushVar(vm, a9);
 
 			sq_call(vm, 10, true, false);
-			R ret = GetVar(TypeWrapper<R>(), vm, -1);
+			R ret = Var<R>(vm, -1).value;
 			sq_pop(vm, 1);
 			return ret;
 		}

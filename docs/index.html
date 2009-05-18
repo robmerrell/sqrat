@@ -1,0 +1,463 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<title>Scrat - Squirrel Binding Utility</title>
+		
+		<link type="text/css" href="style.css" rel="stylesheet" />
+	</head>
+	
+	<body>
+	
+	<div id="header">
+		<h1>Scrat - Squirrel Binding Utility</h1>
+		<h3>(c) 2009 Brandon Jones</h3>
+	</div>
+		
+	<div id="index">
+		<h2>Table of Contents</h2>
+		
+		<ul>
+			<li><a href="#download">Downloads</a></li>
+			<li><a href="#introduction">Introduction</a></li>
+			<li><a href="#features">Features</a></li>
+			<li><a href="#license">License</a></li>
+			<li><a href="#including">Including In Your Project</a></li>
+			<li><a href="#basicUsage">Basic Usage</a></li>
+			<li><a href="#object">Objects</a></li>
+			<li><a href="#table">Tables</a></li>
+			<li><a href="#class">Classes</a></li>
+			<li><a href="#const">Constants and Enumerations</a></li>
+			<li><a href="#function">Functions</a></li>
+			<li><a href="#future">Future Work</a></li>
+			<li><a href="#contact">Contact Information</a></li>
+		</ul>
+	</div>
+		
+	<div id="text">
+	
+		<h2 id="download">Downloads</h2>
+		
+		<p>The latest version of Scrat can be downloaded from <a href="http://sourceforge.net/projects/scrat">SourceForge</a></p>
+		
+		<h2 id="introduction">Introduction</h2>
+
+		<p>Scrat is a C++ library for Squirrel that facilitates exposing classes 
+		and other native functionality to Squirrel scripts. It is similar to 
+		SqPlus, both in functionality and syntax, but seeks to address several 
+		issues present in other binding libraries.</p>
+		
+		<p>Scrat models the underlying Squirrel API a little more closely than most 
+		other binding utilities, and this fact gives it a lot of power in 
+		exchange for a couple of minor quirks in the syntax. Code is 
+		straightforward and easy to read, however, and can easily be ported to 
+		from existing bindings.</p>
+		
+		<p>Scrat has been tested against Squirrel 2.1.1 through 2.2.2. Other 
+		versions may work fine, but the author makes no promises!</p>
+		
+		<h2 id="features">Features</h2>
+		
+		<ul>  
+			<li>zlib/libpng Licensed (Same as Squirrel)</li>
+			<li>ASCII and Unicode Support</li>
+			<li>32 Bit and 64 Bit Squirrel Support</li>
+			<li>Supports multiple Virtual Machines concurrently</li>
+			<li>Header only (no libraries to link)</li>
+			<li>Customizable
+				<ul>
+					<li>User may specialize allocators and variable translators for custom types if needed</li>
+				</ul>
+			</li>
+			<li>Classes
+				<ul>
+					<li>Bind Member or Static variables and functions</li>
+					<li>Bind Global functions as Member functions</li>
+				</ul>
+			</li>
+			<li>Tables
+				<ul>
+					<li>Bind Global functions and variables</li>
+					<li>Can be used to support Namespaces</li>
+				</ul>
+			</li>
+			<li>Constants and Enumerations
+				<ul>
+					<li>True support for compile time constant and enumeration values</li>
+				</ul>
+			</li>
+			<li>Objects
+				<ul>
+					<li>HSQOBJECT Smart-pointer</li>
+					<li>Provides simple lookup and casting capabilities</li>
+				</ul>
+			</li>
+			<li>Functions
+				<ul>
+					<li>Exposes Squirrel functions for calling from C++</li>
+				</ul>
+			</li>
+		</ul>
+		
+		<h2 id="license">License</h2>
+
+		<p>Scrat is licensed under the zlib/libpng license:</p>
+		
+	<pre>
+	Copyright (c) 2009 Brandon Jones
+	
+	This software is provided 'as-is', without any express or implied
+	warranty. In no event will the authors be held liable for any damages
+	arising from the use of this software.
+	
+	Permission is granted to anyone to use this software for any purpose,
+	including commercial applications, and to alter it and redistribute it
+	freely, subject to the following restrictions:
+	
+	1. The origin of this software must not be misrepresented; you must not
+	claim that you wrote the original software. If you use this software
+	in a product, an acknowledgment in the product documentation would be
+	appreciated but is not required.
+	
+	2. Altered source versions must be plainly marked as such, and must not be
+	misrepresented as being the original software.
+	
+	3. This notice may not be removed or altered from any source
+	distribution.
+	</pre>
+	
+		<p>What this means in plain English is essentially that you are welcome to do 
+		anything you want with the code for any purpose, but cannot claim that you
+		wrote the library. Also, any time you redistribute the source, the license
+		must be attached to it.</p>
+		
+		<p>As far as giving credit goes: I personally don't care if you give me credit
+		or not when you use Scrat, but I would love to hear about projects that it's
+		used in!</p>
+		
+		<h2 id="including">Including In Your Project</h2>
+
+		</p>Ensure that "&lt;scrat root&gt;/include" is in your include path and include 
+		"scrat.h" Yup, that's all there is to it!</p>
+		
+		<h2 id="basicUsage">Basic Usage</h2>
+
+		<p>The core of Scrat revolves around it's ability to bind C++ classes, 
+		functions, and variables. All binding is done on either a Table or 
+		Class, and looks like this:</p>
+		
+	<pre>
+	void myFunc() { }
+
+	class MyClass {
+	public:
+		void Foo() {}
+		int bar;
+	};
+
+	void BindSquirrel(HSQUIRRELVM vm) {
+		using namespace Scrat;
+
+		Table myTable(vm);
+		myTable.Func("MyFunc", &myFunc);
+		
+		Class&lt;MyClass&gt; myClass(vm);
+		myClass.Func("Foo", &MyClass::Foo);
+		myClass.Var("bar", &MyClass::bar);
+		
+		RootTable(vm).Bind("MyTable", myTable);
+		RootTable(vm).Bind("MyClass", myClass);
+	}
+	</pre>
+		
+		<p>After running the above code you will then have access to both MyTable 
+		and MyClass in Squirrel, accessed via the root table like so:</p>
+		
+	<pre>
+	MyTable.MyFunc();
+
+	instance &lt;- MyClass();
+	instance.Foo();
+	instance.bar = 1;
+	</pre>
+		
+		<p>A couple of things to notice: Niether the Table or Class were assigned 
+		names when they were created. They were only associated with a name when 
+		bound to their parent table (root). This closely models Squirrel's slot 
+		system and allows for greater flexibility when binding, not to mention 
+		more uniformity of the interface.</p>
+		
+		<p>Also, notice that we need to explicitly define which table the objects 
+		are binding to, root is never implied. Doing so allows nesting of table 
+		definitions like so:</p>
+		
+	<pre>
+	RootTable(vm).Bind("MyTable", myTable);
+	myTable.Bind("MyClass", myClass);
+	</pre>
+			
+		<p>Which would then be accessed in Squirrel as such (and can be used to 
+		emulate namespaces):</p>
+		
+	<pre>
+	instance <- MyTable.MyClass();
+	</pre>
+			
+		<p>Aside from the basic syntax shown above there are a couple of 
+		alternative syntaxes for defining bindings that can reduce the amount of 
+		redundant typing needed and make the code easier to read. First off, all 
+		variable and function definitions can be chained together like so 
+		(Whitespace is irrelevant):</p>
+		
+	<pre>
+	myClass
+		.Func("Foo", &MyClass::Foo)
+		.Var("bar", &MyClass::Bar)
+		;
+	</pre>
+				
+		<p>Definitions like this can also be inlined inside Bind calls:</p>
+		
+	<pre>
+	RootTable(vm).Bind("MyClass", Class&lt;MyClass&gt;(vm)
+		.Func("Foo", &MyClass::Foo)
+		.Var("bar", &MyClass::Bar)
+	);
+	</pre>
+		
+		<p>The only function that cannot be chained is Bind itself, due to static 
+		order of initialization issues. Altogether this means that the first 
+		binding sample could also be declared like such with no change in 
+		functionality:</p>
+
+	<pre>
+	void BindSquirrel(HSQUIRRELVM vm) {
+		using namespace Scrat;
+		
+		RootTable(vm).Bind("MyTable", Table(vm)
+			.Func("MyFunc", &myFunc)
+		);
+		
+		RootTable(vm).Bind("MyClass", Class&lt;MyClass&gt;(vm)
+			.Func("Foo", &MyClass::Foo)
+			.Var("bar", &MyClass::Bar)
+		);
+	}
+	</pre>
+	
+		<p>In addition, if you don't need to differentiate between multiple virtual 
+		machines you can cut down on some code by specifying a Default VM:</p>
+		
+	<pre>
+	void BindSquirrel(HSQUIRRELVM vm) {
+		using namespace Scrat;
+		
+		DefaultVM::Set(vm);
+		
+		RootTable().Bind("MyTable", Table()
+			.Func("MyFunc", &myFunc)
+		);
+		
+		RootTable().Bind("MyClass", Class&lt;MyClass&gt;()
+			.Func("Foo", &MyClass::Foo)
+			.Var("bar", &MyClass::Bar)
+		);
+	}
+	</pre>
+	
+		<p>The default vm takes effect globally once set, and can be retrieved at 
+		any time using Scrat::DefaultVM::Get()</p>
+		
+		<h2 id="object">Objects</h2>
+
+		<p>The Scrat Object is the base class for both the Table and Class. It is 
+		essentially a smart pointer wrapper for HSQOBJECTs. The HSQOBJECT has a 
+		reference added any time a Scrat Object is created or copied and is 
+		dereferenced upon deletion.</p>
+		
+		<p>If the object represents a value you can retreive that value by calling 
+		Cast with the appropriate type:</p>
+		
+	<pre>
+	int objVal = myObject.Cast&lt;int&gt;();
+	</pre>
+		
+		<p>If the object represents a Table or Class you may also retrieve the 
+		values of a given slot using GetSlot. This will return another Scrat 
+		Object:</p>
+		
+	<pre>
+	Object slotVal = myObject.GetSlot("myVal");
+	</pre>
+		
+		<p>If the object represents an instance of a class, the instance user 
+		pointer can be retrieved via GetInstanceUP:</p>
+		
+	<pre>
+	MyClass* instance = (MyClass*)myObject.GetInstanceUP();
+	</pre>
+		
+		<p>GetInstanceUP can also be provided a tag if needed.</p>
+		
+		<h2 id="table">Tables</h2>
+			
+		<p>The Scrat Table is an Object that can have functions or values bound to 
+		it. Functions are bound by calling Func:</p>
+		
+	<pre>
+	myTable.Func("MyFunc", &myFunc);
+	</pre>
+		
+		<p>In this case &myFunc is a reference to a global or static function. If 
+		there are multiple overloads for myFunc, Scrat needs to know which to 
+		use. These cases can be disambiguated by providing the function 
+		signature as a template type to Func:</p>
+		
+	<pre>
+	myTable.Func<bool (*)(int, float)>("MyFunc", &myFunc);
+	</pre>
+		
+		<p>Raw Squirrel functions can also be bound to a table using SquirrelFunc, 
+		which is called exactly like Func:</p>
+		
+	<pre>
+	myTable.SquirrelFunc("MySqFunc", &mySqFunc);
+	</pre>
+		
+		<p>The function passed to SquirrelFunc must be a SQFUNCTION, which is 
+		defined like so:</p>
+		
+	<pre>
+	SQInteger mySqFunc(HSQUIRRELVM vm) {}
+	</pre>
+		
+		<p>When using a Squirrel Function you are responsible for all stack 
+		management.</p>
+
+		<h2 id="class">Classes</h2>
+
+		<p>Scrat Classes are used very much like tables, but can have instances 
+		created of them from within Squirrel. Function binding is identical to 
+		tables, but are now passed references to member functions instead:</p>
+		
+	<pre>
+	myClass.Func("MyFunc", &MyClass::MyFunc);
+	</pre>
+		
+		<p>Class functions are disambiguated the same way as table functions. In 
+		addition to member functions, you can also bind a global or static 
+		function as a member function using GlobalFunc, which has syntax 
+		identical to Func:</p>
+		
+	<pre>
+	myClass.GlobalFunc("MyFunc", &myGlobalFunc);
+	</pre>
+		
+		<p>When binding a function using GlobalFunc, the first argument of the 
+		bound function must be a pointer to the class type that the function is 
+		being bound to, which will be set to the calling instance when the 
+		function is invoked.</p>
+
+		<p>Static functions can also be bound in the same way using StaticFunc, but 
+		static functions will not be passed the calling instance:</p>
+		
+	<pre>
+	myClass.StaticFunc("MyStaticFunc", &MyClass::myStaticFunc)
+	myClass.StaticFunc("MyStaticFunc2", &globalStaticFunc)
+	</pre>
+		
+		<p>Static functions do not need to be called on an instance within Squirrel 
+		(although they can be), you can call them directly on the class:</p>
+		
+	<pre>
+	MyClass.MyStaticFunc();
+	</pre>
+		
+		<p>Variables are treated simliarly to Functions. Instance variables are 
+		bound with Var:</p>
+		
+	<pre>
+	myClass.Var("MyInt", &MyClass::MyInt);
+	</pre>
+		
+		<p>And static variables are bound with StaticVar:</p>
+		
+	<pre>
+	myClass.StaticVar("MyStaticInt", &MyClass::MyStaticInt);
+	</pre>
+		
+		<h2 id="const">Constants and Enumerations</h2>
+
+		<p>Constants and enumerations are both handled similarly by Squirrel in 
+		that both are evaluated at compile time (like C++ defines). This can 
+		improve the performance of scripts by skipping the table lookups 
+		normally associated with variable use.</p>
+
+		<p>Constant binding happens on the ConstTable object, which functions in a 
+		very similar manner to the RootTable object. It is limited to two 
+		operations, however: Const and Enum. Const will set one of the valid 
+		constant values (int, float, or string) to the given name:</p>
+		
+	<pre>
+	ConstTable(vm)
+		.Const("ConstInt", 12)
+		.Const("ConstFloat", 3.14)
+		.Const("ConstString", "Hello World!")
+		;
+	</pre>
+		
+		<p>These are accessed from the script as global variables:</p>
+		
+	<pre>
+	::print(ConstString); // prints "Hello World!"
+	local x = ConstInt - 4; // x = 8;
+	</pre>
+		
+		<p>Enumerations are simply named groups of constant values. Creation of an 
+		enumeration is done with the Enumeration object and bound to the 
+		ConstTable with Enum.</p>
+		
+	<pre>
+	Enumeration color(vm);
+	color.Const("Red", 1);
+	color.Const("Green", 2);
+	color.Const("Blue", 3);
+	
+	ConstTable(vm).Enum("Color", color);
+	</pre>
+		
+		<p>Or, of course:</p>
+		
+	<pre>
+	ConstTable(vm).Enum("Color", Enumeration(vm)
+		.Const("Red", 1)
+		.Const("Green", 2)
+		.Const("Blue", 3)
+	);
+	</pre>
+		
+		<p>Enumerations are accessed from script like static class members:</p>
+		
+	<pre>
+	::print(Color.Red); // prints "1"
+	</pre>
+		
+		<h2 id="function">Functions</h2>
+
+		<p>Section Awaiting Content</p>
+
+		<h2 id="future">Future Work</h2>
+
+		<p>I hope to incorporate the following features in upcoming releases of
+		Scrat:</p>
+
+		<ul>
+			<li>Function/Constructor Overloading</li>
+			<li>Class Attributes</li>
+		</ul>
+		
+		<h2 id="contact">Contact Information</h2>
+
+		Brandon Jones (Toji) - tojiro (at) gmail (dot) com
+	</div>
+	</body>
+</html>

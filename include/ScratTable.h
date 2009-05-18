@@ -32,13 +32,14 @@
 #include <string.h>
 
 #include "ScratObject.h"
+#include "ScratFunction.h"
 #include "ScratGlobalMethods.h"
 
 namespace Scrat {
 
 	class Table : public Object {
 	public:
-		Table(HSQUIRRELVM v) : Object(v, false) {
+		Table(HSQUIRRELVM v = DefaultVM::Get()) : Object(v, false) {
 			sq_newtable(vm);
 			sq_getstackobj(vm,-1,&obj);
 			sq_pop(vm,-1);
@@ -66,8 +67,6 @@ namespace Scrat {
 			return *this;
 		}
 
-		
-
 		//
 		// Variable Binding
 		//
@@ -89,6 +88,22 @@ namespace Scrat {
 			BindFunc(name, &method, sizeof(method), SqGlobalFunc(method));
 			return *this;
 		}
+
+		//
+		// Function Calls
+		//
+
+		template<class R>
+		Function<R> GetFunction(const SQChar* name) {
+			HSQOBJECT funcObj;
+			sq_pushobject(vm, GetObject());
+			sq_pushstring(vm, name, -1);
+			sq_get(vm, -2);
+			sq_getstackobj(vm, -1, &funcObj);
+			sq_pop(vm, 2);
+
+			return Function<R>(vm, GetObject(), funcObj);
+		}
 	};
 
 	//
@@ -97,7 +112,7 @@ namespace Scrat {
 
 	class RootTable : public Table {
 	public:
-		RootTable(HSQUIRRELVM v) : Table(v) {
+		RootTable(HSQUIRRELVM v = DefaultVM::Get()) : Table(v) {
 			sq_pushroottable(vm);
 			sq_getstackobj(vm,-1,&obj);
 			sq_pop(v,-1); // pop root table

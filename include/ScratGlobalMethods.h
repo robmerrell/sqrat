@@ -61,7 +61,7 @@ namespace Scrat {
 			sq_getuserdata(vm, -1, (SQUserPointer*)&method, NULL);
 			
 			R ret = (*method)(
-				GetVar(TypeWrapper<A1>(), vm, startIdx)
+				Var<A1>(vm, startIdx).value
 				);
 
 			PushVar(vm, ret);
@@ -76,8 +76,8 @@ namespace Scrat {
 			sq_getuserdata(vm, -1, (SQUserPointer*)&method, NULL);
 			
 			R ret = (*method)(
-				GetVar(TypeWrapper<A1>(), vm, startIdx),
-				GetVar(TypeWrapper<A2>(), vm, startIdx + 1)
+				Var<A1>(vm, startIdx).value,
+				Var<A2>(vm, startIdx + 1).value
 				);
 
 			PushVar(vm, ret);
@@ -92,9 +92,9 @@ namespace Scrat {
 			sq_getuserdata(vm, -1, (SQUserPointer*)&method, NULL);
 			
 			R ret = (*method)(
-				GetVar(TypeWrapper<A1>(), vm, startIdx),
-				GetVar(TypeWrapper<A2>(), vm, startIdx + 1),
-				GetVar(TypeWrapper<A3>(), vm, startIdx + 2)
+				Var<A1>(vm, startIdx).value,
+				Var<A2>(vm, startIdx + 1).value,
+				Var<A3>(vm, startIdx + 2).value
 				);
 
 			PushVar(vm, ret);
@@ -109,10 +109,10 @@ namespace Scrat {
 			sq_getuserdata(vm, -1, (SQUserPointer*)&method, NULL);
 			
 			R ret = (*method)(
-				GetVar(TypeWrapper<A1>(), vm, startIdx),
-				GetVar(TypeWrapper<A2>(), vm, startIdx + 1),
-				GetVar(TypeWrapper<A3>(), vm, startIdx + 2),
-				GetVar(TypeWrapper<A4>(), vm, startIdx + 3)
+				Var<A1>(vm, startIdx).value,
+				Var<A2>(vm, startIdx + 1).value,
+				Var<A3>(vm, startIdx + 2).value,
+				Var<A4>(vm, startIdx + 3).value
 				);
 
 			PushVar(vm, ret);
@@ -127,11 +127,11 @@ namespace Scrat {
 			sq_getuserdata(vm, -1, (SQUserPointer*)&method, NULL);
 			
 			R ret = (*method)(
-				GetVar(TypeWrapper<A1>(), vm, startIdx),
-				GetVar(TypeWrapper<A2>(), vm, startIdx + 1),
-				GetVar(TypeWrapper<A3>(), vm, startIdx + 2),
-				GetVar(TypeWrapper<A4>(), vm, startIdx + 3),
-				GetVar(TypeWrapper<A5>(), vm, startIdx + 4)
+				Var<A1>(vm, startIdx).value,
+				Var<A2>(vm, startIdx + 1).value,
+				Var<A3>(vm, startIdx + 2).value,
+				Var<A4>(vm, startIdx + 3).value,
+				Var<A5>(vm, startIdx + 4).value
 				);
 
 			PushVar(vm, ret);
@@ -146,12 +146,12 @@ namespace Scrat {
 			sq_getuserdata(vm, -1, (SQUserPointer*)&method, NULL);
 			
 			R ret = (*method)(
-				GetVar(TypeWrapper<A1>(), vm, startIdx),
-				GetVar(TypeWrapper<A2>(), vm, startIdx + 1),
-				GetVar(TypeWrapper<A3>(), vm, startIdx + 2),
-				GetVar(TypeWrapper<A4>(), vm, startIdx + 3),
-				GetVar(TypeWrapper<A5>(), vm, startIdx + 4),
-				GetVar(TypeWrapper<A6>(), vm, startIdx + 5)
+				Var<A1>(vm, startIdx).value,
+				Var<A2>(vm, startIdx + 1).value,
+				Var<A3>(vm, startIdx + 2).value,
+				Var<A4>(vm, startIdx + 3).value,
+				Var<A5>(vm, startIdx + 4).value,
+				Var<A6>(vm, startIdx + 5).value
 				);
 
 			PushVar(vm, ret);
@@ -166,13 +166,13 @@ namespace Scrat {
 			sq_getuserdata(vm, -1, (SQUserPointer*)&method, NULL);
 			
 			R ret = (*method)(
-				GetVar(TypeWrapper<A1>(), vm, startIdx),
-				GetVar(TypeWrapper<A2>(), vm, startIdx + 1),
-				GetVar(TypeWrapper<A3>(), vm, startIdx + 2),
-				GetVar(TypeWrapper<A4>(), vm, startIdx + 3),
-				GetVar(TypeWrapper<A5>(), vm, startIdx + 4),
-				GetVar(TypeWrapper<A6>(), vm, startIdx + 5),
-				GetVar(TypeWrapper<A7>(), vm, startIdx + 6)
+				Var<A1>(vm, startIdx).value,
+				Var<A2>(vm, startIdx + 1).value,
+				Var<A3>(vm, startIdx + 2).value,
+				Var<A4>(vm, startIdx + 3).value,
+				Var<A5>(vm, startIdx + 4).value,
+				Var<A6>(vm, startIdx + 5).value,
+				Var<A7>(vm, startIdx + 6).value
 				);
 
 			PushVar(vm, ret);
@@ -187,14 +187,14 @@ namespace Scrat {
 			sq_getuserdata(vm, -1, (SQUserPointer*)&method, NULL);
 			
 			R ret = (*method)(
-				GetVar(TypeWrapper<A1>(), vm, startIdx),
-				GetVar(TypeWrapper<A2>(), vm, startIdx + 1),
-				GetVar(TypeWrapper<A3>(), vm, startIdx + 2),
-				GetVar(TypeWrapper<A4>(), vm, startIdx + 3),
-				GetVar(TypeWrapper<A5>(), vm, startIdx + 4),
-				GetVar(TypeWrapper<A6>(), vm, startIdx + 5),
-				GetVar(TypeWrapper<A7>(), vm, startIdx + 6),
-				GetVar(TypeWrapper<A8>(), vm, startIdx + 7)
+				Var<A1>(vm, startIdx).value,
+				Var<A2>(vm, startIdx + 1).value,
+				Var<A3>(vm, startIdx + 2).value,
+				Var<A4>(vm, startIdx + 3).value,
+				Var<A5>(vm, startIdx + 4).value,
+				Var<A6>(vm, startIdx + 5).value,
+				Var<A7>(vm, startIdx + 6).value,
+				Var<A8>(vm, startIdx + 7).value
 				);
 
 			PushVar(vm, ret);
@@ -209,15 +209,15 @@ namespace Scrat {
 			sq_getuserdata(vm, -1, (SQUserPointer*)&method, NULL);
 			
 			R ret = (*method)(
-				GetVar(TypeWrapper<A1>(), vm, startIdx),
-				GetVar(TypeWrapper<A2>(), vm, startIdx + 1),
-				GetVar(TypeWrapper<A3>(), vm, startIdx + 2),
-				GetVar(TypeWrapper<A4>(), vm, startIdx + 3),
-				GetVar(TypeWrapper<A5>(), vm, startIdx + 4),
-				GetVar(TypeWrapper<A6>(), vm, startIdx + 5),
-				GetVar(TypeWrapper<A7>(), vm, startIdx + 6),
-				GetVar(TypeWrapper<A8>(), vm, startIdx + 7),
-				GetVar(TypeWrapper<A9>(), vm, startIdx + 8)
+				Var<A1>(vm, startIdx).value,
+				Var<A2>(vm, startIdx + 1).value,
+				Var<A3>(vm, startIdx + 2).value,
+				Var<A4>(vm, startIdx + 3).value,
+				Var<A5>(vm, startIdx + 4).value,
+				Var<A6>(vm, startIdx + 5).value,
+				Var<A7>(vm, startIdx + 6).value,
+				Var<A8>(vm, startIdx + 7).value,
+				Var<A9>(vm, startIdx + 8).value
 				);
 
 			PushVar(vm, ret);
@@ -249,7 +249,7 @@ namespace Scrat {
 			sq_getuserdata(vm, -1, (SQUserPointer*)&method, NULL);
 
 			(*method)(
-				GetVar(TypeWrapper<A1>(), vm, startIdx)
+				Var<A1>(vm, startIdx).value
 				);
 			return 0;
 		}
@@ -262,8 +262,8 @@ namespace Scrat {
 			sq_getuserdata(vm, -1, (SQUserPointer*)&method, NULL);
 
 			(*method)(
-				GetVar(TypeWrapper<A1>(), vm, startIdx),
-				GetVar(TypeWrapper<A2>(), vm, startIdx + 1)
+				Var<A1>(vm, startIdx).value,
+				Var<A2>(vm, startIdx + 1).value
 				);
 			return 0;
 		}
@@ -276,9 +276,9 @@ namespace Scrat {
 			sq_getuserdata(vm, -1, (SQUserPointer*)&method, NULL);
 
 			(*method)(
-				GetVar(TypeWrapper<A1>(), vm, startIdx),
-				GetVar(TypeWrapper<A2>(), vm, startIdx + 1),
-				GetVar(TypeWrapper<A3>(), vm, startIdx + 2)
+				Var<A1>(vm, startIdx).value,
+				Var<A2>(vm, startIdx + 1).value,
+				Var<A3>(vm, startIdx + 2).value
 				);
 			return 0;
 		}
@@ -291,10 +291,10 @@ namespace Scrat {
 			sq_getuserdata(vm, -1, (SQUserPointer*)&method, NULL);
 
 			(*method)(
-				GetVar(TypeWrapper<A1>(), vm, startIdx),
-				GetVar(TypeWrapper<A2>(), vm, startIdx + 1),
-				GetVar(TypeWrapper<A3>(), vm, startIdx + 2),
-				GetVar(TypeWrapper<A4>(), vm, startIdx + 3)
+				Var<A1>(vm, startIdx).value,
+				Var<A2>(vm, startIdx + 1).value,
+				Var<A3>(vm, startIdx + 2).value,
+				Var<A4>(vm, startIdx + 3).value
 				);
 			return 0;
 		}
@@ -307,11 +307,11 @@ namespace Scrat {
 			sq_getuserdata(vm, -1, (SQUserPointer*)&method, NULL);
 
 			(*method)(
-				GetVar(TypeWrapper<A1>(), vm, startIdx),
-				GetVar(TypeWrapper<A2>(), vm, startIdx + 1),
-				GetVar(TypeWrapper<A3>(), vm, startIdx + 2),
-				GetVar(TypeWrapper<A4>(), vm, startIdx + 3),
-				GetVar(TypeWrapper<A5>(), vm, startIdx + 4)
+				Var<A1>(vm, startIdx).value,
+				Var<A2>(vm, startIdx + 1).value,
+				Var<A3>(vm, startIdx + 2).value,
+				Var<A4>(vm, startIdx + 3).value,
+				Var<A5>(vm, startIdx + 4).value
 				);
 			return 0;
 		}
@@ -324,12 +324,12 @@ namespace Scrat {
 			sq_getuserdata(vm, -1, (SQUserPointer*)&method, NULL);
 
 			(*method)(
-				GetVar(TypeWrapper<A1>(), vm, startIdx),
-				GetVar(TypeWrapper<A2>(), vm, startIdx + 1),
-				GetVar(TypeWrapper<A3>(), vm, startIdx + 2),
-				GetVar(TypeWrapper<A4>(), vm, startIdx + 3),
-				GetVar(TypeWrapper<A5>(), vm, startIdx + 4),
-				GetVar(TypeWrapper<A6>(), vm, startIdx + 5)
+				Var<A1>(vm, startIdx).value,
+				Var<A2>(vm, startIdx + 1).value,
+				Var<A3>(vm, startIdx + 2).value,
+				Var<A4>(vm, startIdx + 3).value,
+				Var<A5>(vm, startIdx + 4).value,
+				Var<A6>(vm, startIdx + 5).value
 				);
 			return 0;
 		}
@@ -342,13 +342,13 @@ namespace Scrat {
 			sq_getuserdata(vm, -1, (SQUserPointer*)&method, NULL);
 
 			(*method)(
-				GetVar(TypeWrapper<A1>(), vm, startIdx),
-				GetVar(TypeWrapper<A2>(), vm, startIdx + 1),
-				GetVar(TypeWrapper<A3>(), vm, startIdx + 2),
-				GetVar(TypeWrapper<A4>(), vm, startIdx + 3),
-				GetVar(TypeWrapper<A5>(), vm, startIdx + 4),
-				GetVar(TypeWrapper<A6>(), vm, startIdx + 5),
-				GetVar(TypeWrapper<A7>(), vm, startIdx + 6)
+				Var<A1>(vm, startIdx).value,
+				Var<A2>(vm, startIdx + 1).value,
+				Var<A3>(vm, startIdx + 2).value,
+				Var<A4>(vm, startIdx + 3).value,
+				Var<A5>(vm, startIdx + 4).value,
+				Var<A6>(vm, startIdx + 5).value,
+				Var<A7>(vm, startIdx + 6).value
 				);
 			return 0;
 		}
@@ -361,14 +361,14 @@ namespace Scrat {
 			sq_getuserdata(vm, -1, (SQUserPointer*)&method, NULL);
 
 			(*method)(
-				GetVar(TypeWrapper<A1>(), vm, startIdx),
-				GetVar(TypeWrapper<A2>(), vm, startIdx + 1),
-				GetVar(TypeWrapper<A3>(), vm, startIdx + 2),
-				GetVar(TypeWrapper<A4>(), vm, startIdx + 3),
-				GetVar(TypeWrapper<A5>(), vm, startIdx + 4),
-				GetVar(TypeWrapper<A6>(), vm, startIdx + 5),
-				GetVar(TypeWrapper<A7>(), vm, startIdx + 6),
-				GetVar(TypeWrapper<A8>(), vm, startIdx + 7)
+				Var<A1>(vm, startIdx).value,
+				Var<A2>(vm, startIdx + 1).value,
+				Var<A3>(vm, startIdx + 2).value,
+				Var<A4>(vm, startIdx + 3).value,
+				Var<A5>(vm, startIdx + 4).value,
+				Var<A6>(vm, startIdx + 5).value,
+				Var<A7>(vm, startIdx + 6).value,
+				Var<A8>(vm, startIdx + 7).value
 				);
 			return 0;
 		}
@@ -381,15 +381,15 @@ namespace Scrat {
 			sq_getuserdata(vm, -1, (SQUserPointer*)&method, NULL);
 
 			(*method)(
-				GetVar(TypeWrapper<A1>(), vm, startIdx),
-				GetVar(TypeWrapper<A2>(), vm, startIdx + 1),
-				GetVar(TypeWrapper<A3>(), vm, startIdx + 2),
-				GetVar(TypeWrapper<A4>(), vm, startIdx + 3),
-				GetVar(TypeWrapper<A5>(), vm, startIdx + 4),
-				GetVar(TypeWrapper<A6>(), vm, startIdx + 5),
-				GetVar(TypeWrapper<A7>(), vm, startIdx + 6),
-				GetVar(TypeWrapper<A8>(), vm, startIdx + 7),
-				GetVar(TypeWrapper<A9>(), vm, startIdx + 8)
+				Var<A1>(vm, startIdx).value,
+				Var<A2>(vm, startIdx + 1).value,
+				Var<A3>(vm, startIdx + 2).value,
+				Var<A4>(vm, startIdx + 3).value,
+				Var<A5>(vm, startIdx + 4).value,
+				Var<A6>(vm, startIdx + 5).value,
+				Var<A7>(vm, startIdx + 6).value,
+				Var<A8>(vm, startIdx + 7).value,
+				Var<A9>(vm, startIdx + 8).value
 				);
 			return 0;
 		}
@@ -403,7 +403,7 @@ namespace Scrat {
 	// Arg Count 0
 	template <class R>
 	SQFUNCTION SqGlobalFunc(R (*method)()) {
-		return &SqGlobal<R>::FuncR0;
+		return &SqGlobal<R>::Func0;
 	}
 	
 	// Arg Count 1

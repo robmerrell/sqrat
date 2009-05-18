@@ -34,6 +34,21 @@
 
 namespace Scrat {
 
+	class DefaultVM {
+	private:
+		static HSQUIRRELVM& staticVm() {
+			static HSQUIRRELVM vm;
+			return vm;
+		}
+	public:
+		static HSQUIRRELVM Get() {
+			return staticVm();
+		}
+		static void Set(HSQUIRRELVM vm) {
+			staticVm() = vm;
+		}
+	};
+
 	class Object {
 	protected:
 		HSQUIRRELVM vm;
@@ -54,7 +69,14 @@ namespace Scrat {
 			sq_addref(vm, &obj);
 		}
 
-		Object(HSQUIRRELVM v, HSQOBJECT o) : vm(v), obj(o) {
+		Object(HSQOBJECT o, HSQUIRRELVM v = DefaultVM::Get()) : vm(v), obj(o) {
+			sq_addref(vm, &obj);
+		}
+		
+		template<class T>
+		Object(T* instance, HSQUIRRELVM v = DefaultVM::Get()) : vm(v) {
+			ClassType<T>::PushInstance(vm, instance);
+			sq_getstackobj(vm, -1, &obj);
 			sq_addref(vm, &obj);
 		}
 
@@ -115,13 +137,13 @@ namespace Scrat {
 			sq_get(vm, -2);
 			sq_getstackobj(vm, -1, &slotObj);
 			sq_pop(vm, 2);
-			return Object(vm, slotObj);
+			return Object(slotObj, vm);
 		}
 
 		template <class T>
 		T Cast() const {
 			sq_pushobject(vm, GetObject());
-			T ret = GetVar(TypeWrapper<T>(), vm, -1);
+			T ret = Var<T>(vm, -1).value;
 			sq_pop(vm, 1);
 			return ret;
 		}
@@ -166,12 +188,12 @@ namespace Scrat {
 	//
 
 	template<>
-	class VarType<Object> {
-	public:
-		static Object get(HSQUIRRELVM vm, SQInteger idx) {
-			HSQOBJECT value;
-			sq_getstackobj(vm, idx, &value);
-			return Object(vm, value);
+	struct Var<Object> {
+		Object value;
+		Var(HSQUIRRELVM vm, SQInteger idx) {
+			HSQOBJECT sqValue;
+			sq_getstackobj(vm, idx, &sqValue);
+			value = Object(sqValue, vm);
 		}
 		static void push(HSQUIRRELVM vm, Object& value) {
 			sq_pushobject(vm, value.GetObject());

@@ -35,7 +35,7 @@
 
 namespace Scrat {
 
-	string LastErrorString( HSQUIRRELVM vm ) {
+	inline string LastErrorString( HSQUIRRELVM vm ) {
 		const SQChar* sqErr;
 		sq_getlasterror(vm);
 		if(sq_gettype(vm, -1) == OT_NULL) {

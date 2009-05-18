@@ -83,7 +83,7 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			R ret = (ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2)
+				Var<A1>(vm, 2).value
 				);
 
 			PushVar(vm, ret);
@@ -101,7 +101,7 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			R ret = (ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2)
+				Var<A1>(vm, 2).value
 				);
 
 			PushVar(vm, ret);
@@ -120,8 +120,8 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			R ret = (ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2),
-				GetVar(TypeWrapper<A2>(), vm, 3)
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value
 				);
 
 			PushVar(vm, ret);
@@ -139,8 +139,8 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			R ret = (ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2),
-				GetVar(TypeWrapper<A2>(), vm, 3)
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value
 				);
 
 			PushVar(vm, ret);
@@ -159,9 +159,9 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			R ret = (ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2),
-				GetVar(TypeWrapper<A2>(), vm, 3),
-				GetVar(TypeWrapper<A3>(), vm, 4)
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value
 				);
 
 			PushVar(vm, ret);
@@ -179,9 +179,9 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			R ret = (ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2),
-				GetVar(TypeWrapper<A2>(), vm, 3),
-				GetVar(TypeWrapper<A3>(), vm, 4)
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value
 				);
 
 			PushVar(vm, ret);
@@ -200,10 +200,10 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			R ret = (ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2),
-				GetVar(TypeWrapper<A2>(), vm, 3),
-				GetVar(TypeWrapper<A3>(), vm, 4),
-				GetVar(TypeWrapper<A4>(), vm, 5)
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value
 				);
 
 			PushVar(vm, ret);
@@ -221,10 +221,10 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			R ret = (ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2),
-				GetVar(TypeWrapper<A2>(), vm, 3),
-				GetVar(TypeWrapper<A3>(), vm, 4),
-				GetVar(TypeWrapper<A4>(), vm, 5)
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value
 				);
 
 			PushVar(vm, ret);
@@ -243,11 +243,11 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			R ret = (ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2),
-				GetVar(TypeWrapper<A2>(), vm, 3),
-				GetVar(TypeWrapper<A3>(), vm, 4),
-				GetVar(TypeWrapper<A4>(), vm, 5),
-				GetVar(TypeWrapper<A5>(), vm, 6)
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value
 				);
 
 			PushVar(vm, ret);
@@ -265,11 +265,11 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			R ret = (ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2),
-				GetVar(TypeWrapper<A2>(), vm, 3),
-				GetVar(TypeWrapper<A3>(), vm, 4),
-				GetVar(TypeWrapper<A4>(), vm, 5),
-				GetVar(TypeWrapper<A5>(), vm, 6)
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value
 				);
 
 			PushVar(vm, ret);
@@ -288,12 +288,12 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			R ret = (ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2),
-				GetVar(TypeWrapper<A2>(), vm, 3),
-				GetVar(TypeWrapper<A3>(), vm, 4),
-				GetVar(TypeWrapper<A4>(), vm, 5),
-				GetVar(TypeWrapper<A5>(), vm, 6),
-				GetVar(TypeWrapper<A6>(), vm, 7)
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value,
+				Var<A6>(vm, 7).value
 				);
 
 			PushVar(vm, ret);
@@ -311,12 +311,12 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			R ret = (ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2),
-				GetVar(TypeWrapper<A2>(), vm, 3),
-				GetVar(TypeWrapper<A3>(), vm, 4),
-				GetVar(TypeWrapper<A4>(), vm, 5),
-				GetVar(TypeWrapper<A5>(), vm, 6),
-				GetVar(TypeWrapper<A6>(), vm, 7)
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value,
+				Var<A6>(vm, 7).value
 				);
 
 			PushVar(vm, ret);
@@ -335,13 +335,13 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			R ret = (ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2),
-				GetVar(TypeWrapper<A2>(), vm, 3),
-				GetVar(TypeWrapper<A3>(), vm, 4),
-				GetVar(TypeWrapper<A4>(), vm, 5),
-				GetVar(TypeWrapper<A5>(), vm, 6),
-				GetVar(TypeWrapper<A6>(), vm, 7),
-				GetVar(TypeWrapper<A7>(), vm, 8)
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value,
+				Var<A6>(vm, 7).value,
+				Var<A7>(vm, 8).value
 				);
 
 			PushVar(vm, ret);
@@ -359,13 +359,13 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			R ret = (ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2),
-				GetVar(TypeWrapper<A2>(), vm, 3),
-				GetVar(TypeWrapper<A3>(), vm, 4),
-				GetVar(TypeWrapper<A4>(), vm, 5),
-				GetVar(TypeWrapper<A5>(), vm, 6),
-				GetVar(TypeWrapper<A6>(), vm, 7),
-				GetVar(TypeWrapper<A7>(), vm, 8)
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value,
+				Var<A6>(vm, 7).value,
+				Var<A7>(vm, 8).value
 				);
 
 			PushVar(vm, ret);
@@ -384,14 +384,14 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			R ret = (ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2),
-				GetVar(TypeWrapper<A2>(), vm, 3),
-				GetVar(TypeWrapper<A3>(), vm, 4),
-				GetVar(TypeWrapper<A4>(), vm, 5),
-				GetVar(TypeWrapper<A5>(), vm, 6),
-				GetVar(TypeWrapper<A6>(), vm, 7),
-				GetVar(TypeWrapper<A7>(), vm, 8),
-				GetVar(TypeWrapper<A8>(), vm, 9)
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value,
+				Var<A6>(vm, 7).value,
+				Var<A7>(vm, 8).value,
+				Var<A8>(vm, 9).value
 				);
 
 			PushVar(vm, ret);
@@ -409,14 +409,14 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			R ret = (ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2),
-				GetVar(TypeWrapper<A2>(), vm, 3),
-				GetVar(TypeWrapper<A3>(), vm, 4),
-				GetVar(TypeWrapper<A4>(), vm, 5),
-				GetVar(TypeWrapper<A5>(), vm, 6),
-				GetVar(TypeWrapper<A6>(), vm, 7),
-				GetVar(TypeWrapper<A7>(), vm, 8),
-				GetVar(TypeWrapper<A8>(), vm, 9)
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value,
+				Var<A6>(vm, 7).value,
+				Var<A7>(vm, 8).value,
+				Var<A8>(vm, 9).value
 				);
 
 			PushVar(vm, ret);
@@ -435,15 +435,15 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			R ret = (ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2),
-				GetVar(TypeWrapper<A2>(), vm, 3),
-				GetVar(TypeWrapper<A3>(), vm, 4),
-				GetVar(TypeWrapper<A4>(), vm, 5),
-				GetVar(TypeWrapper<A5>(), vm, 6),
-				GetVar(TypeWrapper<A6>(), vm, 7),
-				GetVar(TypeWrapper<A7>(), vm, 8),
-				GetVar(TypeWrapper<A8>(), vm, 9),
-				GetVar(TypeWrapper<A9>(), vm, 10)
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value,
+				Var<A6>(vm, 7).value,
+				Var<A7>(vm, 8).value,
+				Var<A8>(vm, 9).value,
+				Var<A9>(vm, 10).value
 				);
 
 			PushVar(vm, ret);
@@ -461,15 +461,15 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			R ret = (ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2),
-				GetVar(TypeWrapper<A2>(), vm, 3),
-				GetVar(TypeWrapper<A3>(), vm, 4),
-				GetVar(TypeWrapper<A4>(), vm, 5),
-				GetVar(TypeWrapper<A5>(), vm, 6),
-				GetVar(TypeWrapper<A6>(), vm, 7),
-				GetVar(TypeWrapper<A7>(), vm, 8),
-				GetVar(TypeWrapper<A8>(), vm, 9),
-				GetVar(TypeWrapper<A9>(), vm, 10)
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value,
+				Var<A6>(vm, 7).value,
+				Var<A7>(vm, 8).value,
+				Var<A8>(vm, 9).value,
+				Var<A9>(vm, 10).value
 				);
 
 			PushVar(vm, ret);
@@ -523,7 +523,7 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			(ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2)
+				Var<A1>(vm, 2).value
 				);
 			return 0;
 		}
@@ -539,7 +539,7 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			(ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2)
+				Var<A1>(vm, 2).value
 				);
 			return 0;
 		}
@@ -556,8 +556,8 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			(ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2),
-				GetVar(TypeWrapper<A2>(), vm, 3)
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value
 				);
 			return 0;
 		}
@@ -573,8 +573,8 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			(ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2),
-				GetVar(TypeWrapper<A2>(), vm, 3)
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value
 				);
 			return 0;
 		}
@@ -591,9 +591,9 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			(ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2),
-				GetVar(TypeWrapper<A2>(), vm, 3),
-				GetVar(TypeWrapper<A3>(), vm, 4)
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value
 				);
 			return 0;
 		}
@@ -609,9 +609,9 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			(ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2),
-				GetVar(TypeWrapper<A2>(), vm, 3),
-				GetVar(TypeWrapper<A3>(), vm, 4)
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value
 				);
 			return 0;
 		}
@@ -628,10 +628,10 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			(ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2),
-				GetVar(TypeWrapper<A2>(), vm, 3),
-				GetVar(TypeWrapper<A3>(), vm, 4),
-				GetVar(TypeWrapper<A4>(), vm, 5)
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value
 				);
 			return 0;
 		}
@@ -647,10 +647,10 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			(ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2),
-				GetVar(TypeWrapper<A2>(), vm, 3),
-				GetVar(TypeWrapper<A3>(), vm, 4),
-				GetVar(TypeWrapper<A4>(), vm, 5)
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value
 				);
 			return 0;
 		}
@@ -667,11 +667,11 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			(ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2),
-				GetVar(TypeWrapper<A2>(), vm, 3),
-				GetVar(TypeWrapper<A3>(), vm, 4),
-				GetVar(TypeWrapper<A4>(), vm, 5),
-				GetVar(TypeWrapper<A5>(), vm, 6)
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value
 				);
 			return 0;
 		}
@@ -687,11 +687,11 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			(ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2),
-				GetVar(TypeWrapper<A2>(), vm, 3),
-				GetVar(TypeWrapper<A3>(), vm, 4),
-				GetVar(TypeWrapper<A4>(), vm, 5),
-				GetVar(TypeWrapper<A5>(), vm, 6)
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value
 				);
 			return 0;
 		}
@@ -708,12 +708,12 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			(ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2),
-				GetVar(TypeWrapper<A2>(), vm, 3),
-				GetVar(TypeWrapper<A3>(), vm, 4),
-				GetVar(TypeWrapper<A4>(), vm, 5),
-				GetVar(TypeWrapper<A5>(), vm, 6),
-				GetVar(TypeWrapper<A6>(), vm, 7)
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value,
+				Var<A6>(vm, 7).value
 				);
 			return 0;
 		}
@@ -729,12 +729,12 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			(ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2),
-				GetVar(TypeWrapper<A2>(), vm, 3),
-				GetVar(TypeWrapper<A3>(), vm, 4),
-				GetVar(TypeWrapper<A4>(), vm, 5),
-				GetVar(TypeWrapper<A5>(), vm, 6),
-				GetVar(TypeWrapper<A6>(), vm, 7)
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value,
+				Var<A6>(vm, 7).value
 				);
 			return 0;
 		}
@@ -751,13 +751,13 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			(ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2),
-				GetVar(TypeWrapper<A2>(), vm, 3),
-				GetVar(TypeWrapper<A3>(), vm, 4),
-				GetVar(TypeWrapper<A4>(), vm, 5),
-				GetVar(TypeWrapper<A5>(), vm, 6),
-				GetVar(TypeWrapper<A6>(), vm, 7),
-				GetVar(TypeWrapper<A7>(), vm, 8)
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value,
+				Var<A6>(vm, 7).value,
+				Var<A7>(vm, 8).value
 				);
 			return 0;
 		}
@@ -773,13 +773,13 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			(ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2),
-				GetVar(TypeWrapper<A2>(), vm, 3),
-				GetVar(TypeWrapper<A3>(), vm, 4),
-				GetVar(TypeWrapper<A4>(), vm, 5),
-				GetVar(TypeWrapper<A5>(), vm, 6),
-				GetVar(TypeWrapper<A6>(), vm, 7),
-				GetVar(TypeWrapper<A7>(), vm, 8)
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value,
+				Var<A6>(vm, 7).value,
+				Var<A7>(vm, 8).value
 				);
 			return 0;
 		}
@@ -796,14 +796,14 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			(ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2),
-				GetVar(TypeWrapper<A2>(), vm, 3),
-				GetVar(TypeWrapper<A3>(), vm, 4),
-				GetVar(TypeWrapper<A4>(), vm, 5),
-				GetVar(TypeWrapper<A5>(), vm, 6),
-				GetVar(TypeWrapper<A6>(), vm, 7),
-				GetVar(TypeWrapper<A7>(), vm, 8),
-				GetVar(TypeWrapper<A8>(), vm, 9)
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value,
+				Var<A6>(vm, 7).value,
+				Var<A7>(vm, 8).value,
+				Var<A8>(vm, 9).value
 				);
 			return 0;
 		}
@@ -819,14 +819,14 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			(ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2),
-				GetVar(TypeWrapper<A2>(), vm, 3),
-				GetVar(TypeWrapper<A3>(), vm, 4),
-				GetVar(TypeWrapper<A4>(), vm, 5),
-				GetVar(TypeWrapper<A5>(), vm, 6),
-				GetVar(TypeWrapper<A6>(), vm, 7),
-				GetVar(TypeWrapper<A7>(), vm, 8),
-				GetVar(TypeWrapper<A8>(), vm, 9)
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value,
+				Var<A6>(vm, 7).value,
+				Var<A7>(vm, 8).value,
+				Var<A8>(vm, 9).value
 				);
 			return 0;
 		}
@@ -843,15 +843,15 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			(ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2),
-				GetVar(TypeWrapper<A2>(), vm, 3),
-				GetVar(TypeWrapper<A3>(), vm, 4),
-				GetVar(TypeWrapper<A4>(), vm, 5),
-				GetVar(TypeWrapper<A5>(), vm, 6),
-				GetVar(TypeWrapper<A6>(), vm, 7),
-				GetVar(TypeWrapper<A7>(), vm, 8),
-				GetVar(TypeWrapper<A8>(), vm, 9),
-				GetVar(TypeWrapper<A9>(), vm, 10)
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value,
+				Var<A6>(vm, 7).value,
+				Var<A7>(vm, 8).value,
+				Var<A8>(vm, 9).value,
+				Var<A9>(vm, 10).value
 				);
 			return 0;
 		}
@@ -867,15 +867,15 @@ namespace Scrat {
 			sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
 			(ptr->*method)(
-				GetVar(TypeWrapper<A1>(), vm, 2),
-				GetVar(TypeWrapper<A2>(), vm, 3),
-				GetVar(TypeWrapper<A3>(), vm, 4),
-				GetVar(TypeWrapper<A4>(), vm, 5),
-				GetVar(TypeWrapper<A5>(), vm, 6),
-				GetVar(TypeWrapper<A6>(), vm, 7),
-				GetVar(TypeWrapper<A7>(), vm, 8),
-				GetVar(TypeWrapper<A8>(), vm, 9),
-				GetVar(TypeWrapper<A9>(), vm, 10)
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value,
+				Var<A6>(vm, 7).value,
+				Var<A7>(vm, 8).value,
+				Var<A8>(vm, 9).value,
+				Var<A9>(vm, 10).value
 				);
 			return 0;
 		}
@@ -888,111 +888,111 @@ namespace Scrat {
 		
 	// Arg Count 0
 	template <class C, class R>
-	SQFUNCTION SqMemberFunc(R (C::*method)()) {
+	inline SQFUNCTION SqMemberFunc(R (C::*method)()) {
 		return &SqMember<C, R>::Func0;
 	}
 	
 	template <class C, class R>
-	SQFUNCTION SqMemberFunc(R (C::*method)() const) {
+	inline SQFUNCTION SqMemberFunc(R (C::*method)() const) {
 		return &SqMember<C, R>::Func0C;
 	}
 
 	// Arg Count 1
 	template <class C, class R, class A1>
-	SQFUNCTION SqMemberFunc(R (C::*method)(A1)) {
+	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1)) {
 		return &SqMember<C, R>::Func1<A1>;
 	}
 	
 	template <class C, class R, class A1>
-	SQFUNCTION SqMemberFunc(R (C::*method)(A1) const) {
+	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1) const) {
 		return &SqMember<C, R>::Func1C<A1>;
 	}
 
 	// Arg Count 2
 	template <class C, class R, class A1, class A2>
-	SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2)) {
+	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2)) {
 		return &SqMember<C, R>::Func2<A1, A2>;
 	}
 	
 	template <class C, class R, class A1, class A2>
-	SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2) const) {
+	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2) const) {
 		return &SqMember<C, R>::Func2C<A1, A2>;
 	}
 
 	// Arg Count 3
 	template <class C, class R, class A1, class A2, class A3>
-	SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3)) {
+	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3)) {
 		return &SqMember<C, R>::Func3<A1, A2, A3>;
 	}
 	
 	template <class C, class R, class A1, class A2, class A3>
-	SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3) const) {
+	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3) const) {
 		return &SqMember<C, R>::Func3C<A1, A2, A3>;
 	}
 
 	// Arg Count 4
 	template <class C, class R, class A1, class A2, class A3, class A4>
-	SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4)) {
+	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4)) {
 		return &SqMember<C, R>::Func4<A1, A2, A3, A4>;
 	}
 	
 	template <class C, class R, class A1, class A2, class A3, class A4>
-	SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4) const) {
+	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4) const) {
 		return &SqMember<C, R>::Func4C<A1, A2, A3, A4>;
 	}
 
 	// Arg Count 5
 	template <class C, class R, class A1, class A2, class A3, class A4, class A5>
-	SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4, A5)) {
+	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4, A5)) {
 		return &SqMember<C, R>::Func5<A1, A2, A3, A4, A5>;
 	}
 	
 	template <class C, class R, class A1, class A2, class A3, class A4, class A5>
-	SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4, A5) const) {
+	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4, A5) const) {
 		return &SqMember<C, R>::Func5C<A1, A2, A3, A4, A5>;
 	}
 
 	// Arg Count 6
 	template <class C, class R, class A1, class A2, class A3, class A4, class A5, class A6>
-	SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4, A5, A6)) {
+	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4, A5, A6)) {
 		return &SqMember<C, R>::Func6<A1, A2, A3, A4, A5, A6>;
 	}
 	
 	template <class C, class R, class A1, class A2, class A3, class A4, class A5, class A6>
-	SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4, A5, A6) const) {
+	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4, A5, A6) const) {
 		return &SqMember<C, R>::Func6C<A1, A2, A3, A4, A5, A6>;
 	}
 
 	// Arg Count 7
 	template <class C, class R, class A1, class A2, class A3, class A4, class A5, class A6, class A7>
-	SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4, A5, A6, A7)) {
+	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4, A5, A6, A7)) {
 		return &SqMember<C, R>::Func7<A1, A2, A3, A4, A5, A6, A7>;
 	}
 	
 	template <class C, class R, class A1, class A2, class A3, class A4, class A5, class A6, class A7>
-	SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4, A5, A6, A7) const) {
+	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4, A5, A6, A7) const) {
 		return &SqMember<C, R>::Func7C<A1, A2, A3, A4, A5, A6, A7>;
 	}
 
 	// Arg Count 8
 	template <class C, class R, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8>
-	SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4, A5, A6, A7, A8)) {
+	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4, A5, A6, A7, A8)) {
 		return &SqMember<C, R>::Func8<A1, A2, A3, A4, A5, A6, A7, A8>;
 	}
 	
 	template <class C, class R, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8>
-	SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4, A5, A6, A7, A8) const) {
+	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4, A5, A6, A7, A8) const) {
 		return &SqMember<C, R>::Func8C<A1, A2, A3, A4, A5, A6, A7, A8>;
 	}
 
 	// Arg Count 9
 	template <class C, class R, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9>
-	SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4, A5, A6, A7, A8, A9)) {
+	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4, A5, A6, A7, A8, A9)) {
 		return &SqMember<C, R>::Func9<A1, A2, A3, A4, A5, A6, A7, A8, A9>;
 	}
 	
 	template <class C, class R, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9>
-	SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4, A5, A6, A7, A8, A9) const) {
+	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4, A5, A6, A7, A8, A9) const) {
 		return &SqMember<C, R>::Func9C<A1, A2, A3, A4, A5, A6, A7, A8, A9>;
 	}
 
@@ -1001,7 +1001,7 @@ namespace Scrat {
 	//
 
 	template <class C, class V>
-	SQInteger sqDefaultGet(HSQUIRRELVM vm) {
+	inline SQInteger sqDefaultGet(HSQUIRRELVM vm) {
 		C* ptr = NULL;
 		sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 		
@@ -1015,7 +1015,7 @@ namespace Scrat {
 		return 1;
 	}
 
-	SQInteger sqVarGet(HSQUIRRELVM vm) {
+	inline SQInteger sqVarGet(HSQUIRRELVM vm) {
 		// Find the get method in the get table
 		sq_push(vm, 2);
 		sq_get(vm, -2);
@@ -1033,7 +1033,7 @@ namespace Scrat {
 	//
 
 	template <class C, class V>
-	SQInteger sqDefaultSet(HSQUIRRELVM vm) {
+	inline SQInteger sqDefaultSet(HSQUIRRELVM vm) {
 		C* ptr = NULL;
 		sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 		
@@ -1042,11 +1042,11 @@ namespace Scrat {
 		sq_getuserdata(vm, -1, (SQUserPointer*)&memberPtr, NULL); // Get Member...
 		M member = *memberPtr;
 
-		ptr->*member = GetVar(TypeWrapper<V>(), vm, 2);
+		ptr->*member = Var<V>(vm, 2).value;
 		return 0;
 	}
 
-	SQInteger sqVarSet(HSQUIRRELVM vm) {
+	inline SQInteger sqVarSet(HSQUIRRELVM vm) {
 		// Find the set method in the set table
 		sq_push(vm, 2);
 		sq_get(vm, -2);

@@ -46,7 +46,7 @@ namespace Scrat {
 	class Class : public Object {
 	public:
 		// Create a new table
-		Class(HSQUIRRELVM v, bool createClass = true) : Object(v, false) {
+		Class(HSQUIRRELVM v = DefaultVM::Get(), bool createClass = true) : Object(v, false) {
 			if(createClass && !ClassType<C>::Initialized()) {
 				sq_newclass(vm, false);
 				sq_getstackobj(vm, -1, &ClassType<C>::ClassObject());
