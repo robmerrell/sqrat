@@ -1,5 +1,5 @@
 //
-// ScratTypes: Type Translators
+// SqratTypes: Type Translators
 //
 
 //
@@ -31,9 +31,9 @@
 #include <squirrel.h>
 #include <string>
 
-#include "ScratClassType.h"
+#include "SqratClassType.h"
 
-namespace Scrat {
+namespace Sqrat {
 
 	//
 	// Variable Accessors

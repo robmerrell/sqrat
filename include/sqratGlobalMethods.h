@@ -1,5 +1,5 @@
 //
-// ScratGlobalMethods: Global Methods
+// SqratGlobalMethods: Global Methods
 //
 
 //
@@ -29,9 +29,9 @@
 #define _SCRAT_GLOBAL_METHODS_H_
 
 #include <squirrel.h>
-#include "ScratTypes.h"
+#include "SqratTypes.h"
 
-namespace Scrat {
+namespace Sqrat {
 
 	//
 	// Squirrel Global Functions

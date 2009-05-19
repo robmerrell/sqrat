@@ -30,9 +30,9 @@
 
 #include <squirrel.h>
 #include <string.h>
-#include "ScratTypes.h"
+#include "SqratTypes.h"
 
-namespace Scrat {
+namespace Sqrat {
 
 	class DefaultVM {
 	private:

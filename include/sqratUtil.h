@@ -1,5 +1,5 @@
 //
-// Scrat: Squirrel C++ Binding Utility
+// SqratUtil: Squirrel Utilities
 //
 
 //
@@ -25,15 +25,27 @@
 //	distribution.
 //
 
-#if !defined(_SCRAT_MAIN_H_)
-#define _SCRAT_MAIN_H_
+#if !defined(_SCRAT_UTIL_H_)
+#define _SCRAT_UTIL_H_
 
 #include <squirrel.h>
+#include <string.h>
 
-#include "ScratTable.h"
-#include "ScratClass.h"
-#include "ScratFunction.h"
-#include "ScratConst.h"
-#include "ScratUtil.h"
+#include "SqratTypes.h"
+
+namespace Sqrat {
+
+	inline string LastErrorString( HSQUIRRELVM vm ) {
+		const SQChar* sqErr;
+		sq_getlasterror(vm);
+		if(sq_gettype(vm, -1) == OT_NULL) {
+			return string();
+		}
+		sq_tostring(vm, -1);
+		sq_getstring(vm, -1, &sqErr);
+		return string(sqErr);
+	}
+
+}
 
 #endif

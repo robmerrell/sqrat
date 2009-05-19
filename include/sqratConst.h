@@ -1,5 +1,5 @@
 //
-// ScratConst: Constant and Enumeration Binding
+// SqratConst: Constant and Enumeration Binding
 //
 
 //
@@ -31,9 +31,9 @@
 #include <squirrel.h>
 #include <string.h>
 
-#include "ScratObject.h"
+#include "SqratObject.h"
 
-namespace Scrat {
+namespace Sqrat {
 	
 	//
 	// Enumerations

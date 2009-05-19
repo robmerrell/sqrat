@@ -1,5 +1,5 @@
 //
-// ScratMemberMethods: Member Methods
+// SqratMemberMethods: Member Methods
 //
 
 //
@@ -29,9 +29,9 @@
 #define _SCRAT_MEMBER_METHODS_H_
 
 #include <squirrel.h>
-#include "ScratTypes.h"
+#include "SqratTypes.h"
 
-namespace Scrat {
+namespace Sqrat {
 
 	//
 	// Squirrel Global Functions

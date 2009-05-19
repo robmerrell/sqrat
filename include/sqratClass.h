@@ -1,5 +1,5 @@
 //
-// ScratClass: Class Binding
+// SqratClass: Class Binding
 //
 
 //
@@ -31,12 +31,12 @@
 #include <squirrel.h>
 #include <string.h>
 
-#include "ScratObject.h"
-#include "ScratClassType.h"
-#include "ScratMemberMethods.h"
-#include "ScratAllocator.h"
+#include "SqratObject.h"
+#include "SqratClassType.h"
+#include "SqratMemberMethods.h"
+#include "SqratAllocator.h"
 
-namespace Scrat {
+namespace Sqrat {
 
 	//
 	// Class

@@ -29,9 +29,9 @@
 #define _SCRAT_SQFUNC_H_
 
 #include <squirrel.h>
-#include "ScratObject.h"
+#include "SqratObject.h"
 
-namespace Scrat {
+namespace Sqrat {
 
 	template <class R>
 	class Function  {

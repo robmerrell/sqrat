@@ -1,5 +1,5 @@
 //
-// ScratTable: Table Binding
+// SqratTable: Table Binding
 //
 
 //
@@ -31,11 +31,11 @@
 #include <squirrel.h>
 #include <string.h>
 
-#include "ScratObject.h"
-#include "ScratFunction.h"
-#include "ScratGlobalMethods.h"
+#include "SqratObject.h"
+#include "SqratFunction.h"
+#include "SqratGlobalMethods.h"
 
-namespace Scrat {
+namespace Sqrat {
 
 	class Table : public Object {
 	public:

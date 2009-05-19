@@ -1,5 +1,5 @@
 //
-// ScratClassType: Type Translators
+// SqratClassType: Type Translators
 //
 
 //
@@ -30,7 +30,7 @@
 
 #include <squirrel.h>
 
-namespace Scrat {
+namespace Sqrat {
 
 	//
 	// ClassType

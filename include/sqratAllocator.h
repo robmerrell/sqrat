@@ -1,5 +1,5 @@
 //
-// ScratAllocator: Custom Class Allocation/Deallocation
+// SqratAllocator: Custom Class Allocation/Deallocation
 //
 
 //
@@ -31,9 +31,9 @@
 #include <squirrel.h>
 #include <string.h>
 
-#include "ScratObject.h"
+#include "SqratObject.h"
 
-namespace Scrat {
+namespace Sqrat {
 	
 	//
 	// DefaultAllocator
