@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 	<head>
-		<title>Scrat - Squirrel Binding Utility</title>
+		<title>Sqrat - Squirrel Binding Utility</title>
 		
 		<link type="text/css" href="style.css" rel="stylesheet" />
 	</head>
@@ -9,7 +9,7 @@
 	<body>
 	
 	<div id="header">
-		<h1>Scrat - Squirrel Binding Utility</h1>
+		<h1>Sqrat - Squirrel Binding Utility</h1>
 		<h3>(c) 2009 Brandon Jones</h3>
 	</div>
 		
@@ -37,22 +37,22 @@
 	
 		<h2 id="download">Downloads</h2>
 		
-		<p>The latest version of Scrat can be downloaded from <a href="http://sourceforge.net/projects/scrat">SourceForge</a></p>
+		<p>The latest version of Sqrat can be downloaded from <a href="http://sourceforge.net/projects/sqrat">SourceForge</a></p>
 		
 		<h2 id="introduction">Introduction</h2>
 
-		<p>Scrat is a C++ library for Squirrel that facilitates exposing classes 
+		<p>Sqrat is a C++ library for Squirrel that facilitates exposing classes 
 		and other native functionality to Squirrel scripts. It is similar to 
 		SqPlus, both in functionality and syntax, but seeks to address several 
 		issues present in other binding libraries.</p>
 		
-		<p>Scrat models the underlying Squirrel API a little more closely than most 
+		<p>Sqrat models the underlying Squirrel API a little more closely than most 
 		other binding utilities, and this fact gives it a lot of power in 
 		exchange for a couple of minor quirks in the syntax. Code is 
 		straightforward and easy to read, however, and can easily be ported to 
 		from existing bindings.</p>
 		
-		<p>Scrat has been tested against Squirrel 2.1.1 through 2.2.2. Other 
+		<p>Sqrat has been tested against Squirrel 2.1.1 through 2.2.2. Other 
 		versions may work fine, but the author makes no promises!</p>
 		
 		<h2 id="features">Features</h2>
@@ -100,7 +100,7 @@
 		
 		<h2 id="license">License</h2>
 
-		<p>Scrat is licensed under the zlib/libpng license:</p>
+		<p>Sqrat is licensed under the zlib/libpng license:</p>
 		
 	<pre>
 	Copyright (c) 2009 Brandon Jones
@@ -131,17 +131,17 @@
 		must be attached to it.</p>
 		
 		<p>As far as giving credit goes: I personally don't care if you give me credit
-		or not when you use Scrat, but I would love to hear about projects that it's
+		or not when you use Sqrat, but I would love to hear about projects that it's
 		used in!</p>
 		
 		<h2 id="including">Including In Your Project</h2>
 
-		</p>Ensure that "&lt;scrat root&gt;/include" is in your include path and include 
-		"scrat.h" Yup, that's all there is to it!</p>
+		</p>Ensure that "&lt;sqrat root&gt;/include" is in your include path and include 
+		"sqrat.h" Yup, that's all there is to it!</p>
 		
 		<h2 id="basicUsage">Basic Usage</h2>
 
-		<p>The core of Scrat revolves around it's ability to bind C++ classes, 
+		<p>The core of Sqrat revolves around it's ability to bind C++ classes, 
 		functions, and variables. All binding is done on either a Table or 
 		Class, and looks like this:</p>
 		
@@ -155,7 +155,7 @@
 	};
 
 	void BindSquirrel(HSQUIRRELVM vm) {
-		using namespace Scrat;
+		using namespace Sqrat;
 
 		Table myTable(vm);
 		myTable.Func("MyFunc", &myFunc);
@@ -231,7 +231,7 @@
 
 	<pre>
 	void BindSquirrel(HSQUIRRELVM vm) {
-		using namespace Scrat;
+		using namespace Sqrat;
 		
 		RootTable(vm).Bind("MyTable", Table(vm)
 			.Func("MyFunc", &myFunc)
@@ -249,7 +249,7 @@
 		
 	<pre>
 	void BindSquirrel(HSQUIRRELVM vm) {
-		using namespace Scrat;
+		using namespace Sqrat;
 		
 		DefaultVM::Set(vm);
 		
@@ -265,13 +265,13 @@
 	</pre>
 	
 		<p>The default vm takes effect globally once set, and can be retrieved at 
-		any time using Scrat::DefaultVM::Get()</p>
+		any time using Sqrat::DefaultVM::Get()</p>
 		
 		<h2 id="object">Objects</h2>
 
-		<p>The Scrat Object is the base class for both the Table and Class. It is 
+		<p>The Sqrat Object is the base class for both the Table and Class. It is 
 		essentially a smart pointer wrapper for HSQOBJECTs. The HSQOBJECT has a 
-		reference added any time a Scrat Object is created or copied and is 
+		reference added any time a Sqrat Object is created or copied and is 
 		dereferenced upon deletion.</p>
 		
 		<p>If the object represents a value you can retreive that value by calling 
@@ -282,7 +282,7 @@
 	</pre>
 		
 		<p>If the object represents a Table or Class you may also retrieve the 
-		values of a given slot using GetSlot. This will return another Scrat 
+		values of a given slot using GetSlot. This will return another Sqrat 
 		Object:</p>
 		
 	<pre>
@@ -300,7 +300,7 @@
 		
 		<h2 id="table">Tables</h2>
 			
-		<p>The Scrat Table is an Object that can have functions or values bound to 
+		<p>The Sqrat Table is an Object that can have functions or values bound to 
 		it. Functions are bound by calling Func:</p>
 		
 	<pre>
@@ -308,7 +308,7 @@
 	</pre>
 		
 		<p>In this case &myFunc is a reference to a global or static function. If 
-		there are multiple overloads for myFunc, Scrat needs to know which to 
+		there are multiple overloads for myFunc, Sqrat needs to know which to 
 		use. These cases can be disambiguated by providing the function 
 		signature as a template type to Func:</p>
 		
@@ -335,7 +335,7 @@
 
 		<h2 id="class">Classes</h2>
 
-		<p>Scrat Classes are used very much like tables, but can have instances 
+		<p>Sqrat Classes are used very much like tables, but can have instances 
 		created of them from within Squirrel. Function binding is identical to 
 		tables, but are now passed references to member functions instead:</p>
 		
@@ -448,7 +448,7 @@
 		<h2 id="future">Future Work</h2>
 
 		<p>I hope to incorporate the following features in upcoming releases of
-		Scrat:</p>
+		Sqrat:</p>
 
 		<ul>
 			<li>Function/Constructor Overloading</li>
