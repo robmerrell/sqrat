@@ -42,7 +42,7 @@ namespace Sqrat {
 	// Class
 	//
 
-	template<class C, class A = DefaultAllocator<C>>
+	template<class C, class A = DefaultAllocator<C> >
 	class Class : public Object {
 	public:
 		// Create a new table
@@ -58,22 +58,22 @@ namespace Sqrat {
 				ClassType<C>::Initialized() = true;
 			}
 		}
-		
+
 		// Get the Squirrel Object for this Class
-		virtual HSQOBJECT GetObject() const { 
+		virtual HSQOBJECT GetObject() const {
 			return ClassType<C>::ClassObject();
 		}
 
 		// Get the Squirrel Object for this Class
-		virtual HSQOBJECT& GetObject() { 
+		virtual HSQOBJECT& GetObject() {
 			return ClassType<C>::ClassObject();
 		}
-	
+
 	public:
 		//
 		// Variable Binding
 		//
-		
+
 		template<class V>
 		Class& SetStaticValue(const SQChar* name, const V& val) {
 			BindValue<V>(name, val, true);
@@ -85,7 +85,7 @@ namespace Sqrat {
 			BindValue<V>(name, val, false);
 			return *this;
 		}
-		
+
 		template<class V>
 		Class& Var(const SQChar* name, V C::* var) {
 			// Add the getter
@@ -102,7 +102,7 @@ namespace Sqrat {
 		//
 		// Function Binding
 		//
-		
+
 		template<class F>
 		Class& Func(const SQChar* name, F method) {
 			BindFunc(name, &method, sizeof(method), SqMemberFunc(method));
@@ -138,7 +138,7 @@ namespace Sqrat {
 			HSQOBJECT& classObj = ClassType<C>::ClassObject();
 			HSQOBJECT& setTable = ClassType<C>::SetTable();
 			HSQOBJECT& getTable = ClassType<C>::GetTable();
-			
+
 			// push the class
 			sq_pushobject(vm, classObj);
 
@@ -162,13 +162,13 @@ namespace Sqrat {
 			sq_newtable(vm);
 			sq_getstackobj(vm, -1, &getTable);
 			sq_newslot(vm, -3, true);
-			
+
 			// override _set
 			sq_pushstring(vm, _SC("_set"), -1);
 			sq_pushobject(vm, setTable); // Push the set table as a free variable
 			sq_newclosure(vm, &sqVarSet, 1);
 			sq_newslot(vm, -3, false);
-			
+
 			// override _get
 			sq_pushstring(vm, _SC("_get"), -1);
 			sq_pushobject(vm, getTable); // Push the get table as a free variable
@@ -178,47 +178,47 @@ namespace Sqrat {
 			// pop the class
 			sq_pop(vm, 1);
 		}
-		
+
 		// Helper function used to bind getters and setters
 		inline void BindAccessor(const SQChar* name, void* var, size_t varSize, SQFUNCTION func, HSQOBJECT table) {
 			// Push the get or set table
 			sq_pushobject(vm, table);
 			sq_pushstring(vm, name, -1);
-			
+
 			// Push the variable offset as a free variable
 			SQUserPointer varPtr = sq_newuserdata(vm, static_cast<SQUnsignedInteger>(varSize));
 			memcpy(varPtr, var, varSize);
-			
+
 			// Create the accessor function
 			sq_newclosure(vm, func, 1);
-			
+
 			// Add the accessor to the table
 			sq_newslot(vm, -3, false);
-			
+
 			// Pop get/set table
-			sq_pop(vm,-1); 
+			sq_pop(vm,-1);
 		}
 
 	};
 
-	template<class C, class B, class A = DefaultAllocator<C>>
+	template<class C, class B, class A = DefaultAllocator<C> >
 	class DerivedClass : public Class<C, A> {
 	public:
 		DerivedClass(HSQUIRRELVM v) : Class<C, A>(v, false) {
 			if(!ClassType<C>::Initialized()) {
-				sq_pushobject(vm, ClassType<B>::ClassObject());
-				sq_newclass(vm, true);
-				sq_getstackobj(vm, -1, &ClassType<C>::ClassObject());
+				sq_pushobject(v, ClassType<B>::ClassObject());
+				sq_newclass(v, true);
+				sq_getstackobj(v, -1, &ClassType<C>::ClassObject());
 
-				sq_pop(vm, -1);
+				sq_pop(v, -1);
 
-				InitDerivedClass();
+				InitDerivedClass(v);
 				ClassType<C>::Initialized() = true;
 			}
 		}
 
 	protected:
-		void InitDerivedClass() {
+		void InitDerivedClass(HSQUIRRELVM vm) {
 			HSQOBJECT& classObj = ClassType<C>::ClassObject();
 			HSQOBJECT& setTable = ClassType<C>::SetTable();
 			HSQOBJECT& getTable = ClassType<C>::GetTable();
@@ -232,7 +232,7 @@ namespace Sqrat {
 			sq_pushstring(vm,_SC("constructor"), -1);
 			sq_newclosure(vm, &A::New, 0);
 			sq_newslot(vm, -3, false);
-			
+
 			// clone the base classes set table (static)
 			sq_resetobject(&setTable);
 			sq_pushobject(vm, setTable);
@@ -250,13 +250,13 @@ namespace Sqrat {
 			sq_remove(vm, -3);
 			sq_getstackobj(vm, -1, &getTable);
 			sq_newslot(vm, -3, true);
-			
+
 			// override _set
 			sq_pushstring(vm, _SC("_set"), -1);
 			sq_pushobject(vm, setTable); // Push the set table as a free variable
 			sq_newclosure(vm, sqVarSet, 1);
 			sq_newslot(vm, -3, false);
-			
+
 			// override _get
 			sq_pushstring(vm, _SC("_get"), -1);
 			sq_pushobject(vm, getTable); // Push the get table as a free variable

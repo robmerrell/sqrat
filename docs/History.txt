@@ -1,10 +1,13 @@
 ﻿Sqrat - Squirrel Binding Utility
 (c) 2009 Brandon Jones
-Version 0.5
+Version 0.6
 
 === Version History ===
 
-0.5 (???)
+0.6 (05/21/2009)
+ * Small bugfix release to get Sqrat compatible with GCC
+
+0.5 (05/18/2009)
  * Renamed library to 'Sqrat' (now with 100% more 'sq'!)
  * Changed revision number scheme. Will now be simply major.minor 
  * Added Constants and Enumerations (See "Using Sqrat" for details)

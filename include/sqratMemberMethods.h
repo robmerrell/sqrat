@@ -900,100 +900,100 @@ namespace Sqrat {
 	// Arg Count 1
 	template <class C, class R, class A1>
 	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1)) {
-		return &SqMember<C, R>::Func1<A1>;
+		return &SqMember<C, R>::template Func1<A1>;
 	}
 	
 	template <class C, class R, class A1>
 	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1) const) {
-		return &SqMember<C, R>::Func1C<A1>;
+		return &SqMember<C, R>::template Func1C<A1>;
 	}
 
 	// Arg Count 2
 	template <class C, class R, class A1, class A2>
 	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2)) {
-		return &SqMember<C, R>::Func2<A1, A2>;
+		return &SqMember<C, R>::template Func2<A1, A2>;
 	}
 	
 	template <class C, class R, class A1, class A2>
 	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2) const) {
-		return &SqMember<C, R>::Func2C<A1, A2>;
+		return &SqMember<C, R>::template Func2C<A1, A2>;
 	}
 
 	// Arg Count 3
 	template <class C, class R, class A1, class A2, class A3>
 	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3)) {
-		return &SqMember<C, R>::Func3<A1, A2, A3>;
+		return &SqMember<C, R>::template Func3<A1, A2, A3>;
 	}
 	
 	template <class C, class R, class A1, class A2, class A3>
 	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3) const) {
-		return &SqMember<C, R>::Func3C<A1, A2, A3>;
+		return &SqMember<C, R>::template Func3C<A1, A2, A3>;
 	}
 
 	// Arg Count 4
 	template <class C, class R, class A1, class A2, class A3, class A4>
 	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4)) {
-		return &SqMember<C, R>::Func4<A1, A2, A3, A4>;
+		return &SqMember<C, R>::template Func4<A1, A2, A3, A4>;
 	}
 	
 	template <class C, class R, class A1, class A2, class A3, class A4>
 	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4) const) {
-		return &SqMember<C, R>::Func4C<A1, A2, A3, A4>;
+		return &SqMember<C, R>::template Func4C<A1, A2, A3, A4>;
 	}
 
 	// Arg Count 5
 	template <class C, class R, class A1, class A2, class A3, class A4, class A5>
 	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4, A5)) {
-		return &SqMember<C, R>::Func5<A1, A2, A3, A4, A5>;
+		return &SqMember<C, R>::template Func5<A1, A2, A3, A4, A5>;
 	}
 	
 	template <class C, class R, class A1, class A2, class A3, class A4, class A5>
 	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4, A5) const) {
-		return &SqMember<C, R>::Func5C<A1, A2, A3, A4, A5>;
+		return &SqMember<C, R>::template Func5C<A1, A2, A3, A4, A5>;
 	}
 
 	// Arg Count 6
 	template <class C, class R, class A1, class A2, class A3, class A4, class A5, class A6>
 	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4, A5, A6)) {
-		return &SqMember<C, R>::Func6<A1, A2, A3, A4, A5, A6>;
+		return &SqMember<C, R>::template Func6<A1, A2, A3, A4, A5, A6>;
 	}
 	
 	template <class C, class R, class A1, class A2, class A3, class A4, class A5, class A6>
 	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4, A5, A6) const) {
-		return &SqMember<C, R>::Func6C<A1, A2, A3, A4, A5, A6>;
+		return &SqMember<C, R>::template Func6C<A1, A2, A3, A4, A5, A6>;
 	}
 
 	// Arg Count 7
 	template <class C, class R, class A1, class A2, class A3, class A4, class A5, class A6, class A7>
 	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4, A5, A6, A7)) {
-		return &SqMember<C, R>::Func7<A1, A2, A3, A4, A5, A6, A7>;
+		return &SqMember<C, R>::template Func7<A1, A2, A3, A4, A5, A6, A7>;
 	}
 	
 	template <class C, class R, class A1, class A2, class A3, class A4, class A5, class A6, class A7>
 	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4, A5, A6, A7) const) {
-		return &SqMember<C, R>::Func7C<A1, A2, A3, A4, A5, A6, A7>;
+		return &SqMember<C, R>::template Func7C<A1, A2, A3, A4, A5, A6, A7>;
 	}
 
 	// Arg Count 8
 	template <class C, class R, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8>
 	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4, A5, A6, A7, A8)) {
-		return &SqMember<C, R>::Func8<A1, A2, A3, A4, A5, A6, A7, A8>;
+		return &SqMember<C, R>::template Func8<A1, A2, A3, A4, A5, A6, A7, A8>;
 	}
 	
 	template <class C, class R, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8>
 	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4, A5, A6, A7, A8) const) {
-		return &SqMember<C, R>::Func8C<A1, A2, A3, A4, A5, A6, A7, A8>;
+		return &SqMember<C, R>::template Func8C<A1, A2, A3, A4, A5, A6, A7, A8>;
 	}
 
 	// Arg Count 9
 	template <class C, class R, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9>
 	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4, A5, A6, A7, A8, A9)) {
-		return &SqMember<C, R>::Func9<A1, A2, A3, A4, A5, A6, A7, A8, A9>;
+		return &SqMember<C, R>::template Func9<A1, A2, A3, A4, A5, A6, A7, A8, A9>;
 	}
 	
 	template <class C, class R, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9>
 	inline SQFUNCTION SqMemberFunc(R (C::*method)(A1, A2, A3, A4, A5, A6, A7, A8, A9) const) {
-		return &SqMember<C, R>::Func9C<A1, A2, A3, A4, A5, A6, A7, A8, A9>;
+		return &SqMember<C, R>::template Func9C<A1, A2, A3, A4, A5, A6, A7, A8, A9>;
 	}
 
 	//

@@ -72,7 +72,7 @@ namespace Sqrat {
 		Object(HSQOBJECT o, HSQUIRRELVM v = DefaultVM::Get()) : vm(v), obj(o) {
 			sq_addref(vm, &obj);
 		}
-		
+
 		template<class T>
 		Object(T* instance, HSQUIRRELVM v = DefaultVM::Get()) : vm(v) {
 			ClassType<T>::PushInstance(vm, instance);
@@ -80,7 +80,7 @@ namespace Sqrat {
 			sq_addref(vm, &obj);
 		}
 
-		~Object() {
+		virtual ~Object() {
 			if(release) {
 				Release();
 			}
@@ -153,7 +153,7 @@ namespace Sqrat {
 		inline void BindFunc(const SQChar* name, void* method, size_t methodSize, SQFUNCTION func, bool staticVar = false) {
 			sq_pushobject(vm, GetObject());
 			sq_pushstring(vm, name, -1);
-			
+
 			SQUserPointer methodPtr = sq_newuserdata(vm, static_cast<SQUnsignedInteger>(methodSize));
 			memcpy(methodPtr, method, methodSize);
 
@@ -161,7 +161,7 @@ namespace Sqrat {
 			sq_newslot(vm, -3, staticVar);
 			sq_pop(vm,-1); // pop table
 		}
-		
+
 		// Set the value of a variable on the object. Changes to values set this way are not reciprocated
 		template<class V>
 		inline void BindValue(const SQChar* name, const V& val, bool staticVar = false) {
@@ -171,7 +171,7 @@ namespace Sqrat {
 			sq_newslot(vm, -3, staticVar);
 			sq_pop(vm,-1); // pop table
 		}
-		
+
 		// Set the value of an instance on the object. Changes to values set this way are reciprocated back to the source instance
 		template<class V>
 		inline void BindInstance(const SQChar* name, V* val, bool staticVar = false) {

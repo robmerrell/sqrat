@@ -37,7 +37,7 @@
 	
 		<h2 id="download">Downloads</h2>
 		
-		<p>The latest version of Sqrat can be downloaded from <a href="http://sourceforge.net/projects/sqrat">SourceForge</a></p>
+		<p>The latest version of Sqrat can be downloaded from <a href="http://sourceforge.net/projects/scrat">SourceForge</a></p>
 		
 		<h2 id="introduction">Introduction</h2>
 
@@ -313,7 +313,7 @@
 		signature as a template type to Func:</p>
 		
 	<pre>
-	myTable.Func<bool (*)(int, float)>("MyFunc", &myFunc);
+	myTable.Func&lt;bool (*)(int, float)&gt;("MyFunc", &myFunc);
 	</pre>
 		
 		<p>Raw Squirrel functions can also be bound to a table using SquirrelFunc, 
