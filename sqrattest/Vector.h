@@ -1,8 +1,4 @@
 //
-// SqratUtil: Squirrel Utilities
-//
-
-//
 // Copyright (c) 2009 Brandon Jones
 //
 // This software is provided 'as-is', without any express or implied
@@ -25,27 +21,34 @@
 //	distribution.
 //
 
-#if !defined(_SCRAT_UTIL_H_)
-#define _SCRAT_UTIL_H_
+#if !defined(SQRAT_TEST_VECTOR_H)
+#define SQRAT_TEST_VECTOR_H
 
-#include <squirrel.h>
-#include <string.h>
+#include <sqrat.h>
 
-#include "SqratTypes.h"
+namespace Sqrat { 
+	// A simple Vector class used to demonstrate binding
+	class Vec2 {
+	public:
+		float x, y;
 
-namespace Sqrat {
+		Vec2( void );								
+		Vec2( const Vec2 &v );			
+		Vec2( const float vx, const float vy );	
+						
+		bool operator ==( const Vec2 &v ) const;
+		Vec2 operator -( void ) const;
+		Vec2 operator +( const Vec2& v ) const;
+		Vec2 operator -( const Vec2& v ) const;
+		Vec2 operator *( const float f ) const;
+		Vec2 operator /( const float f ) const;
+		Vec2& operator =( const Vec2& v );
 
-	inline string LastErrorString( HSQUIRRELVM vm ) {
-		const SQChar* sqErr;
-		sq_getlasterror(vm);
-		if(sq_gettype(vm, -1) == OT_NULL) {
-			return string();
-		}
-		sq_tostring(vm, -1);
-		sq_getstring(vm, -1, &sqErr);
-		return string(sqErr);
-	}
-
+		float Length( void ) const;
+		float Distance( const Vec2 &v ) const;
+		Vec2& Normalize( void );
+		float Dot( const Vec2 &v ) const;
+	};
 }
 
 #endif

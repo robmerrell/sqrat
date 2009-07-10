@@ -23,6 +23,7 @@
 			<li><a href="#license">License</a></li>
 			<li><a href="#including">Including In Your Project</a></li>
 			<li><a href="#basicUsage">Basic Usage</a></li>
+			<li><a href="#scripts">Scripts</a></li>
 			<li><a href="#object">Objects</a></li>
 			<li><a href="#table">Tables</a></li>
 			<li><a href="#class">Classes</a></li>
@@ -52,7 +53,7 @@
 		straightforward and easy to read, however, and can easily be ported to 
 		from existing bindings.</p>
 		
-		<p>Sqrat has been tested against Squirrel 2.1.1 through 2.2.2. Other 
+		<p>Sqrat has been tested against Squirrel 2.1.1 through 2.2.3. Other 
 		versions may work fine, but the author makes no promises!</p>
 		
 		<h2 id="features">Features</h2>
@@ -63,6 +64,7 @@
 			<li>32 Bit and 64 Bit Squirrel Support</li>
 			<li>Supports multiple Virtual Machines concurrently</li>
 			<li>Header only (no libraries to link)</li>
+			<li>Includes multiple unit tests to demonstrate and verify functionality</li>
 			<li>Customizable
 				<ul>
 					<li>User may specialize allocators and variable translators for custom types if needed</li>
@@ -72,6 +74,7 @@
 				<ul>
 					<li>Bind Member or Static variables and functions</li>
 					<li>Bind Global functions as Member functions</li>
+					<li>Properties - Variables accessed via setter and getter functions</li>
 				</ul>
 			</li>
 			<li>Tables
@@ -94,6 +97,12 @@
 			<li>Functions
 				<ul>
 					<li>Exposes Squirrel functions for calling from C++</li>
+				</ul>
+			</li>
+			<li>Script Helpers
+				<ul>
+					<li>Load and run scripts from string or file</li>
+					<li>Save compiled scripts to file</li>
 				</ul>
 			</li>
 		</ul>
@@ -267,19 +276,38 @@
 		<p>The default vm takes effect globally once set, and can be retrieved at 
 		any time using Sqrat::DefaultVM::Get()</p>
 		
+		<h2 id="scripts">Scripts</h2>
+		
+		<p>Sqrat provides helper objects for the loading, compiling, and running of
+		scripts either from a string or a file. In addition, compiled scripts can
+		be written out to a file for faster loading later on.</a>
+		
+		<p>To compile and run a script, use the following code:</p>
+		
+	<pre>
+	try {
+		Script script1, script2;
+		
+		script1.CompileString("::print(\"Hello World\");");
+		script2.CompileFile("/Path/to/Script.nut");
+		
+		script1.Run();
+		script2.Run();
+	} catch( Exception ) {
+		// Handle exceptions here
+	}
+	</pre>
+	
+		<p>Note that if either the compile or run fails they will throw a 
+		Sqrat::Exception. Calling Message() on the exception will give details about 
+		the failure.</p>
+		
 		<h2 id="object">Objects</h2>
 
 		<p>The Sqrat Object is the base class for both the Table and Class. It is 
 		essentially a smart pointer wrapper for HSQOBJECTs. The HSQOBJECT has a 
 		reference added any time a Sqrat Object is created or copied and is 
 		dereferenced upon deletion.</p>
-		
-		<p>If the object represents a value you can retreive that value by calling 
-		Cast with the appropriate type:</p>
-		
-	<pre>
-	int objVal = myObject.Cast&lt;int&gt;();
-	</pre>
 		
 		<p>If the object represents a Table or Class you may also retrieve the 
 		values of a given slot using GetSlot. This will return another Sqrat 
@@ -288,15 +316,31 @@
 	<pre>
 	Object slotVal = myObject.GetSlot("myVal");
 	</pre>
-		
-		<p>If the object represents an instance of a class, the instance user 
-		pointer can be retrieved via GetInstanceUP:</p>
+	
+		<p>If the object represents a value you can retreive that value by calling 
+		Cast with the appropriate type:</p>
 		
 	<pre>
-	MyClass* instance = (MyClass*)myObject.GetInstanceUP();
+	int objVal = myObject.Cast&lt;int&gt;();
+	</pre>
+	
+		<p>This also works for class instances:</p>
+		
+	<pre>
+	MyClass* mc = myObject.Cast&lt;MyClass*&gt;();
 	</pre>
 		
-		<p>GetInstanceUP can also be provided a tag if needed.</p>
+		<p>You can test if an Object points to a NULL value using IsNull(). Putting 
+		these methods together gives you a consistent way of accessing Squirrel
+		variables:</p>
+		
+	<pre>
+	// Get the int value of myVar from the root table
+	Object myIntObj = RootTable().GetSlot("myInt");
+	if(!myIntObj.IsNull()) {
+		int myInt = myIntObj.Cast&lt;int&gt;();
+	}
+	</pre>
 		
 		<h2 id="table">Tables</h2>
 			
@@ -384,7 +428,44 @@
 	<pre>
 	myClass.StaticVar("MyStaticInt", &MyClass::MyStaticInt);
 	</pre>
+	
+		<p>Sqrat also allows you to expose Properties to Squirrel via the Prop method.
+		A property is a variable that is accessed via a getter and setter function 
+		natively, but appears to Squirrel as a standard variable. For example, if you
+		had a class defined like so:</p>
+
+	<pre>
+	class MyClass {
+	public:
+		int GetMyVar() { return myVar; }
+		void SetMyVar(int i) { myVar = i; }
 		
+	private:
+		int myVar;
+	};
+	</pre>
+	
+		<p>you can bind the Get and Set methods as a property rather than as separate 
+		functions.</p>
+		
+	<pre>
+	myClass.Prop("MyVar", &MyClass::GetMyVar, &MyClass::SetMyVar);
+	</pre>
+	
+		<p>Accessing the variable in Squirrel then works like any other variable:</p>
+
+	<pre>
+	mc <- MyClass();
+	mc.MyVar = 5;
+	</pre>
+	
+		<p>If you wish, you can make the property read only by only supplying a Get 
+		function</p>
+		
+	<pre>
+	myClass.Prop("MyVar", &MyClass::GetMyVar);
+	</pre>
+	
 		<h2 id="const">Constants and Enumerations</h2>
 
 		<p>Constants and enumerations are both handled similarly by Squirrel in 

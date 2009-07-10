@@ -37,15 +37,10 @@
 
 namespace Sqrat {
 
-	class Table : public Object {
+	class TableBase : public Object {
 	public:
-		Table(HSQUIRRELVM v = DefaultVM::Get()) : Object(v, false) {
-			sq_newtable(vm);
-			sq_getstackobj(vm,-1,&obj);
-			sq_pop(vm,-1);
+		TableBase(HSQUIRRELVM v = DefaultVM::Get()) : Object(v, true) {
 		}
-
-	public:
 		// Bind a Table or Class to the Table (Can be used to facilitate Namespaces)
 		// Note: Bind cannot be called "inline" like other functions because it introduces order-of-initialization bugs.
 		void Bind(const SQChar* name, Object& obj) {
@@ -53,16 +48,16 @@ namespace Sqrat {
 			sq_pushstring(vm, name, -1);
 			sq_pushobject(vm, obj.GetObject());
 			sq_newslot(vm, -3, false);
-			sq_pop(vm,-1); // pop table
+			sq_pop(vm,1); // pop table
 		}
 		
 		// Bind a raw Squirrel closure to the Table
-		Table& SquirrelFunc(const SQChar* name, SQFUNCTION func) {
+		TableBase& SquirrelFunc(const SQChar* name, SQFUNCTION func) {
 			sq_pushobject(vm, GetObject());
 			sq_pushstring(vm, name, -1);
 			sq_newclosure(vm, func, 0);
 			sq_newslot(vm, -3, false);
-			sq_pop(vm,-1); // pop table
+			sq_pop(vm,1); // pop table
 
 			return *this;
 		}
@@ -72,19 +67,19 @@ namespace Sqrat {
 		//
 		
 		template<class V>
-		Table& SetValue(const SQChar* name, const V& val) {
+		TableBase& SetValue(const SQChar* name, const V& val) {
 			BindValue<V>(name, val, false);
 			return *this;
 		}
 
 		template<class V>
-		Table& SetInstance(const SQChar* name, V* val) {
+		TableBase& SetInstance(const SQChar* name, V* val) {
 			BindInstance<V>(name, val, false);
 			return *this;
 		}
 
 		template<class F>
-		Table& Func(const SQChar* name, F method) {
+		TableBase& Func(const SQChar* name, F method) {
 			BindFunc(name, &method, sizeof(method), SqGlobalFunc(method));
 			return *this;
 		}
@@ -106,16 +101,27 @@ namespace Sqrat {
 		}
 	};
 
+	class Table : public TableBase {
+	public:
+		Table(HSQUIRRELVM v = DefaultVM::Get()) : TableBase(v) {
+			sq_newtable(vm);
+			sq_getstackobj(vm,-1,&obj);
+			sq_addref(vm, &obj);
+			sq_pop(vm,1);
+		}
+	};
+
 	//
 	// Root Table
 	//
 
-	class RootTable : public Table {
+	class RootTable : public TableBase {
 	public:
-		RootTable(HSQUIRRELVM v = DefaultVM::Get()) : Table(v) {
+		RootTable(HSQUIRRELVM v = DefaultVM::Get()) : TableBase(v) {
 			sq_pushroottable(vm);
 			sq_getstackobj(vm,-1,&obj);
-			sq_pop(v,-1); // pop root table
+			sq_addref(vm, &obj);
+			sq_pop(v,1); // pop root table
 		}
 	};
 }

@@ -1,5 +1,5 @@
 //
-// SqObject: Referenced Squirrel Object Wrapper
+// SqratObject: Referenced Squirrel Object Wrapper
 //
 
 //
@@ -57,7 +57,6 @@ namespace Sqrat {
 
 		Object(HSQUIRRELVM v, bool releaseOnDestroy = true) : vm(v), release(releaseOnDestroy) {
 			sq_resetobject(&obj);
-			releaseOnDestroy = true;
 		}
 
 	public:
@@ -106,6 +105,10 @@ namespace Sqrat {
 			return GetObject()._type;
 		}
 
+		bool IsNull() const {
+			return sq_isnull(GetObject());
+		}
+
 		virtual HSQOBJECT GetObject() const {
 			return obj;
 		}
@@ -134,10 +137,14 @@ namespace Sqrat {
 			HSQOBJECT slotObj;
 			sq_pushobject(vm, GetObject());
 			sq_pushstring(vm, slot, -1);
-			sq_get(vm, -2);
-			sq_getstackobj(vm, -1, &slotObj);
-			sq_pop(vm, 2);
-			return Object(slotObj, vm);
+			if(SQ_FAILED(sq_get(vm, -2))) {
+				sq_pop(vm, 1);
+				return Object(vm); // Return a NULL object
+			} else {
+				sq_getstackobj(vm, -1, &slotObj);
+				sq_pop(vm, 2);
+				return Object(slotObj, vm);
+			}
 		}
 
 		template <class T>
@@ -159,7 +166,7 @@ namespace Sqrat {
 
 			sq_newclosure(vm, func, 1);
 			sq_newslot(vm, -3, staticVar);
-			sq_pop(vm,-1); // pop table
+			sq_pop(vm,1); // pop table
 		}
 
 		// Set the value of a variable on the object. Changes to values set this way are not reciprocated
@@ -169,7 +176,7 @@ namespace Sqrat {
 			sq_pushstring(vm, name, -1);
 			PushVar(vm, val);
 			sq_newslot(vm, -3, staticVar);
-			sq_pop(vm,-1); // pop table
+			sq_pop(vm,1); // pop table
 		}
 
 		// Set the value of an instance on the object. Changes to values set this way are reciprocated back to the source instance
@@ -179,7 +186,7 @@ namespace Sqrat {
 			sq_pushstring(vm, name, -1);
 			PushVar(vm, val);
 			sq_newslot(vm, -3, staticVar);
-			sq_pop(vm,-1); // pop table
+			sq_pop(vm,1); // pop table
 		}
 	};
 

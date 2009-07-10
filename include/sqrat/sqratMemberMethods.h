@@ -1018,7 +1018,9 @@ namespace Sqrat {
 	inline SQInteger sqVarGet(HSQUIRRELVM vm) {
 		// Find the get method in the get table
 		sq_push(vm, 2);
-		sq_get(vm, -2);
+		if (SQ_FAILED( sq_get(vm,-2) )) {
+			return sq_throwerror(vm,_SC("Member Variable not found"));
+		}
 		
 		// push 'this'
 		sq_push(vm, 1);
@@ -1049,7 +1051,9 @@ namespace Sqrat {
 	inline SQInteger sqVarSet(HSQUIRRELVM vm) {
 		// Find the set method in the set table
 		sq_push(vm, 2);
-		sq_get(vm, -2);
+		if (SQ_FAILED( sq_get(vm,-2) )) {
+			return sq_throwerror(vm,_SC("Member Variable not found"));
+		}
 		
 		// push 'this'
 		sq_push(vm, 1);

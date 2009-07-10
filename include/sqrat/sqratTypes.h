@@ -108,6 +108,32 @@ namespace Sqrat {
 		static void push(HSQUIRRELVM vm, type& value) { \
 			sq_pushinteger(vm, static_cast<SQInteger>(value)); \
 		} \
+	};\
+	\
+	template<> \
+	struct Var<const type> { \
+		type value; \
+		Var(HSQUIRRELVM vm, SQInteger idx) { \
+			SQInteger sqValue; \
+			sq_getinteger(vm, idx, &sqValue); \
+			value = static_cast<type>(sqValue); \
+		} \
+		static void push(HSQUIRRELVM vm, const type& value) { \
+			sq_pushinteger(vm, static_cast<SQInteger>(value)); \
+		} \
+	}; \
+	\
+	template<> \
+	struct Var<const type&> { \
+		type value; \
+		Var(HSQUIRRELVM vm, SQInteger idx) { \
+			SQInteger sqValue; \
+			sq_getinteger(vm, idx, &sqValue); \
+			value = static_cast<type>(sqValue); \
+		} \
+		static void push(HSQUIRRELVM vm, const type& value) { \
+			sq_pushinteger(vm, static_cast<SQInteger>(value)); \
+		} \
 	};
 
 	SCRAT_INTEGER(unsigned int)
@@ -135,6 +161,31 @@ namespace Sqrat {
 		static void push(HSQUIRRELVM vm, type& value) { \
 			sq_pushfloat(vm, static_cast<SQFloat>(value)); \
 		} \
+	}; \
+	\
+	template<> \
+	struct Var<const type> { \
+		type value; \
+		Var(HSQUIRRELVM vm, SQInteger idx) { \
+			SQFloat sqValue; \
+			sq_getfloat(vm, idx, &sqValue); \
+			value = static_cast<type>(sqValue); \
+		} \
+		static void push(HSQUIRRELVM vm, const type& value) { \
+			sq_pushfloat(vm, static_cast<SQFloat>(value)); \
+		} \
+	}; \
+	template<> \
+	struct Var<const type&> { \
+		type value; \
+		Var(HSQUIRRELVM vm, SQInteger idx) { \
+			SQFloat sqValue; \
+			sq_getfloat(vm, idx, &sqValue); \
+			value = static_cast<type>(sqValue); \
+		} \
+		static void push(HSQUIRRELVM vm, const type& value) { \
+			sq_pushfloat(vm, static_cast<SQFloat>(value)); \
+		} \
 	};
 
 	SCRAT_FLOAT(float)
@@ -154,8 +205,46 @@ namespace Sqrat {
 		}
 	};
 
+	template<>
+	struct Var<const bool> {
+		bool value;
+		Var(HSQUIRRELVM vm, SQInteger idx) {
+			SQBool sqValue;
+			sq_tobool(vm, idx, &sqValue);
+			value = (sqValue != 0);
+		}
+		static void push(HSQUIRRELVM vm, const bool& value) {
+			sq_pushbool(vm, static_cast<SQBool>(value));
+		}
+	};
+
+	template<>
+	struct Var<const bool&> {
+		bool value;
+		Var(HSQUIRRELVM vm, SQInteger idx) {
+			SQBool sqValue;
+			sq_tobool(vm, idx, &sqValue);
+			value = (sqValue != 0);
+		}
+		static void push(HSQUIRRELVM vm, const bool& value) {
+			sq_pushbool(vm, static_cast<SQBool>(value));
+		}
+	};
+
 	// String Types
 	typedef std::basic_string<SQChar> string;
+
+	template<>
+	struct Var<SQChar*> {
+		SQChar* value;
+		Var(HSQUIRRELVM vm, SQInteger idx) {
+			sq_tostring(vm, idx);
+			sq_getstring(vm, -1, (const SQChar**)&value);
+		}
+		static void push(HSQUIRRELVM vm, SQChar* value) {
+			sq_pushstring(vm, value, -1);
+		}
+	};
 
 	template<>
 	struct Var<const SQChar*> {

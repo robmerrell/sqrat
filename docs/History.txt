@@ -1,8 +1,25 @@
 ﻿Sqrat - Squirrel Binding Utility
 (c) 2009 Brandon Jones
-Version 0.6
+Version 0.7
 
 === Version History ===
+
+0.7 (07/10/2009)
+ * Added Script objects to help compile and run scripts
+ * Added Properties to Class binding. Allows squirrel to access variables through a getter and setter
+ * Corrections and improvements from kanryu to help with Stack Management and Table abstraction
+ * Started building Unit tests for Sqrat to serve as "Real world" code examples and as a safeguard against breaking changes
+	* Built using the GoogleTest framework
+	* Included project file for MSVC 2005
+	* The following tests have been implemented:
+		- Script Loading
+		- Table Binding
+		- Class Binding
+		- Derived Class Binding
+		- Class Instances
+		- Class Properties
+ * Corrected an issue with Tables not adding references when needed
+ * Corrected issue with Derived Classes not recognizing the Default VM 
 
 0.6 (05/21/2009)
  * Small bugfix release to get Sqrat compatible with GCC

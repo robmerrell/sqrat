@@ -38,14 +38,24 @@
 
 namespace Sqrat {
 
-	//
-	// Class
-	//
+	/**
+		@tparam	C	class type to expose
+		@tparam A	allocator to use when instantiating and destroying class instances in Squirrel
 
+		@remarks
+		DefaultAllocator<C> is used if no allocator is specified. This should be sufficent for most classes
+		but if specific behavior is desired it can be overridden. If the class should not be instantiated from
+		Squirrel the NoConstructor allocator may be used.
+	*/
+	/// Exposes a C++ class to Squirrel
 	template<class C, class A = DefaultAllocator<C> >
 	class Class : public Object {
 	public:
-		// Create a new table
+		
+		/**
+			@param v	Squirrel virtual machine to bind to
+		*/
+		/// Constructor
 		Class(HSQUIRRELVM v = DefaultVM::Get(), bool createClass = true) : Object(v, false) {
 			if(createClass && !ClassType<C>::Initialized()) {
 				sq_newclass(vm, false);
@@ -57,6 +67,9 @@ namespace Sqrat {
 
 				ClassType<C>::Initialized() = true;
 			}
+		}
+		~Class() {
+			sq_pop(vm, 1);
 		}
 
 		// Get the Squirrel Object for this Class
@@ -73,7 +86,7 @@ namespace Sqrat {
 		//
 		// Variable Binding
 		//
-
+		
 		template<class V>
 		Class& SetStaticValue(const SQChar* name, const V& val) {
 			BindValue<V>(name, val, true);
@@ -85,7 +98,12 @@ namespace Sqrat {
 			BindValue<V>(name, val, false);
 			return *this;
 		}
-
+		
+		/**
+			@param name	name of the variable as it will appear in Squirrel
+			@param var	variable to bind
+		*/
+		/// Bind a class variable
 		template<class V>
 		Class& Var(const SQChar* name, V C::* var) {
 			// Add the getter
@@ -93,6 +111,47 @@ namespace Sqrat {
 
 			// Add the setter
 			BindAccessor(name, &var, sizeof(var), &sqDefaultSet<C, V>, ClassType<C>::SetTable());
+
+			return *this;
+		}
+
+		/// Bind a class property (variable accessed via a setter and getter) 
+		template<class V>
+		Class& Prop(const SQChar* name, V (C::*getMethod)() const, void (C::*setMethod)(const V&)) {
+			if(getMethod != NULL) {
+				// Add the getter
+				BindAccessor(name, &getMethod, sizeof(getMethod), SqMemberFunc(getMethod), ClassType<C>::GetTable());
+			}
+			
+			if(setMethod != NULL) {
+				// Add the setter
+				BindAccessor(name, &setMethod, sizeof(setMethod), SqMemberFunc(setMethod), ClassType<C>::SetTable());
+			}
+
+			return *this;
+		}
+
+		/// Bind a class property (variable accessed via a setter and getter) 
+		template<class V>
+		Class& Prop(const SQChar* name, V (C::*getMethod)(), void (C::*setMethod)(V)) {
+			if(getMethod != NULL) {
+				// Add the getter
+				BindAccessor(name, &getMethod, sizeof(getMethod), SqMemberFunc(getMethod), ClassType<C>::GetTable());
+			}
+			
+			if(setMethod != NULL) {
+				// Add the setter
+				BindAccessor(name, &setMethod, sizeof(setMethod), SqMemberFunc(setMethod), ClassType<C>::SetTable());
+			}
+
+			return *this;
+		}
+
+		/// Bind a read only class property (variable accessed via a getter) 
+		template<class V>
+		Class& Prop(const SQChar* name, V (C::*getMethod)() const) {
+			// Add the getter
+			BindAccessor(name, &getMethod, sizeof(getMethod), SqMemberFunc(getMethod), ClassType<C>::GetTable());
 
 			return *this;
 		}
@@ -196,7 +255,7 @@ namespace Sqrat {
 			sq_newslot(vm, -3, false);
 
 			// Pop get/set table
-			sq_pop(vm,-1);
+			sq_pop(vm,1);
 		}
 
 	};
@@ -204,7 +263,7 @@ namespace Sqrat {
 	template<class C, class B, class A = DefaultAllocator<C> >
 	class DerivedClass : public Class<C, A> {
 	public:
-		DerivedClass(HSQUIRRELVM v) : Class<C, A>(v, false) {
+		DerivedClass(HSQUIRRELVM v = DefaultVM::Get()) : Class<C, A>(v, false) {
 			if(!ClassType<C>::Initialized()) {
 				sq_pushobject(v, ClassType<B>::ClassObject());
 				sq_newclass(v, true);

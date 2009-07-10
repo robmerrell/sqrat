@@ -1,8 +1,4 @@
 //
-// Sqrat: Squirrel C++ Binding Utility
-//
-
-//
 // Copyright (c) 2009 Brandon Jones
 //
 // This software is provided 'as-is', without any express or implied
@@ -25,16 +21,55 @@
 //	distribution.
 //
 
-#if !defined(_SCRAT_MAIN_H_)
-#define _SCRAT_MAIN_H_
+#include <gtest/gtest.h>
+#include <sqrat.h>
+#include "Vector.h"
+#include "Fixture.h"
 
-#include <squirrel.h>
+using namespace Sqrat;
 
-#include "sqrat/sqratTable.h"
-#include "sqrat/sqratClass.h"
-#include "sqrat/sqratFunction.h"
-#include "sqrat/sqratConst.h"
-#include "sqrat/sqratUtil.h"
-#include "sqrat/sqratScript.h"
+TEST_F(SqratTest, LoadScriptFromString) {
+	//
+	// Compile and run from string
+	//
+	
+	DefaultVM::Set(vm);
 
-#endif
+	Script script;
+
+	try {
+		script.CompileString(_SC(" \
+			::print(\"Hello World!\\n\"); \
+			"));
+	} catch(Exception ex) {
+		FAIL() << _SC("Script Compile Failed: ") << ex.Message();
+	}
+	
+	try {
+		script.Run();
+	} catch(Exception ex) {
+		FAIL() << _SC("Script Run Failed: ") << ex.Message();
+	}
+}
+
+TEST_F(SqratTest, LoadScriptFromFile) {
+	//
+	// Compile and run from file
+	//
+	
+	DefaultVM::Set(vm);
+	
+	Script script;
+
+	try {
+		script.CompileFile(_SC("scripts\\hello.nut"));
+	} catch(Exception ex) {
+		FAIL() << _SC("Script Compile Failed: ") << ex.Message();
+	}
+	
+	try {
+		script.Run();
+	} catch(Exception ex) {
+		FAIL() << _SC("Script Run Failed: ") << ex.Message();
+	}
+}
