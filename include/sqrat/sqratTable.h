@@ -88,16 +88,17 @@ namespace Sqrat {
 		// Function Calls
 		//
 
-		template<class R>
-		Function<R> GetFunction(const SQChar* name) {
+		Function GetFunction(const SQChar* name) {
 			HSQOBJECT funcObj;
 			sq_pushobject(vm, GetObject());
 			sq_pushstring(vm, name, -1);
-			sq_get(vm, -2);
+			if(SQ_FAILED(sq_get(vm, -2))) {
+				sq_pushnull(vm);
+			}
 			sq_getstackobj(vm, -1, &funcObj);
 			sq_pop(vm, 2);
 
-			return Function<R>(vm, GetObject(), funcObj);
+			return Function(vm, GetObject(), funcObj);
 		}
 	};
 

@@ -3,8 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sqrattest", "sqrattest\sqrattest.vcproj", "{9EC4B19C-F37A-45C8-B7D5-C846C47F4CD0}"
 	ProjectSection(ProjectDependencies) = postProject
+		{E6C8F568-7B37-4793-A608-091D1BA186F8} = {E6C8F568-7B37-4793-A608-091D1BA186F8}
 		{C8F6C172-56F2-4E76-B5FA-C3B423B31BE7} = {C8F6C172-56F2-4E76-B5FA-C3B423B31BE7}
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sqratlib", "sqratlib\sqratlib.vcproj", "{E6C8F568-7B37-4793-A608-091D1BA186F8}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gtest", "gtest-1.3.0\msvc\gtest.vcproj", "{C8F6C172-56F2-4E76-B5FA-C3B423B31BE7}"
 EndProject
@@ -18,6 +21,10 @@ Global
 		{9EC4B19C-F37A-45C8-B7D5-C846C47F4CD0}.Debug|Win32.Build.0 = Debug|Win32
 		{9EC4B19C-F37A-45C8-B7D5-C846C47F4CD0}.Release|Win32.ActiveCfg = Release|Win32
 		{9EC4B19C-F37A-45C8-B7D5-C846C47F4CD0}.Release|Win32.Build.0 = Release|Win32
+		{E6C8F568-7B37-4793-A608-091D1BA186F8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E6C8F568-7B37-4793-A608-091D1BA186F8}.Debug|Win32.Build.0 = Debug|Win32
+		{E6C8F568-7B37-4793-A608-091D1BA186F8}.Release|Win32.ActiveCfg = Release|Win32
+		{E6C8F568-7B37-4793-A608-091D1BA186F8}.Release|Win32.Build.0 = Release|Win32
 		{C8F6C172-56F2-4E76-B5FA-C3B423B31BE7}.Debug|Win32.ActiveCfg = Debug|Win32
 		{C8F6C172-56F2-4E76-B5FA-C3B423B31BE7}.Debug|Win32.Build.0 = Debug|Win32
 		{C8F6C172-56F2-4E76-B5FA-C3B423B31BE7}.Release|Win32.ActiveCfg = Release|Win32

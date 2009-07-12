@@ -27,41 +27,60 @@
 
 using namespace Sqrat;
 
-TEST_F(SqratTest, LoadScriptFromString) {
-	//
-	// Compile and run from string
-	//
-	
+TEST_F(SqratTest, CallSquirrelFunction) {
 	DefaultVM::Set(vm);
 
 	Script script;
 
 	try {
 		script.CompileString(_SC(" \
-			::print(\"Hello World!\\n\"); \
+			function AddTwo(a, b) { \
+				return a + b; \
+			} \
+			function MultiplyTwo(a, b) { \
+				return a * b; \
+			} \
 			"));
 	} catch(Exception ex) {
 		FAIL() << _SC("Script Compile Failed: ") << ex.Message();
 	}
 	
 	try {
-		script.Run();
+		script.Run(); // Must run the script before the function will be available
 	} catch(Exception ex) {
 		FAIL() << _SC("Script Run Failed: ") << ex.Message();
 	}
+	
+	// Method one for function retrieval: via the constructor
+	Function addTwo(RootTable(), _SC("AddTwo"));
+	ASSERT_FALSE(addTwo.IsNull());
+	EXPECT_EQ(addTwo.Evaluate<int>(1, 2), 3);
+
+	// Method two for function retrieval: from the class or table
+	Function multiplyTwo = RootTable().GetFunction(_SC("MultiplyTwo"));
+	ASSERT_FALSE(multiplyTwo.IsNull());
+	EXPECT_EQ(multiplyTwo.Evaluate<int>(2, 3), 6);
 }
 
-TEST_F(SqratTest, LoadScriptFromFile) {
-	//
-	// Compile and run from file
-	//
-	
+int NativeOp(int a, int b, Function opFunc) {
+	if(opFunc.IsNull()) { return -1; }
+	return opFunc.Evaluate<int>(a, b);
+}
+
+TEST_F(SqratTest, FunctionAsArgument) {
 	DefaultVM::Set(vm);
-	
+
+	RootTable().Func(_SC("NativeOp"), &NativeOp);
+
 	Script script;
 
 	try {
-		script.CompileFile(_SC("scripts\\hello.nut"));
+		script.CompileString(_SC(" \
+			function SubTwo(a, b) { \
+				return a - b; \
+			} \
+			gTest.EXPECT_INT_EQ(::NativeOp(5, 1, SubTwo), 4); \
+			"));
 	} catch(Exception ex) {
 		FAIL() << _SC("Script Compile Failed: ") << ex.Message();
 	}

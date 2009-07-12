@@ -191,6 +191,23 @@ namespace Sqrat {
 			return *this;
 		}
 
+		//
+		// Function Calls
+		//
+
+		Function GetFunction(const SQChar* name) {
+			HSQOBJECT funcObj;
+			sq_pushobject(vm, ClassType<C>::ClassObject());
+			sq_pushstring(vm, name, -1);
+			if(SQ_FAILED(sq_get(vm, -2))) {
+				sq_pushnull(vm);
+			}
+			sq_getstackobj(vm, -1, &funcObj);
+			sq_pop(vm, 2);
+
+			return Function(vm, ClassType<C>::ClassObject(), funcObj);
+		}
+
 	protected:
 		// Initialize the required data structure for the class
 		void InitClass() {

@@ -4,6 +4,10 @@ Version 0.7
 
 === Version History ===
 
+0.7.1 (07/12/2009)
+ * Restructured Function object to facilitate passing Functions as arguments
+ * Added Function usage unit tests
+
 0.7 (07/10/2009)
  * Added Script objects to help compile and run scripts
  * Added Properties to Class binding. Allows squirrel to access variables through a getter and setter

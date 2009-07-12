@@ -524,7 +524,49 @@
 		
 		<h2 id="function">Functions</h2>
 
-		<p>Section Awaiting Content</p>
+		<p>Functions from Squirrel can be queried and called from C++ or even be 
+		passed to C++ as an argument using the Sqrat::Function object. There are two
+		ways to retrieve a squirrel function:</p>
+		
+	<pre>
+	Function funcA(RootTable(vm), "FunctionName"); // Via the constructor
+	Function funcB = RootTable().GetFunction("FunctionName"); // Via the class or table
+	</pre>
+	
+		<p>As with objects, IsNull will indicate if the function retreived is valid</p>
+		
+	<pre>
+	if(funcA.IsNull()) { /* function not retreived. handle appropriately */ }
+	</pre>
+	
+		<p>Once retrieved, a function can be called using either the Evaluate or 
+		Execute function. Both will call the squirrel function, while Evaluate will
+		return the result of the call (if there is one). Both can be called with up
+		to 9 arguments.</p>
+		
+	<pre>
+	int result = funcA.Evaluate<int>(1, "String");
+	funcA.Execute(2, "Bob");
+	funcA(3, "Hello!"); // Same as Execute
+	</pre>
+	
+		<p>A function can also be passed to you from Squirrel (like a callback)</p>
+		
+	<pre>
+	// Squirrel Code
+	function Add(a, b) { return a + b; }
+	d = ::NativeFunc(1, 2, Add); // d should equal 3
+
+	// C++ Code
+	int NativeFunc(int a, int b, Function op) {
+		return op.Evaluate<int>(a, b);
+	}
+	</pre>
+	
+		<p>Please note that Sqrat has no way of determining if the number or type of 
+		arguments you pass to the function call match what Squirrel is expecting.
+		It is up to the developer to ensure that calls from C++ match their squirrel
+		counterparts.</p>
 
 		<h2 id="future">Future Work</h2>
 
