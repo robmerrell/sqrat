@@ -1,4 +1,8 @@
 //
+// SqratThread: Sqrat threading module
+//
+
+//
 // Copyright (c) 2009 Brandon Jones
 //
 // This software is provided 'as-is', without any express or implied
@@ -21,55 +25,19 @@
 //	distribution.
 //
 
-#include <gtest/gtest.h>
-#include <sqrat.h>
-#include "Fixture.h"
+#if !defined(_SQRAT_THREAD_H_)
+#define _SQRAT_THREAD_H_
 
-using namespace Sqrat;
+#include "sqmodule.h"
 
-TEST_F(SqratTest, LoadScriptFromString) {
-	//
-	// Compile and run from string
-	//
-	
-	DefaultVM::Set(vm);
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-	Script script;
+__declspec(dllexport) SQRESULT sqmodule_load(HSQUIRRELVM v, HSQAPI api);
 
-	try {
-		script.CompileString(_SC(" \
-			x <- 1 + 2; \
-			gTest.EXPECT_STR_EQ(x, 3); \
-			"));
-	} catch(Exception ex) {
-		FAIL() << _SC("Script Compile Failed: ") << ex.Message();
-	}
-	
-	try {
-		script.Run();
-	} catch(Exception ex) {
-		FAIL() << _SC("Script Run Failed: ") << ex.Message();
-	}
-}
+#ifdef __cplusplus
+} /*extern "C"*/
+#endif
 
-TEST_F(SqratTest, LoadScriptFromFile) {
-	//
-	// Compile and run from file
-	//
-	
-	DefaultVM::Set(vm);
-	
-	Script script;
-
-	try {
-		script.CompileFile(_SC("scripts/hello.nut"));
-	} catch(Exception ex) {
-		FAIL() << _SC("Script Compile Failed: ") << ex.Message();
-	}
-	
-	try {
-		script.Run();
-	} catch(Exception ex) {
-		FAIL() << _SC("Script Run Failed: ") << ex.Message();
-	}
-}
+#endif /*_SQRAT_THREAD_H_*/

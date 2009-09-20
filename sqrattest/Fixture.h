@@ -21,6 +21,10 @@ namespace Sqrat {
 		virtual void SetUp() {
 			vm = sq_open(1024);
 			sq_setprintfunc(vm, printfunc);
+
+			sq_newclosure(vm, errorhandler,0);
+			sq_seterrorhandler(vm);
+
 			BindTestFunctions();
 		}
 
@@ -39,6 +43,19 @@ namespace Sqrat {
 			va_start(vl, s);
 			scvprintf(s, vl);
 			va_end(vl);
+		}
+
+		static SQInteger errorhandler(HSQUIRRELVM v) {
+			const SQChar *sErr = 0;
+			if(sq_gettop(v)>=1) {
+				if(SQ_SUCCEEDED(sq_getstring(v,2,&sErr)))	{
+					ADD_FAILURE() << _SC("A Script Error Occured: ") << sErr;
+				}
+				else{
+					ADD_FAILURE() << _SC("An Unknown Script Error Occured.") << sErr;
+				}
+			}
+			return 0;
 		}
 
 		// Test Macros
@@ -68,11 +85,11 @@ namespace Sqrat {
 			ASSERT_NE(a, b);
 		}
 
-		static void SQ_ASSERT_STREQ(string a, string b) {
+		static void SQ_ASSERT_STR_EQ(string a, string b) {
 			ASSERT_STREQ(a.c_str(), b.c_str());
 		}
 
-		static void SQ_ASSERT_STRNE(string a, string b) {
+		static void SQ_ASSERT_STR_NE(string a, string b) {
 			ASSERT_STRNE(a.c_str(), b.c_str());
 		}
 
@@ -101,11 +118,11 @@ namespace Sqrat {
 			EXPECT_NE(a, b);
 		}
 
-		static void SQ_EXPECT_STREQ(string a, string b) {
+		static void SQ_EXPECT_STR_EQ(string a, string b) {
 			EXPECT_STREQ(a.c_str(), b.c_str());
 		}
 
-		static void SQ_EXPECT_STRNE(string a, string b) {
+		static void SQ_EXPECT_STR_NE(string a, string b) {
 			EXPECT_STRNE(a.c_str(), b.c_str());
 		}
 
@@ -118,8 +135,8 @@ namespace Sqrat {
 				.Func(_SC("ASSERT_INT_NE"), &SQ_ASSERT_INT_NE)
 				.Func(_SC("ASSERT_FLOAT_EQ"), &SQ_ASSERT_FLOAT_EQ)
 				.Func(_SC("ASSERT_FLOAT_NE"), &SQ_ASSERT_FLOAT_NE)
-				.Func(_SC("ASSERT_STREQ"), &SQ_ASSERT_STREQ)
-				.Func(_SC("ASSERT_STRNE"), &SQ_ASSERT_STRNE)
+				.Func(_SC("ASSERT_STR_EQ"), &SQ_ASSERT_STR_EQ)
+				.Func(_SC("ASSERT_STR_NE"), &SQ_ASSERT_STR_NE)
 
 				.Func(_SC("EXPECT_TRUE"), &SQ_EXPECT_TRUE)
 				.Func(_SC("EXPECT_FALSE"), &SQ_EXPECT_FALSE)
@@ -127,8 +144,8 @@ namespace Sqrat {
 				.Func(_SC("EXPECT_INT_NE"), &SQ_EXPECT_INT_NE)
 				.Func(_SC("EXPECT_FLOAT_EQ"), &SQ_EXPECT_FLOAT_EQ)
 				.Func(_SC("EXPECT_FLOAT_NE"), &SQ_EXPECT_FLOAT_NE)
-				.Func(_SC("EXPECT_STREQ"), &SQ_EXPECT_STREQ)
-				.Func(_SC("EXPECT_STRNE"), &SQ_EXPECT_STRNE)
+				.Func(_SC("EXPECT_STR_EQ"), &SQ_EXPECT_STR_EQ)
+				.Func(_SC("EXPECT_STR_NE"), &SQ_EXPECT_STR_NE)
 				);
 
 		}

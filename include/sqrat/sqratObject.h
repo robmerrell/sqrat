@@ -30,24 +30,11 @@
 
 #include <squirrel.h>
 #include <string.h>
-#include "SqratTypes.h"
+#include "sqratTypes.h"
+#include "sqratOverloadMethods.h"
+#include "sqratUtil.h"
 
 namespace Sqrat {
-
-	class DefaultVM {
-	private:
-		static HSQUIRRELVM& staticVm() {
-			static HSQUIRRELVM vm;
-			return vm;
-		}
-	public:
-		static HSQUIRRELVM Get() {
-			return staticVm();
-		}
-		static void Set(HSQUIRRELVM vm) {
-			staticVm() = vm;
-		}
-	};
 
 	class Object {
 	protected:
@@ -166,6 +153,28 @@ namespace Sqrat {
 
 			sq_newclosure(vm, func, 1);
 			sq_newslot(vm, -3, staticVar);
+			sq_pop(vm,1); // pop table
+		}
+
+		// Bind a function and it's associated Squirrel closure to the object
+		inline void BindOverload(const SQChar* name, void* method, size_t methodSize, SQFUNCTION func, SQFUNCTION overload, int argCount, bool staticVar = false) {
+			string overloadName = SqOverloadName::Get(name, argCount);
+
+			sq_pushobject(vm, GetObject());
+
+			// Bind overload handler
+			sq_pushstring(vm, name, -1);
+			sq_pushstring(vm, name, -1); // function name is passed as a free variable
+			sq_newclosure(vm, overload, 1);
+			sq_newslot(vm, -3, staticVar);
+			
+			// Bind overloaded function
+			sq_pushstring(vm, overloadName.c_str(), -1);
+			SQUserPointer methodPtr = sq_newuserdata(vm, static_cast<SQUnsignedInteger>(methodSize));
+			memcpy(methodPtr, method, methodSize);
+			sq_newclosure(vm, func, 1);
+			sq_newslot(vm, -3, staticVar);
+
 			sq_pop(vm,1); // pop table
 		}
 

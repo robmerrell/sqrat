@@ -4,6 +4,35 @@ Version 0.7
 
 === Version History ===
 
+0.8 (09/20/2009)
+ * Function overloading now available for classes and tables
+ * Added ErrorHandling static settings object to enable or disable error handling (true by defualt)
+ * Added Module Import library
+ * Added Threading Utility module
+	* Thread Scheduling
+	* Sleep
+	* Get Current Thread
+ * GCC Compatibility updates (suggested by Nimrof)
+ * 64 bit project setting updates
+ * Cleaned up unit tests. None of them print to console now unless there is an error. Makes output more readable and identifying problems faster.
+ * Changed unit test STREQ/STRNE bindings to STR_EQ/STR_NE to be more consistent with int and float checks.
+ * Additional variations of Property bindings to allow for more flexible get/set definitions
+ * Implemented weakref for Sqrat-bound classes (suggested by emeyex)
+ * Fixed several issues with Sqrat bindings not properly cleaning up the stack (code provided by emeyex)
+	* Changed all instances of sq_pop(v, -1) to sq_pop(v, 1). The effects of -1 are undocumented.
+	* Added appropriate pops to Function::Evaluate and Function::Execute.
+	  from the sq docs for sq_call:
+	  "the function pops all the parameters and leave the closure in the stack; if retval is true the return value of the closure is pushed"
+	  so I added one to the sq_pop for all Evaluate() calls, and added sq_pop(vm, 1) for all Execute() calls
+	  i.e., need to pop 1 for the closure (always), and 1 for the return value if specified
+	* Added appropriate pops to string Var classes.
+	  from the sq docs for sq_tostring:
+	  "converts the object at position idx in the stack to string and pushes the resulting string in the stack"
+	  so needed to add calls to sq_pop(vm,1) after all sq_tostring + sq_getstring sequences
+	* Added appropriate pops to class and derived class.
+	
+ 
+
 0.7.1 (07/12/2009)
  * Restructured Function object to facilitate passing Functions as arguments
  * Added Function usage unit tests

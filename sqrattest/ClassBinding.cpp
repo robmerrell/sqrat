@@ -75,8 +75,8 @@ TEST_F(SqratTest, SimpleClassBinding) {
 			v *= 2.0; \
 			gTest.EXPECT_FLOAT_EQ(2.4, v.x); \
 			gTest.EXPECT_FLOAT_EQ(6.8, v.y); \
-			::print(v + \"\\n\"); // Invokes _tostring \
-			::print(\"Length:\" + v.Length() + \"\\n\"); \
+			gTest.EXPECT_STR_EQ(\"\" + v, \"Vec2(2.4, 6.8)\"); \
+			gTest.EXPECT_FLOAT_EQ(v.Length(), 7.211103); \
 			"));
 	} catch(Exception ex) {
 		FAIL() << _SC("Compile Failed: ") << ex.Message();
@@ -143,13 +143,13 @@ TEST_F(SqratTest, InheritedClassBinding) {
 			d <- Dog(); \
 			m <- Mouse(); \
 			\
-			gTest.EXPECT_STREQ(c.Speak(), \"Meow!\"); \
-			gTest.EXPECT_STREQ(d.Speak(), \"Woof!\"); \
-			gTest.EXPECT_STREQ(m.Speak(), \"Squeak!\"); \
+			gTest.EXPECT_STR_EQ(c.Speak(), \"Meow!\"); \
+			gTest.EXPECT_STR_EQ(d.Speak(), \"Woof!\"); \
+			gTest.EXPECT_STR_EQ(m.Speak(), \"Squeak!\"); \
 			\
-			gTest.EXPECT_STREQ(MakeSpeak(c), \"Meow!\"); \
-			gTest.EXPECT_STREQ(MakeSpeak(d), \"Woof!\"); \
-			/*gTest.EXPECT_STREQ(MakeSpeak(m), \"Squeak!\");*/ /* This will fail! Classes overridden in squirrel will be exposed as their base native class to C++ */ \
+			gTest.EXPECT_STR_EQ(MakeSpeak(c), \"Meow!\"); \
+			gTest.EXPECT_STR_EQ(MakeSpeak(d), \"Woof!\"); \
+			/*gTest.EXPECT_STR_EQ(MakeSpeak(m), \"Squeak!\");*/ /* This will fail! Classes overridden in squirrel will be exposed as their base native class to C++ */ \
 			"));
 	} catch(Exception ex) {
 		FAIL() << _SC("Compile Failed: ") << ex.Message();
@@ -159,5 +159,55 @@ TEST_F(SqratTest, InheritedClassBinding) {
 		script.Run();
 	} catch(Exception ex) {
 		FAIL() << _SC("Run Failed: ") << ex.Message();
+	}
+}
+
+class NativeObj {
+public:
+	int Id() {
+		return 42;
+	}
+};
+
+TEST_F(SqratTest, WeakRef) {
+	//
+	// Ensure that weak referenceing work with Sqrat-bound classes
+	// Created in response to a bug reported by emeyex
+	//
+	
+	DefaultVM::Set(vm);
+
+	// Defining class definitions inline
+	RootTable().Bind(_SC("NativeObj"), 
+		Class<NativeObj>()
+		.Func(_SC("Id"), &NativeObj::Id)
+		);
+	
+	Script script;
+
+	try {
+		script.CompileString(_SC(" \
+			class SqObj { \
+				function Id() { \
+					return 3.14; \
+				} \
+			} \
+			\
+			local obj1 = SqObj(); \
+			local ref1 = obj1.weakref(); \
+			local obj2 = NativeObj(); \
+			local ref2 = obj2.weakref(); \
+			\
+			gTest.EXPECT_FLOAT_EQ(3.14, ref1.ref().Id()); \
+			gTest.EXPECT_INT_EQ(42, ref2.ref().Id()); \
+			"));
+	} catch(Exception ex) {
+		FAIL() << _SC("Script Compile Failed: ") << ex.Message();
+	}
+	
+	try {
+		script.Run();
+	} catch(Exception ex) {
+		FAIL() << _SC("Script Run Failed: ") << ex.Message();
 	}
 }

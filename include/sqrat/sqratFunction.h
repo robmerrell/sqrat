@@ -29,7 +29,7 @@
 #define _SCRAT_SQFUNC_H_
 
 #include <squirrel.h>
-#include "SqratObject.h"
+#include "sqratObject.h"
 
 namespace Sqrat {
 
@@ -94,8 +94,12 @@ namespace Sqrat {
 		}
 
 		void Release() {
-			sq_release(vm, &env);
-			sq_release(vm, &obj);
+			if(!IsNull()) {
+				sq_release(vm, &env);
+				sq_release(vm, &obj);
+				sq_resetobject(&env);
+				sq_resetobject(&obj);
+			}
 		}
 		
 		template <class R>
@@ -103,9 +107,9 @@ namespace Sqrat {
 			sq_pushobject(vm, obj);
 			sq_pushobject(vm, env);
 
-			sq_call(vm, 1, true, false);
+			sq_call(vm, 1, true, ErrorHandling::IsEnabled());
 			R ret = Var<R>(vm, -1).value;
-			sq_pop(vm, 1);
+			sq_pop(vm, 2);
 			return ret;
 		}
 
@@ -116,9 +120,9 @@ namespace Sqrat {
 
 			PushVar(vm, a1);
 
-			sq_call(vm, 2, true, false);
+			sq_call(vm, 2, true, ErrorHandling::IsEnabled());
 			Var<R> ret(vm, -1);
-			sq_pop(vm, 1);
+			sq_pop(vm, 2);
 			return ret.value;
 		}
 
@@ -130,9 +134,9 @@ namespace Sqrat {
 			PushVar(vm, a1);
 			PushVar(vm, a2);
 
-			sq_call(vm, 3, true, false);
+			sq_call(vm, 3, true, ErrorHandling::IsEnabled());
 			R ret = Var<R>(vm, -1).value;
-			sq_pop(vm, 1);
+			sq_pop(vm, 2);
 			return ret;
 		}
 
@@ -145,9 +149,9 @@ namespace Sqrat {
 			PushVar(vm, a2);
 			PushVar(vm, a3);
 
-			sq_call(vm, 4, true, false);
+			sq_call(vm, 4, true, ErrorHandling::IsEnabled());
 			R ret = Var<R>(vm, -1).value;
-			sq_pop(vm, 1);
+			sq_pop(vm, 2);
 			return ret;
 		}
 
@@ -161,9 +165,9 @@ namespace Sqrat {
 			PushVar(vm, a3);
 			PushVar(vm, a4);
 
-			sq_call(vm, 5, true, false);
+			sq_call(vm, 5, true, ErrorHandling::IsEnabled());
 			R ret = Var<R>(vm, -1).value;
-			sq_pop(vm, 1);
+			sq_pop(vm, 2);
 			return ret;
 		}
 
@@ -179,9 +183,9 @@ namespace Sqrat {
 			PushVar(vm, a4);
 			PushVar(vm, a5);
 
-			sq_call(vm, 6, true, false);
+			sq_call(vm, 6, true, ErrorHandling::IsEnabled());
 			R ret = Var<R>(vm, -1).value;
-			sq_pop(vm, 1);
+			sq_pop(vm, 2);
 			return ret;
 		}
 
@@ -197,9 +201,9 @@ namespace Sqrat {
 			PushVar(vm, a5);
 			PushVar(vm, a6);
 
-			sq_call(vm, 7, true, false);
+			sq_call(vm, 7, true, ErrorHandling::IsEnabled());
 			R ret = Var<R>(vm, -1).value;
-			sq_pop(vm, 1);
+			sq_pop(vm, 2);
 			return ret;
 		}
 
@@ -216,9 +220,9 @@ namespace Sqrat {
 			PushVar(vm, a6);
 			PushVar(vm, a7);
 
-			sq_call(vm, 8, true, false);
+			sq_call(vm, 8, true, ErrorHandling::IsEnabled());
 			R ret = Var<R>(vm, -1).value;
-			sq_pop(vm, 1);
+			sq_pop(vm, 2);
 			return ret;
 		}
 
@@ -236,9 +240,9 @@ namespace Sqrat {
 			PushVar(vm, a7);
 			PushVar(vm, a8);
 
-			sq_call(vm, 9, true, false);
+			sq_call(vm, 9, true, ErrorHandling::IsEnabled());
 			R ret = Var<R>(vm, -1).value;
-			sq_pop(vm, 1);
+			sq_pop(vm, 2);
 			return ret;
 		}
 
@@ -257,9 +261,9 @@ namespace Sqrat {
 			PushVar(vm, a8);
 			PushVar(vm, a9);
 
-			sq_call(vm, 10, true, false);
+			sq_call(vm, 10, true, ErrorHandling::IsEnabled());
 			R ret = Var<R>(vm, -1).value;
-			sq_pop(vm, 1);
+			sq_pop(vm, 2);
 			return ret;
 		}
 
@@ -271,7 +275,8 @@ namespace Sqrat {
 			sq_pushobject(vm, obj);
 			sq_pushobject(vm, env);
 
-			sq_call(vm, 1, false, false);
+			sq_call(vm, 1, false, ErrorHandling::IsEnabled());
+			sq_pop(vm, 1);		
 		}
 
 		template <class A1>
@@ -281,7 +286,8 @@ namespace Sqrat {
 
 			PushVar(vm, a1);
 
-			sq_call(vm, 2, false, false);
+			sq_call(vm, 2, false, ErrorHandling::IsEnabled());
+			sq_pop(vm, 1);
 		}
 
 		template <class A1, class A2>
@@ -292,7 +298,8 @@ namespace Sqrat {
 			PushVar(vm, a1);
 			PushVar(vm, a2);
 
-			sq_call(vm, 3, false, false);
+			sq_call(vm, 3, false, ErrorHandling::IsEnabled());
+			sq_pop(vm, 1);
 		}
 
 		template <class A1, class A2, class A3>
@@ -304,7 +311,8 @@ namespace Sqrat {
 			PushVar(vm, a2);
 			PushVar(vm, a3);
 
-			sq_call(vm, 4, false, false);
+			sq_call(vm, 4, false, ErrorHandling::IsEnabled());
+			sq_pop(vm, 1);
 		}
 
 		template <class A1, class A2, class A3, class A4>
@@ -317,7 +325,8 @@ namespace Sqrat {
 			PushVar(vm, a3);
 			PushVar(vm, a4);
 
-			sq_call(vm, 5, false, false);
+			sq_call(vm, 5, false, ErrorHandling::IsEnabled());
+			sq_pop(vm, 1);
 		}
 
 		
@@ -332,7 +341,8 @@ namespace Sqrat {
 			PushVar(vm, a4);
 			PushVar(vm, a5);
 
-			sq_call(vm, 6, false, false);
+			sq_call(vm, 6, false, ErrorHandling::IsEnabled());
+			sq_pop(vm, 1);
 		}
 
 		template <class A1, class A2, class A3, class A4, class A5, class A6>
@@ -347,7 +357,8 @@ namespace Sqrat {
 			PushVar(vm, a5);
 			PushVar(vm, a6);
 
-			sq_call(vm, 7, false, false);
+			sq_call(vm, 7, false, ErrorHandling::IsEnabled());
+			sq_pop(vm, 1);
 		}
 
 		template <class A1, class A2, class A3, class A4, class A5, class A6, class A7>
@@ -363,7 +374,8 @@ namespace Sqrat {
 			PushVar(vm, a6);
 			PushVar(vm, a7);
 
-			sq_call(vm, 8, false, false);
+			sq_call(vm, 8, false, ErrorHandling::IsEnabled());
+			sq_pop(vm, 1);
 		}
 
 		template <class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8>
@@ -380,7 +392,8 @@ namespace Sqrat {
 			PushVar(vm, a7);
 			PushVar(vm, a8);
 
-			sq_call(vm, 9, false, false);
+			sq_call(vm, 9, false, ErrorHandling::IsEnabled());
+			sq_pop(vm, 1);
 		}
 
 		template <class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9>
@@ -398,7 +411,8 @@ namespace Sqrat {
 			PushVar(vm, a8);
 			PushVar(vm, a9);
 
-			sq_call(vm, 10, false, false);
+			sq_call(vm, 10, false, ErrorHandling::IsEnabled());
+			sq_pop(vm, 1);
 		}
 		
 		//

@@ -31,7 +31,7 @@
 #include <squirrel.h>
 #include <string>
 
-#include "SqratClassType.h"
+#include "sqratClassType.h"
 
 namespace Sqrat {
 
@@ -240,6 +240,7 @@ namespace Sqrat {
 		Var(HSQUIRRELVM vm, SQInteger idx) {
 			sq_tostring(vm, idx);
 			sq_getstring(vm, -1, (const SQChar**)&value);
+			sq_pop(vm,1);
 		}
 		static void push(HSQUIRRELVM vm, SQChar* value) {
 			sq_pushstring(vm, value, -1);
@@ -252,6 +253,7 @@ namespace Sqrat {
 		Var(HSQUIRRELVM vm, SQInteger idx) {
 			sq_tostring(vm, idx);
 			sq_getstring(vm, -1, &value);
+			sq_pop(vm,1);
 		}
 		static void push(HSQUIRRELVM vm, const SQChar* value) {
 			sq_pushstring(vm, value, -1);
@@ -266,6 +268,7 @@ namespace Sqrat {
 			sq_tostring(vm, idx);
 			sq_getstring(vm, -1, &ret);
 			value = string(ret);
+			sq_pop(vm,1);
 		}
 		static void push(HSQUIRRELVM vm, string value) {
 			sq_pushstring(vm, value.c_str(), -1);
@@ -280,6 +283,7 @@ namespace Sqrat {
 			sq_tostring(vm, idx);
 			sq_getstring(vm, -1, &ret);
 			value = string(ret);
+			sq_pop(vm,1);
 		}
 		static void push(HSQUIRRELVM vm, string value) {
 			sq_pushstring(vm, value.c_str(), -1);
@@ -294,6 +298,7 @@ namespace Sqrat {
 			sq_tostring(vm, idx);
 			sq_getstring(vm, -1, &ret);
 			value = string(ret);
+			sq_pop(vm,1);
 		}
 		static void push(HSQUIRRELVM vm, string value) {
 			sq_pushstring(vm, value.c_str(), -1);

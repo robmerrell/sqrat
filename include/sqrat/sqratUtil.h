@@ -31,9 +31,39 @@
 #include <squirrel.h>
 #include <string.h>
 
-#include "SqratTypes.h"
+#include "sqratTypes.h"
 
 namespace Sqrat {
+
+	class DefaultVM {
+	private:
+		static HSQUIRRELVM& staticVm() {
+			static HSQUIRRELVM vm;
+			return vm;
+		}
+	public:
+		static HSQUIRRELVM Get() {
+			return staticVm();
+		}
+		static void Set(HSQUIRRELVM vm) {
+			staticVm() = vm;
+		}
+	};
+
+	class ErrorHandling {
+	private:
+		static bool& errorHandling() {
+			static bool eh = true;
+			return eh;
+		}
+	public:
+		static bool IsEnabled() {
+			return errorHandling();
+		}
+		static void Enable(bool enable) {
+			errorHandling() = enable;
+		}
+	};
 
 	class Exception {
 	public:

@@ -31,7 +31,7 @@
 #include <squirrel.h>
 #include <string.h>
 
-#include "SqratObject.h"
+#include "sqratObject.h"
 
 namespace Sqrat {
 	
@@ -72,11 +72,34 @@ namespace Sqrat {
 		static SQInteger New(HSQUIRRELVM) { 
 			return 0; 
 		}
-		static SQInteger Copy(HSQUIRRELVM, SQInteger, const void*) { 
+		static SQInteger Copy(HSQUIRRELVM, SQInteger, const void*) {
+			return 0;
+		}
+		static SQInteger Delete(SQUserPointer, SQInteger) {
+			return 0;
+		}
+	};
+
+	//
+	// CopyOnly
+	//
+
+	template<class C>
+	class CopyOnly {
+	public:
+		static SQInteger New(HSQUIRRELVM) { 
 			return 0; 
 		}
-		static SQInteger Delete(SQUserPointer, SQInteger) { 
-			return 0; 
+		static SQInteger Copy(HSQUIRRELVM vm, SQInteger idx, const void* value) {
+			C* instance = new C(*static_cast<const C*>(value));
+			sq_setinstanceup(vm, idx, instance);
+			sq_setreleasehook(vm, idx, &Delete);
+			return 0;
+		}
+		static SQInteger Delete(SQUserPointer ptr, SQInteger size) {
+			void* instance = reinterpret_cast<C*>(ptr);
+			delete instance;
+			return 0;
 		}
 	};
 }

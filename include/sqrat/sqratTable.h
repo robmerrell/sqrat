@@ -31,9 +31,9 @@
 #include <squirrel.h>
 #include <string.h>
 
-#include "SqratObject.h"
-#include "SqratFunction.h"
-#include "SqratGlobalMethods.h"
+#include "sqratObject.h"
+#include "sqratFunction.h"
+#include "sqratGlobalMethods.h"
 
 namespace Sqrat {
 
@@ -81,6 +81,12 @@ namespace Sqrat {
 		template<class F>
 		TableBase& Func(const SQChar* name, F method) {
 			BindFunc(name, &method, sizeof(method), SqGlobalFunc(method));
+			return *this;
+		}
+
+		template<class F>
+		TableBase& Overload(const SQChar* name, F method) {
+			BindOverload(name, &method, sizeof(method), SqGlobalFunc(method), SqOverloadFunc(method), SqGetArgCount(method));
 			return *this;
 		}
 

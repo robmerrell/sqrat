@@ -29,7 +29,7 @@
 #define _SCRAT_GLOBAL_METHODS_H_
 
 #include <squirrel.h>
-#include "SqratTypes.h"
+#include "sqratTypes.h"
 
 namespace Sqrat {
 

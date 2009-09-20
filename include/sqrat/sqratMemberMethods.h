@@ -29,7 +29,7 @@
 #define _SCRAT_MEMBER_METHODS_H_
 
 #include <squirrel.h>
-#include "SqratTypes.h"
+#include "sqratTypes.h"
 
 namespace Sqrat {
 
@@ -1026,7 +1026,7 @@ namespace Sqrat {
 		sq_push(vm, 1);
 
 		// Call the getter
-		sq_call(vm, 1, true, false);
+		sq_call(vm, 1, true, ErrorHandling::IsEnabled());
 		return 1;
 	}
 
@@ -1060,7 +1060,7 @@ namespace Sqrat {
 		sq_push(vm, 3);
 
 		// Call the setter
-		sq_call(vm, 2, false, false);
+		sq_call(vm, 2, false, ErrorHandling::IsEnabled());
 
 		return 0;
 	}

@@ -32,7 +32,7 @@
 #include <sqstdio.h>
 #include <string.h>
 
-#include "SqratObject.h"
+#include "sqratObject.h"
 
 namespace Sqrat {
 
@@ -42,7 +42,6 @@ namespace Sqrat {
 		}
 
 		void CompileString(const string& script) {
-			sq_pushroottable(vm);
 			if(SQ_FAILED(sq_compilebuffer(vm, script.c_str(), static_cast<SQInteger>(script.size() * sizeof(SQChar)), _SC(""), true))) {
 				throw Exception(LastErrorString(vm));
 			}

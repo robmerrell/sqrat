@@ -74,15 +74,17 @@ TEST_F(SqratTest, SimpleTableBinding) {
 
 	try {
 		script.CompileString(_SC(" \
-			::print(\"Version: \" + Test.version + \"\\n\"); \
-			::print(\"Greeting: \" + Test.GetGreeting() + \"\\n\"); \
+			gTest.EXPECT_STR_EQ(Test.version, \"1.0.0\"); \
+			gTest.EXPECT_STR_EQ(Test.GetGreeting(), \"Hello world!\"); \
 			gTest.EXPECT_INT_EQ(Test.AddTwo(1, 2), 3); \
 			Test.count += 3; \
 			gTest.EXPECT_INT_EQ(Test.count, 15); \
+			\
 			p <- Test.Person(); \
 			p.name = \"Bobby\"; \
 			p.age = 25; \
-			::print(\"Person: \" + p.name + \", age \" + p.age + \"\\n\"); \
+			gTest.EXPECT_STR_EQ(p.name, \"Bobby\"); \
+			gTest.EXPECT_STR_EQ(p.age, 25); \
 			"));
 	} catch(Exception ex) {
 		FAIL() << _SC("Compile Failed: ") << ex.Message();

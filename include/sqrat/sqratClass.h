@@ -31,10 +31,10 @@
 #include <squirrel.h>
 #include <string.h>
 
-#include "SqratObject.h"
-#include "SqratClassType.h"
-#include "SqratMemberMethods.h"
-#include "SqratAllocator.h"
+#include "sqratObject.h"
+#include "sqratClassType.h"
+#include "sqratMemberMethods.h"
+#include "sqratAllocator.h"
 
 namespace Sqrat {
 
@@ -51,33 +51,31 @@ namespace Sqrat {
 	template<class C, class A = DefaultAllocator<C> >
 	class Class : public Object {
 	public:
-		
 		/**
 			@param v	Squirrel virtual machine to bind to
 		*/
 		/// Constructor
 		Class(HSQUIRRELVM v = DefaultVM::Get(), bool createClass = true) : Object(v, false) {
 			if(createClass && !ClassType<C>::Initialized()) {
-				sq_newclass(vm, false);
-				sq_getstackobj(vm, -1, &ClassType<C>::ClassObject());
+				HSQOBJECT& classObj = ClassType<C>::ClassObject();
+				sq_resetobject(&classObj);
 
-				sq_pop(vm, -1);
+				sq_newclass(vm, false);
+				sq_getstackobj(vm, -1, &classObj);
+				sq_addref(vm, &classObj); // must addref before the pop!
+				sq_pop(vm, 1);
 
 				InitClass();
-
 				ClassType<C>::Initialized() = true;
 			}
 		}
-		~Class() {
-			sq_pop(vm, 1);
-		}
 
-		// Get the Squirrel Object for this Class
+		/// Get the Squirrel Object for this Class (const)
 		virtual HSQOBJECT GetObject() const {
 			return ClassType<C>::ClassObject();
 		}
 
-		// Get the Squirrel Object for this Class
+		/// Get the Squirrel Object for this Class (ref)
 		virtual HSQOBJECT& GetObject() {
 			return ClassType<C>::ClassObject();
 		}
@@ -87,12 +85,22 @@ namespace Sqrat {
 		// Variable Binding
 		//
 		
+		/**
+			@param name	name of the static slot
+			@param var	value to assign
+		*/
+		/// Assign a static class slot a value
 		template<class V>
 		Class& SetStaticValue(const SQChar* name, const V& val) {
 			BindValue<V>(name, val, true);
 			return *this;
 		}
-
+		
+		/**
+			@param name	name of the slot
+			@param var	value to assign
+		*/
+		/// Assign a class slot a value
 		template<class V>
 		Class& SetValue(const SQChar* name, const V& val) {
 			BindValue<V>(name, val, false);
@@ -156,6 +164,15 @@ namespace Sqrat {
 			return *this;
 		}
 
+		/// Bind a read only class property (variable accessed via a getter) 
+		template<class V>
+		Class& Prop(const SQChar* name, V (C::*getMethod)()) {
+			// Add the getter
+			BindAccessor(name, &getMethod, sizeof(getMethod), SqMemberFunc(getMethod), ClassType<C>::GetTable());
+
+			return *this;
+		}
+
 		// TODO: Handle static instance vars
 
 		//
@@ -165,6 +182,12 @@ namespace Sqrat {
 		template<class F>
 		Class& Func(const SQChar* name, F method) {
 			BindFunc(name, &method, sizeof(method), SqMemberFunc(method));
+			return *this;
+		}
+
+		template<class F>
+		Class& Overload(const SQChar* name, F method) {
+			BindOverload(name, &method, sizeof(method), SqMemberFunc(method), SqOverloadFunc(method), SqGetArgCount(method));
 			return *this;
 		}
 
@@ -186,7 +209,7 @@ namespace Sqrat {
 			sq_pushstring(vm, name, -1);
 			sq_newclosure(vm, func, 0);
 			sq_newslot(vm, -3, false);
-			sq_pop(vm,-1); // pop table
+			sq_pop(vm, 1); // pop table
 
 			return *this;
 		}
@@ -209,16 +232,17 @@ namespace Sqrat {
 		}
 
 	protected:
+		static SQInteger ClassWeakref(HSQUIRRELVM vm) {
+			sq_weakref(vm, -1);
+			return 1;
+		}
+
 		// Initialize the required data structure for the class
 		void InitClass() {
-			HSQOBJECT& classObj = ClassType<C>::ClassObject();
-			HSQOBJECT& setTable = ClassType<C>::SetTable();
-			HSQOBJECT& getTable = ClassType<C>::GetTable();
+			ClassType<C>::CopyFunc() = &A::Copy;
 
 			// push the class
-			sq_pushobject(vm, classObj);
-
-			ClassType<C>::CopyFunc() = &A::Copy;
+			sq_pushobject(vm, ClassType<C>::ClassObject());
 
 			// add the default constructor
 			sq_pushstring(vm,_SC("constructor"), -1);
@@ -226,17 +250,21 @@ namespace Sqrat {
 			sq_newslot(vm, -3, false);
 
 			// add the set table (static)
+			HSQOBJECT& setTable = ClassType<C>::SetTable();
 			sq_resetobject(&setTable);
 			sq_pushstring(vm,_SC("__setTable"), -1);
 			sq_newtable(vm);
 			sq_getstackobj(vm, -1, &setTable);
+			sq_addref(vm, &setTable);
 			sq_newslot(vm, -3, true);
 
 			// add the get table (static)
+			HSQOBJECT& getTable = ClassType<C>::GetTable();
 			sq_resetobject(&getTable);
 			sq_pushstring(vm,_SC("__getTable"), -1);
 			sq_newtable(vm);
 			sq_getstackobj(vm, -1, &getTable);
+			sq_addref(vm, &getTable);
 			sq_newslot(vm, -3, true);
 
 			// override _set
@@ -249,6 +277,11 @@ namespace Sqrat {
 			sq_pushstring(vm, _SC("_get"), -1);
 			sq_pushobject(vm, getTable); // Push the get table as a free variable
 			sq_newclosure(vm, &sqVarGet, 1);
+			sq_newslot(vm, -3, false);
+
+			// add weakref (apparently not provided by default)
+			sq_pushstring(vm, _SC("weakref"), -1);
+			sq_newclosure(vm, &Class::ClassWeakref, 0);
 			sq_newslot(vm, -3, false);
 
 			// pop the class
@@ -272,21 +305,38 @@ namespace Sqrat {
 			sq_newslot(vm, -3, false);
 
 			// Pop get/set table
-			sq_pop(vm,1);
+			sq_pop(vm, 1);
 		}
 
 	};
 
+	/**
+		@tparam	C	class type to expose
+		@tparam	B	base class type (must already be bound)
+		@tparam A	allocator to use when instantiating and destroying class instances in Squirrel
+
+		@remarks
+		DefaultAllocator<C> is used if no allocator is specified. This should be sufficent for most classes
+		but if specific behavior is desired it can be overridden. If the class should not be instantiated from
+		Squirrel the NoConstructor allocator may be used.
+
+		@remarks
+		Classes in Squirrel are single-inheritance only, and as such Sqrat only allows for single inheritance as well
+	*/
+	/// Exposes a C++ class with a base class to Squirrel
 	template<class C, class B, class A = DefaultAllocator<C> >
 	class DerivedClass : public Class<C, A> {
 	public:
 		DerivedClass(HSQUIRRELVM v = DefaultVM::Get()) : Class<C, A>(v, false) {
 			if(!ClassType<C>::Initialized()) {
+				HSQOBJECT& classObj = ClassType<C>::ClassObject();
+				sq_resetobject(&classObj);
+
 				sq_pushobject(v, ClassType<B>::ClassObject());
 				sq_newclass(v, true);
-				sq_getstackobj(v, -1, &ClassType<C>::ClassObject());
-
-				sq_pop(v, -1);
+				sq_getstackobj(v, -1, &classObj);
+				sq_addref(vm, &classObj); // must addref before the pop!
+				sq_pop(vm, 1);
 
 				InitDerivedClass(v);
 				ClassType<C>::Initialized() = true;
@@ -295,14 +345,10 @@ namespace Sqrat {
 
 	protected:
 		void InitDerivedClass(HSQUIRRELVM vm) {
-			HSQOBJECT& classObj = ClassType<C>::ClassObject();
-			HSQOBJECT& setTable = ClassType<C>::SetTable();
-			HSQOBJECT& getTable = ClassType<C>::GetTable();
+			ClassType<C>::CopyFunc() = &A::Copy;
 
 			// push the class
-			sq_pushobject(vm, classObj);
-
-			ClassType<C>::CopyFunc() = &A::Copy;
+			sq_pushobject(vm, ClassType<C>::ClassObject());
 
 			// add the default constructor
 			sq_pushstring(vm,_SC("constructor"), -1);
@@ -310,21 +356,25 @@ namespace Sqrat {
 			sq_newslot(vm, -3, false);
 
 			// clone the base classes set table (static)
+			HSQOBJECT& setTable = ClassType<C>::SetTable();
 			sq_resetobject(&setTable);
-			sq_pushobject(vm, setTable);
+			sq_pushobject(vm, ClassType<B>::SetTable());
 			sq_pushstring(vm,_SC("__setTable"), -1);
 			sq_clone(vm, -2);
 			sq_remove(vm, -3);
 			sq_getstackobj(vm, -1, &setTable);
+			sq_addref(vm, &setTable);
 			sq_newslot(vm, -3, true);
 
 			// clone the base classes get table (static)
+			HSQOBJECT& getTable = ClassType<C>::GetTable();
 			sq_resetobject(&getTable);
-			sq_pushobject(vm, getTable);
+			sq_pushobject(vm, ClassType<B>::GetTable());
 			sq_pushstring(vm,_SC("__getTable"), -1);
 			sq_clone(vm, -2);
 			sq_remove(vm, -3);
 			sq_getstackobj(vm, -1, &getTable);
+			sq_addref(vm, &getTable);
 			sq_newslot(vm, -3, true);
 
 			// override _set
@@ -337,6 +387,11 @@ namespace Sqrat {
 			sq_pushstring(vm, _SC("_get"), -1);
 			sq_pushobject(vm, getTable); // Push the get table as a free variable
 			sq_newclosure(vm, sqVarGet, 1);
+			sq_newslot(vm, -3, false);
+
+			// add weakref (apparently not provided by default)
+			sq_pushstring(vm, _SC("weakref"), -1);
+			sq_newclosure(vm, &Class::ClassWeakref, 0);
 			sq_newslot(vm, -3, false);
 
 			// pop the class

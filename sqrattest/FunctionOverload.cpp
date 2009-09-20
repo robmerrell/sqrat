@@ -27,49 +27,47 @@
 
 using namespace Sqrat;
 
-TEST_F(SqratTest, LoadScriptFromString) {
-	//
-	// Compile and run from string
-	//
-	
+class Speaker {
+public:
+	int Echo() { return 0; }
+	int Echo(int val) { return val; }
+};
+
+int GlobalEcho() { return 0; }
+int GlobalEcho(int val) { return val; }
+
+TEST_F(SqratTest, OverloadedMemberFunction) {
 	DefaultVM::Set(vm);
+
+	// Member function overloads
+	RootTable().Bind(_SC("Speaker"), 
+		Class<Speaker>()
+		.Overload<int (Speaker::*)()>(_SC("Echo"), &Speaker::Echo)
+		.Overload<int (Speaker::*)(int)>(_SC("Echo"), &Speaker::Echo)
+		);
+
+	// Global Function overloads
+	RootTable().Overload<int (*)()>(_SC("GlobalEcho"), &GlobalEcho);
+	RootTable().Overload<int (*)(int)>(_SC("GlobalEcho"), &GlobalEcho);
 
 	Script script;
 
 	try {
 		script.CompileString(_SC(" \
-			x <- 1 + 2; \
-			gTest.EXPECT_STR_EQ(x, 3); \
+			s <- Speaker(); \
+			\
+			gTest.EXPECT_INT_EQ(0, s.Echo()); \
+			gTest.EXPECT_INT_EQ(1, s.Echo(1)); \
+			gTest.EXPECT_INT_EQ(0, GlobalEcho()); \
+			gTest.EXPECT_INT_EQ(1, GlobalEcho(1)); \
 			"));
 	} catch(Exception ex) {
-		FAIL() << _SC("Script Compile Failed: ") << ex.Message();
+		FAIL() << _SC("Compile Failed: ") << ex.Message();
 	}
 	
 	try {
 		script.Run();
 	} catch(Exception ex) {
-		FAIL() << _SC("Script Run Failed: ") << ex.Message();
-	}
-}
-
-TEST_F(SqratTest, LoadScriptFromFile) {
-	//
-	// Compile and run from file
-	//
-	
-	DefaultVM::Set(vm);
-	
-	Script script;
-
-	try {
-		script.CompileFile(_SC("scripts/hello.nut"));
-	} catch(Exception ex) {
-		FAIL() << _SC("Script Compile Failed: ") << ex.Message();
-	}
-	
-	try {
-		script.Run();
-	} catch(Exception ex) {
-		FAIL() << _SC("Script Run Failed: ") << ex.Message();
+		FAIL() << _SC("Run Failed: ") << ex.Message();
 	}
 }

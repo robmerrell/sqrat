@@ -109,8 +109,8 @@ TEST_F(SqratTest, ClassProperties) {
 			item2 <- Item(); \
 			item2.name = \"Shield\"; \
 			p.leftHand = item2; \
-			gTest.EXPECT_STREQ(p.rightHand.name, \"Sword\"); \
-			gTest.EXPECT_STREQ(p.leftHand.name, \"Shield\"); \
+			gTest.EXPECT_STR_EQ(p.rightHand.name, \"Sword\"); \
+			gTest.EXPECT_STR_EQ(p.leftHand.name, \"Shield\"); \
 			"));
 	} catch(Exception ex) {
 		FAIL() << _SC("Compile Failed: ") << ex.Message();

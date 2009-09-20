@@ -102,13 +102,24 @@ TEST_F(SqratTest, ClassInstances) {
 			steve.age = 34; \
 			steve.wage = 35.00; \
 			steve.department = \"Management\"; \
-			::print(steve); \
-			::print(\"===========\\n\"); \
+			\
+			gTest.EXPECT_INT_EQ(steve.age, 34); \
+			gTest.EXPECT_FLOAT_EQ(steve.wage, 35.00); \
+			gTest.EXPECT_STR_EQ(steve.lastName, \"Jones\"); \
+			\
 			\
 			bob.age += 1; \
 			bob.GiveRaise(0.02); \
 			bob.supervisor = steve; \
-			::print(bob); \
+			\
+			gTest.EXPECT_INT_EQ(bob.age, 43); \
+			gTest.EXPECT_FLOAT_EQ(bob.wage, 22.389); \
+			gTest.EXPECT_STR_EQ(bob.lastName, \"Smith\"); \
+			\
+			// Uncomment the following to see _tostring demonstrated \
+			//::print(steve); \
+			//::print(\"===========\\n\"); \
+			//::print(bob); \
 			"));
 	} catch(Exception ex) {
 		FAIL() << _SC("Compile Failed: ") << ex.Message();

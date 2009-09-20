@@ -23,53 +23,59 @@
 
 #include <gtest/gtest.h>
 #include <sqrat.h>
+#include <sqratimport.h>
 #include "Fixture.h"
 
 using namespace Sqrat;
 
-TEST_F(SqratTest, LoadScriptFromString) {
-	//
-	// Compile and run from string
-	//
-	
+TEST_F(SqratTest, ImportScript) {
 	DefaultVM::Set(vm);
+
+	sqrat_register_importlib(vm);
 
 	Script script;
 
 	try {
 		script.CompileString(_SC(" \
-			x <- 1 + 2; \
-			gTest.EXPECT_STR_EQ(x, 3); \
+			::import(\"scripts/samplemodule\"); \
+			\
+			gTest.EXPECT_FLOAT_EQ(3.1415, ::PI); \
+			gTest.EXPECT_INT_EQ(10, ::RectArea(2, 5)); \
+			gTest.EXPECT_FLOAT_EQ(12.566, ::CircleArea(2)); \
 			"));
 	} catch(Exception ex) {
-		FAIL() << _SC("Script Compile Failed: ") << ex.Message();
+		FAIL() << _SC("Compile Failed: ") << ex.Message();
 	}
 	
 	try {
 		script.Run();
 	} catch(Exception ex) {
-		FAIL() << _SC("Script Run Failed: ") << ex.Message();
+		FAIL() << _SC("Run Failed: ") << ex.Message();
 	}
 }
 
-TEST_F(SqratTest, LoadScriptFromFile) {
-	//
-	// Compile and run from file
-	//
-	
+TEST_F(SqratTest, ImportScriptIntoTable) {
 	DefaultVM::Set(vm);
-	
+
+	sqrat_register_importlib(vm);
+
 	Script script;
 
 	try {
-		script.CompileFile(_SC("scripts/hello.nut"));
+		script.CompileString(_SC(" \
+			mod <- ::import(\"scripts/samplemodule\", {}); \
+			\
+			gTest.EXPECT_FLOAT_EQ(3.1415, mod.PI); \
+			gTest.EXPECT_INT_EQ(10, mod.RectArea(2, 5)); \
+			gTest.EXPECT_FLOAT_EQ(12.566, mod.CircleArea(2)); \
+			"));
 	} catch(Exception ex) {
-		FAIL() << _SC("Script Compile Failed: ") << ex.Message();
+		FAIL() << _SC("Compile Failed: ") << ex.Message();
 	}
 	
 	try {
 		script.Run();
 	} catch(Exception ex) {
-		FAIL() << _SC("Script Run Failed: ") << ex.Message();
+		FAIL() << _SC("Run Failed: ") << ex.Message();
 	}
 }
