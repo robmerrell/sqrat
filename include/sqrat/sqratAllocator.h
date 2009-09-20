@@ -102,6 +102,33 @@ namespace Sqrat {
 			return 0;
 		}
 	};
+
+
+	//
+	// NoCopy
+	//
+
+	template<class C>
+	class NoCopy {
+	public:
+		static SQInteger New(HSQUIRRELVM vm) {
+			C* instance = new C();
+			sq_setinstanceup(vm, 1, instance);
+			sq_setreleasehook(vm, 1, &Delete);
+			return 0;
+		}
+
+		static SQInteger Copy(HSQUIRRELVM vm, SQInteger idx, const void* value) {
+			return 0;
+		}
+
+		static SQInteger Delete(SQUserPointer ptr, SQInteger size) {
+			C* instance = reinterpret_cast<C*>(ptr);
+			delete instance;
+			return 0;
+		}
+	};
+
 }
 
 #endif

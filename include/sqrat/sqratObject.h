@@ -47,20 +47,20 @@ namespace Sqrat {
 		}
 
 	public:
-		Object() {
+		Object() : vm(0), release(true) {
 			sq_resetobject(&obj);
 		}
 
-		Object(const Object& so) : vm(so.vm), obj(so.obj) {
+		Object(const Object& so) : vm(so.vm), obj(so.obj), release(so.release) {
 			sq_addref(vm, &obj);
 		}
 
-		Object(HSQOBJECT o, HSQUIRRELVM v = DefaultVM::Get()) : vm(v), obj(o) {
+		Object(HSQOBJECT o, HSQUIRRELVM v = DefaultVM::Get()) : vm(v), obj(o), release(true) {
 			sq_addref(vm, &obj);
 		}
 
 		template<class T>
-		Object(T* instance, HSQUIRRELVM v = DefaultVM::Get()) : vm(v) {
+		Object(T* instance, HSQUIRRELVM v = DefaultVM::Get()) : vm(v), release(true) {
 			ClassType<T>::PushInstance(vm, instance);
 			sq_getstackobj(vm, -1, &obj);
 			sq_addref(vm, &obj);
@@ -73,9 +73,12 @@ namespace Sqrat {
 		}
 
 		Object& operator=(const Object& so) {
-			Release();
+			if(release) {
+				Release();
+			}
 			vm = so.vm;
 			obj = so.obj;
+			release = so.release;
 			sq_addref(vm, &GetObject());
 			return *this;
 		}
@@ -215,6 +218,33 @@ namespace Sqrat {
 			sq_pushobject(vm, value.GetObject());
 		}
 	};
+
+	template<>
+	struct Var<Object&> {
+		Object value;
+		Var(HSQUIRRELVM vm, SQInteger idx) {
+			HSQOBJECT sqValue;
+			sq_getstackobj(vm, idx, &sqValue);
+			value = Object(sqValue, vm);
+		}
+		static void push(HSQUIRRELVM vm, Object& value) {
+			sq_pushobject(vm, value.GetObject());
+		}
+	};
+
+	template<>
+	struct Var<const Object&> {
+		Object value;
+		Var(HSQUIRRELVM vm, SQInteger idx) {
+			HSQOBJECT sqValue;
+			sq_getstackobj(vm, idx, &sqValue);
+			value = Object(sqValue, vm);
+		}
+		static void push(HSQUIRRELVM vm, Object& value) {
+			sq_pushobject(vm, value.GetObject());
+		}
+	};
+
 }
 
 #endif
