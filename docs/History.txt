@@ -4,6 +4,12 @@ Version 0.7
 
 === Version History ===
 
+0.8.1 (09/23/2009)
+ * Fixed heap corruption when binding enumerations (needed an addref)
+ * Fixed disambiguation issue when overloading with const member functions
+ * Made C++ object variable initialization more consistent (emeyex)
+ * Added a NoCopy allocator (emeyex) 
+
 0.8 (09/20/2009)
  * Function overloading now available for classes and tables
  * Added ErrorHandling static settings object to enable or disable error handling (true by defualt)

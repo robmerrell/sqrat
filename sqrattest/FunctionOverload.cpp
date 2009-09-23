@@ -71,3 +71,44 @@ TEST_F(SqratTest, OverloadedMemberFunction) {
 		FAIL() << _SC("Run Failed: ") << ex.Message();
 	}
 }
+
+//
+// Overload test with const functions, based on scenario provided by emeyex
+//
+
+class Entity {
+public:
+	unsigned int QueryEnumValue( unsigned int enumKey, unsigned int enumValueDefault ) const { return enumKey; }
+	unsigned int QueryEnumValue( unsigned int enumKey ) const { return QueryEnumValue( enumKey, 0 ); }
+};
+
+TEST_F(SqratTest, ConstOverloadTest) {
+	DefaultVM::Set(vm);
+
+	// Member function overloads
+	RootTable().Bind(_SC("Entity"), 
+		Class<Entity>()
+		.Overload<unsigned int (Entity::*)(unsigned int, unsigned int) const>(_SC("QueryEnumValue"), &Entity::QueryEnumValue)
+		.Overload<unsigned int (Entity::*)(unsigned int) const>(_SC("QueryEnumValue"), &Entity::QueryEnumValue)
+		);
+
+	Script script;
+
+	try {
+		script.CompileString(_SC(" \
+			e <- Entity(); \
+			\
+			gTest.EXPECT_INT_EQ(1, e.QueryEnumValue(1, 0)); \
+			gTest.EXPECT_INT_EQ(2, e.QueryEnumValue(2)); \
+			"));
+	} catch(Exception ex) {
+		FAIL() << _SC("Compile Failed: ") << ex.Message();
+	}
+	
+	try {
+		script.Run();
+	} catch(Exception ex) {
+		FAIL() << _SC("Run Failed: ") << ex.Message();
+	}
+}
+

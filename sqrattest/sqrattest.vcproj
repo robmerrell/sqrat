@@ -442,6 +442,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ConstBindings.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\FunctionOverload.cpp"
 				>
 			</File>

@@ -45,6 +45,7 @@ namespace Sqrat {
 			if(createTable) {
 				sq_newtable(vm);
 				sq_getstackobj(vm,-1,&obj);
+				sq_addref(vm, &obj);
 				sq_pop(vm,1);
 			}
 		}
@@ -79,7 +80,7 @@ namespace Sqrat {
 		ConstTable(HSQUIRRELVM v = DefaultVM::Get()) : Enumeration(v, false) {
 			sq_pushconsttable(vm);
 			sq_getstackobj(vm,-1, &obj);
-			sq_pop(v,1);
+			sq_pop(v,1); // No addref needed, since the consttable is always around
 		}
 
 		//

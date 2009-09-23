@@ -127,6 +127,56 @@ namespace Sqrat {
 		return &SqOverload<R>::Func;
 	}
 
+	template <class C, class R>
+	inline SQFUNCTION SqOverloadFunc(R (C::*method)() const ) {
+		return &SqOverload<R>::Func;
+	}
+
+	template <class C, class R, class A1>
+	inline SQFUNCTION SqOverloadFunc(R (C::*method)(A1) const ) {
+		return &SqOverload<R>::Func;
+	}
+
+	template <class C, class R, class A1, class A2>
+	inline SQFUNCTION SqOverloadFunc(R (C::*method)(A1, A2) const ) {
+		return &SqOverload<R>::Func;
+	}
+
+	template <class C, class R, class A1, class A2, class A3>
+	inline SQFUNCTION SqOverloadFunc(R (C::*method)(A1, A2, A3) const ) {
+		return &SqOverload<R>::Func;
+	}
+
+	template <class C, class R, class A1, class A2, class A3, class A4>
+	inline SQFUNCTION SqOverloadFunc(R (C::*method)(A1, A2, A3, A4) const ) {
+		return &SqOverload<R>::Func;
+	}
+
+	template <class C, class R, class A1, class A2, class A3, class A4, class A5>
+	inline SQFUNCTION SqOverloadFunc(R (C::*method)(A1, A2, A3, A4, A5) const ) {
+		return &SqOverload<R>::Func;
+	}
+
+	template <class C, class R, class A1, class A2, class A3, class A4, class A5, class A6>
+	inline SQFUNCTION SqOverloadFunc(R (C::*method)(A1, A2, A3, A4, A5, A6) const ) {
+		return &SqOverload<R>::Func;
+	}
+
+	template <class C, class R, class A1, class A2, class A3, class A4, class A5, class A6, class A7>
+	inline SQFUNCTION SqOverloadFunc(R (C::*method)(A1, A2, A3, A4, A5, A6, A7) const ) {
+		return &SqOverload<R>::Func;
+	}
+
+	template <class C, class R, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8>
+	inline SQFUNCTION SqOverloadFunc(R (C::*method)(A1, A2, A3, A4, A5, A6, A7, A8) const ) {
+		return &SqOverload<R>::Func;
+	}
+
+	template <class C, class R, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9>
+	inline SQFUNCTION SqOverloadFunc(R (C::*method)(A1, A2, A3, A4, A5, A6, A7, A8, A9) const ) {
+		return &SqOverload<R>::Func;
+	}
+
 	//
 	// Query argument count
 	//
@@ -252,6 +302,70 @@ namespace Sqrat {
 	// Arg Count 9
 	template <class C, class R, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9>
 	inline int SqGetArgCount(R (C::*method)(A1, A2, A3, A4, A5, A6, A7, A8, A9)) {
+		return 9;
+	}
+
+	//
+	// Query const member function argument count
+	//
+
+	// Arg Count 0
+	template <class C, class R>
+	inline int SqGetArgCount(R (C::*method)() const) {
+		return 0;
+	}
+
+	// Arg Count 1
+	template <class C, class R, class A1>
+	inline int SqGetArgCount(R (C::*method)(A1) const) {
+		return 1;
+	}
+
+	// Arg Count 2
+	template <class C, class R, class A1, class A2>
+	inline int SqGetArgCount(R (C::*method)(A1, A2) const) {
+		return 2;
+	}
+
+	// Arg Count 3
+	template <class C, class R, class A1, class A2, class A3>
+	inline int SqGetArgCount(R (C::*method)(A1, A2, A3) const) {
+		return 3;
+	}
+
+	// Arg Count 4
+	template <class C, class R, class A1, class A2, class A3, class A4>
+	inline int SqGetArgCount(R (C::*method)(A1, A2, A3, A4) const) {
+		return 4;
+	}
+
+	// Arg Count 5
+	template <class C, class R, class A1, class A2, class A3, class A4, class A5>
+	inline int SqGetArgCount(R (C::*method)(A1, A2, A3, A4, A5) const) {
+		return 5;
+	}
+
+	// Arg Count 6
+	template <class C, class R, class A1, class A2, class A3, class A4, class A5, class A6>
+	inline int SqGetArgCount(R (C::*method)(A1, A2, A3, A4, A5, A6) const) {
+		return 6;
+	}
+
+	// Arg Count 7
+	template <class C, class R, class A1, class A2, class A3, class A4, class A5, class A6, class A7>
+	inline int SqGetArgCount(R (C::*method)(A1, A2, A3, A4, A5, A6, A7) const) {
+		return 7;
+	}
+
+	// Arg Count 8
+	template <class C, class R, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8>
+	inline int SqGetArgCount(R (C::*method)(A1, A2, A3, A4, A5, A6, A7, A8) const) {
+		return 8;
+	}
+
+	// Arg Count 9
+	template <class C, class R, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9>
+	inline int SqGetArgCount(R (C::*method)(A1, A2, A3, A4, A5, A6, A7, A8, A9) const) {
 		return 9;
 	}
 
