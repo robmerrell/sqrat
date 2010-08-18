@@ -48,6 +48,8 @@ namespace Sqrat {
 
 			R ret = (*method)();
 
+			if(ret == NULL) return 0;
+
 			PushVar(vm, ret);
 			return 1;
 		}
@@ -63,6 +65,8 @@ namespace Sqrat {
 			R ret = (*method)(
 				Var<A1>(vm, startIdx).value
 				);
+
+			if(ret == NULL) return 0;
 
 			PushVar(vm, ret);
 			return 1;
@@ -80,6 +84,8 @@ namespace Sqrat {
 				Var<A2>(vm, startIdx + 1).value
 				);
 
+			if(ret == NULL) return 0;
+
 			PushVar(vm, ret);
 			return 1;
 		}
@@ -96,6 +102,8 @@ namespace Sqrat {
 				Var<A2>(vm, startIdx + 1).value,
 				Var<A3>(vm, startIdx + 2).value
 				);
+
+			if(ret == NULL) return 0;
 
 			PushVar(vm, ret);
 			return 1;
@@ -115,6 +123,8 @@ namespace Sqrat {
 				Var<A4>(vm, startIdx + 3).value
 				);
 
+			if(ret == NULL) return 0;
+
 			PushVar(vm, ret);
 			return 1;
 		}
@@ -133,6 +143,8 @@ namespace Sqrat {
 				Var<A4>(vm, startIdx + 3).value,
 				Var<A5>(vm, startIdx + 4).value
 				);
+
+			if(ret == NULL) return 0;
 
 			PushVar(vm, ret);
 			return 1;
@@ -154,6 +166,8 @@ namespace Sqrat {
 				Var<A6>(vm, startIdx + 5).value
 				);
 
+			if(ret == NULL) return 0;
+
 			PushVar(vm, ret);
 			return 1;
 		}
@@ -174,6 +188,8 @@ namespace Sqrat {
 				Var<A6>(vm, startIdx + 5).value,
 				Var<A7>(vm, startIdx + 6).value
 				);
+
+			if(ret == NULL) return 0;
 
 			PushVar(vm, ret);
 			return 1;
@@ -197,6 +213,8 @@ namespace Sqrat {
 				Var<A8>(vm, startIdx + 7).value
 				);
 
+			if(ret == NULL) return 0;
+
 			PushVar(vm, ret);
 			return 1;
 		}
@@ -219,6 +237,8 @@ namespace Sqrat {
 				Var<A8>(vm, startIdx + 7).value,
 				Var<A9>(vm, startIdx + 8).value
 				);
+
+			if(ret == NULL) return 0;
 
 			PushVar(vm, ret);
 			return 1;
