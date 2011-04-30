@@ -335,8 +335,8 @@ namespace Sqrat {
 				sq_pushobject(v, ClassType<B>::ClassObject());
 				sq_newclass(v, true);
 				sq_getstackobj(v, -1, &classObj);
-				sq_addref(vm, &classObj); // must addref before the pop!
-				sq_pop(vm, 1);
+				sq_addref(v, &classObj); // must addref before the pop!
+				sq_pop(v, 1);
 
 				InitDerivedClass(v);
 				ClassType<C>::Initialized() = true;
@@ -391,7 +391,7 @@ namespace Sqrat {
 
 			// add weakref (apparently not provided by default)
 			sq_pushstring(vm, _SC("weakref"), -1);
-			sq_newclosure(vm, &Class::ClassWeakref, 0);
+			sq_newclosure(vm, &Class<C,A>::ClassWeakref, 0);
 			sq_newslot(vm, -3, false);
 
 			// pop the class
